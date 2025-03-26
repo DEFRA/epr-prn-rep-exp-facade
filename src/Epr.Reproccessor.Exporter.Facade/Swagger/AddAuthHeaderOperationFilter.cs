@@ -25,7 +25,8 @@ public class AddAuthHeaderOperationFilter : IOperationFilter
                     Type = ReferenceType.SecurityScheme,
                     Id = "Bearer"
                 }
-            }] = new List<string>()
+            }
+            ] = new List<string>()
         });
     }
 }
