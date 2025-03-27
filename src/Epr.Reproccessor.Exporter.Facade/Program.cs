@@ -1,5 +1,3 @@
-
-using Epr.Reproccessor.Exporter.Facade.HealthChecks;
 using Epr.Reproccessor.Exporter.Facade.Swagger;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -11,23 +9,21 @@ using System.Text.Json.Serialization;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services
-    .AddApplicationInsightsTelemetry()
-    .AddHealthChecks();
-  
+	.AddApplicationInsightsTelemetry()
+	.AddHealthChecks();
 
 // Logging
 builder.Services.AddLogging();
 
 // Authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddMicrosoftIdentityWebApi(options =>
-    {
-        builder.Configuration.Bind("AzureAdB2C", options);
-    }, options =>
-    {
-        builder.Configuration.Bind("AzureAdB2C", options);
-    });
-
+	.AddMicrosoftIdentityWebApi(options =>
+	{
+		builder.Configuration.Bind("AzureAdB2C", options);
+	}, options =>
+	{
+		builder.Configuration.Bind("AzureAdB2C", options);
+	});
 
 // Authorization
 var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
@@ -35,16 +31,16 @@ builder.Services.AddAuthorizationBuilder().AddPolicy("AuthUser", policy);
 
 // General Config
 builder.Services.AddControllers()
-    .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+	.AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
-    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
-        Type = SecuritySchemeType.Http,
-        Scheme = "Bearer"
-    });
-    options.OperationFilter<AddAuthHeaderOperationFilter>();
+	options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+	{
+		Type = SecuritySchemeType.Http,
+		Scheme = "Bearer"
+	});
+	options.OperationFilter<AddAuthHeaderOperationFilter>();
 });
 
 // App
@@ -57,7 +53,7 @@ app.UseSwaggerUI();
 
 if (app.Environment.IsDevelopment())
 {
-    IdentityModelEventSource.ShowPII = true;
+	IdentityModelEventSource.ShowPII = true;
 }
 
 app.UseHttpsRedirection();
@@ -65,9 +61,5 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-
-//app.MapHealthChecks(
-//    builder.Configuration.GetValue<string>("HealthCheckPath"),
-//    HealthCheckOptionBuilder.Build()).AllowAnonymous();
 
 await app.RunAsync();

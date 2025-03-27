@@ -27,4 +27,3 @@ public class AntivirusApiConfig
 
     public bool PersistFile { get; set; }
 }
-
