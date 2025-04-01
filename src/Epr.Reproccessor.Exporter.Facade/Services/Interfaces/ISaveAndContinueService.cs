@@ -1,0 +1,9 @@
+﻿using Epr.Reproccessor.Exporter.Facade.Api.Models;
+
+namespace Epr.Reproccessor.Exporter.Facade.Api.Services.Interfaces
+{
+    public interface ISaveAndContinueService
+    {
+        Task<HttpResponseMessage> SaveAsync(SaveAndContinueModel model);
+    }
+}
