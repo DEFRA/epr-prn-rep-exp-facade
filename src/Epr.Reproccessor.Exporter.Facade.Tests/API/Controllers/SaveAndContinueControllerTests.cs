@@ -29,10 +29,10 @@ namespace Epr.Reproccessor.Exporter.Facade.Tests.API.Controllers
         }
 
         [TestMethod]
-        public async Task Save_ReturnsOk()
+        public async Task Create_ReturnsOk()
         {
             var model = new SaveAndContinueRequest() { RegistrationId = 1, Action = "Test", Controller = "Test", Area = "Area" };
-            var result = await _systemUnderTest.Save(model) as OkResult;
+            var result = await _systemUnderTest.Create(model) as OkResult;
 
             result.Should().BeOfType<OkResult>();
             result.Should().NotBeNull();
@@ -41,11 +41,42 @@ namespace Epr.Reproccessor.Exporter.Facade.Tests.API.Controllers
 
 
         [TestMethod]
-        public async Task Save_InternalServerError_ReturnsBadRequest()
+        public async Task Create_InternalServerError_ReturnsBadRequest()
         {
-            _mockSaveAndContinueService.Setup(s => s.SaveAsync(It.IsAny<SaveAndContinueRequest>())).Throws<ArgumentException>();
+            _mockSaveAndContinueService.Setup(s => s.AddAsync(It.IsAny<SaveAndContinueRequest>())).Throws<ArgumentException>();
 
-            var result = await _systemUnderTest.Save(null) as BadRequestResult;
+            var result = await _systemUnderTest.Create(null) as BadRequestResult;
+
+            result.Should().BeOfType<BadRequestResult>();
+            result.Should().NotBeNull();
+            result.StatusCode.Should().Be((int)HttpStatusCode.BadRequest);
+        }
+
+        [TestMethod]
+        public async Task GetLatest_ReturnsOk()
+        {
+            var data = new SaveAndContinueResponse() { Id = 1, RegistrationId = 1, Area = "Area", Controller= "Controller", Action ="Action", CreatedOn = DateTime.UtcNow };
+            var registrationId = 1;
+            var area = "Registration";
+
+            _mockSaveAndContinueService.Setup(x=>x.GetLatestAsync(It.IsAny<int>(), It.IsAny<string>())).ReturnsAsync(data);
+
+            var result = await _systemUnderTest.GetLatest(registrationId, area) as OkObjectResult;
+
+            result.Should().BeOfType<OkObjectResult>();
+            result.Should().NotBeNull();
+            result.StatusCode.Should().Be((int)HttpStatusCode.OK);
+        }
+
+
+        [TestMethod]
+        public async Task GetLatest_InternalServerError_ReturnsBadRequest()
+        {
+            _mockSaveAndContinueService.Setup(x => x.GetLatestAsync(It.IsAny<int>(), It.IsAny<string>())).Throws<ArgumentException>();
+            var registrationId = 1;
+            var area = "Registration";
+
+            var result = await _systemUnderTest.GetLatest(registrationId, area) as BadRequestResult;
 
             result.Should().BeOfType<BadRequestResult>();
             result.Should().NotBeNull();

@@ -8,19 +8,37 @@ namespace Epr.Reproccessor.Exporter.Facade.Api.Controllers
     [Route("[controller]")]
     public class SaveAndContinueController (ISaveAndContinueService service, ILogger<SaveAndContinueController> logger) : Controller
     {
-        [HttpPost(Name = "Save")]
+        [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Save(SaveAndContinueRequest request)
+        public async Task<IActionResult> Create(SaveAndContinueRequest request)
         {
             try
             {
-                await service.SaveAsync(request);
+                await service.AddAsync(request);
                 return Ok();
             }
             catch(Exception ex)
             {
-                logger.LogError(ex, "SaveAndContinueController - Save: {request}: Recieved Unhandled exception", request);
+                logger.LogError(ex, "SaveAndContinueController - Create: {request}: Recieved Unhandled exception", request);
+            }
+            return BadRequest();
+        }
+
+        [HttpGet]
+        [Route("GetLastet")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetLatest(int registtrationId, string area)
+        {
+            try
+            {
+                var response = await service.GetLatestAsync(registtrationId, area);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "SaveAndContinueController - GetLatest: registrationId:{registratioId} and area:{area}: Recieved Unhandled exception", registtrationId, area);
             }
             return BadRequest();
         }

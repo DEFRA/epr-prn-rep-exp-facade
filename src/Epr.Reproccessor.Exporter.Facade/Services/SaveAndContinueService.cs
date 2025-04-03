@@ -13,9 +13,9 @@ namespace Epr.Reproccessor.Exporter.Facade.Api.Services
     IOptions<PrnBackendServiceApiConfig> settings) : ISaveAndContinueService
     {
 
-        public async Task<HttpResponseMessage> SaveAsync(SaveAndContinueRequest model)
+        public async Task<HttpResponseMessage> AddAsync(SaveAndContinueRequest request)
         {
-            var response = await httpClient.PostAsJsonAsync(settings.Value.Endpoints?.SaveAndContinueSaveUri, model);
+            var response = await httpClient.PostAsJsonAsync(settings.Value.Endpoints?.SaveAndContinueSaveUri, request);
 
             if (!response.IsSuccessStatusCode)
             {
@@ -32,7 +32,7 @@ namespace Epr.Reproccessor.Exporter.Facade.Api.Services
             return response;
         }
 
-        public async Task<SaveAndContinueResponse> GetLatestAsync(int registrationId, string area)
+        public async Task<SaveAndContinueResponse?> GetLatestAsync(int registrationId, string area)
         {
             var response = await httpClient.GetAsync($"{settings.Value.Endpoints?.SaveAndContinueGetLatestUri}/{registrationId}/{area}");
             

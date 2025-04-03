@@ -17,7 +17,7 @@ namespace Epr.Reproccessor.Exporter.Facade.App.Config
 
     public class PrnBackendServiceEndpoint
     {
-        public string SaveAndContinueSaveUri { get; set; } = "api/v1.0/saveandcontinue/save";
+        public string SaveAndContinueSaveUri { get; set; } = "api/v1.0/saveandcontinue";
         public string SaveAndContinueGetLatestUri { get; set; } = "api/v1.0/saveandcontinue/getLatest/";
         public string SaveAndContinueGetAllUri { get; set; } = "api/v1.0/saveandcontinue/getAll/";
     }

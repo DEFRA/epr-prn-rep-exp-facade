@@ -60,7 +60,7 @@ namespace Epr.Reproccessor.Exporter.Facade.Tests.API.Services
             var sut = new SaveAndContinueService(httpClient, _logger, _options.Object);
 
             // Act
-            var response = await sut.SaveAsync(new SaveAndContinueRequest());
+            var response = await sut.AddAsync(new SaveAndContinueRequest());
 
             // Assert
             response.Should().BeEquivalentTo(apiResponse);
@@ -76,7 +76,7 @@ namespace Epr.Reproccessor.Exporter.Facade.Tests.API.Services
             var sut = new SaveAndContinueService(httpClient, _logger, _options.Object);
 
             // Act
-            Func<Task> act = () => sut.SaveAsync(new SaveAndContinueRequest());
+            Func<Task> act = () => sut.AddAsync(new SaveAndContinueRequest());
 
             // Assert
             await act.Should().ThrowAsync<InvalidOperationException>();
