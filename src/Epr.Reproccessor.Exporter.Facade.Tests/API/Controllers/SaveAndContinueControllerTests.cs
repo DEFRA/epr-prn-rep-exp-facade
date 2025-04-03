@@ -31,7 +31,7 @@ namespace Epr.Reproccessor.Exporter.Facade.Tests.API.Controllers
         [TestMethod]
         public async Task Save_ReturnsOk()
         {
-            var model = new SaveAndContinueModel() { RegistrationId = 1, Action = "Test", Controller = "Test", Area = "Area" };
+            var model = new SaveAndContinueRequest() { RegistrationId = 1, Action = "Test", Controller = "Test", Area = "Area" };
             var result = await _systemUnderTest.Save(model) as OkResult;
 
             result.Should().BeOfType<OkResult>();
@@ -43,7 +43,7 @@ namespace Epr.Reproccessor.Exporter.Facade.Tests.API.Controllers
         [TestMethod]
         public async Task Save_InternalServerError_ReturnsBadRequest()
         {
-            _mockSaveAndContinueService.Setup(s => s.SaveAsync(It.IsAny<SaveAndContinueModel>())).Throws<ArgumentException>();
+            _mockSaveAndContinueService.Setup(s => s.SaveAsync(It.IsAny<SaveAndContinueRequest>())).Throws<ArgumentException>();
 
             var result = await _systemUnderTest.Save(null) as BadRequestResult;
 

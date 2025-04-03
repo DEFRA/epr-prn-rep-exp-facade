@@ -11,16 +11,16 @@ namespace Epr.Reproccessor.Exporter.Facade.Api.Controllers
         [HttpPost(Name = "Save")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Save(SaveAndContinueModel model)
+        public async Task<IActionResult> Save(SaveAndContinueRequest request)
         {
             try
             {
-                await service.SaveAsync(model);
+                await service.SaveAsync(request);
                 return Ok();
             }
             catch(Exception ex)
             {
-                logger.LogError(ex, "SaveAndContinueController - Save: {request}: Recieved Unhandled exception", model);
+                logger.LogError(ex, "SaveAndContinueController - Save: {request}: Recieved Unhandled exception", request);
             }
             return BadRequest();
         }

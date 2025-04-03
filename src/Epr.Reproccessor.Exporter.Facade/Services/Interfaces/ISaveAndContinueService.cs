@@ -4,6 +4,7 @@ namespace Epr.Reproccessor.Exporter.Facade.Api.Services.Interfaces
 {
     public interface ISaveAndContinueService
     {
-        Task<HttpResponseMessage> SaveAsync(SaveAndContinueModel model);
+        Task<HttpResponseMessage> SaveAsync(SaveAndContinueRequest model);
+        Task<SaveAndContinueResponse> GetLatestAsync(int registrationId, string area);
     }
 }

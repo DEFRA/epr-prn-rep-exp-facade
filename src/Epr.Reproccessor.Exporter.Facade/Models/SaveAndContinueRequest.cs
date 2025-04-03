@@ -1,6 +1,6 @@
 ﻿namespace Epr.Reproccessor.Exporter.Facade.Api.Models
 {
-    public class SaveAndContinueModel
+    public class SaveAndContinueRequest
     {
         public string? Action { get; set; }
         public string? Controller { get; set; }
