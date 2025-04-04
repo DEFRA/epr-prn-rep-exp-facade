@@ -58,10 +58,10 @@ namespace Epr.Reproccessor.Exporter.Facade.Tests.API.Controllers
             var data = new SaveAndContinueResponse() { Id = 1, RegistrationId = 1, Area = "Area", Controller= "Controller", Action ="Action", CreatedOn = DateTime.UtcNow };
             var registrationId = 1;
             var area = "Registration";
+            var controller = "Controller";
+            _mockSaveAndContinueService.Setup(x=>x.GetLatestAsync(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(data);
 
-            _mockSaveAndContinueService.Setup(x=>x.GetLatestAsync(It.IsAny<int>(), It.IsAny<string>())).ReturnsAsync(data);
-
-            var result = await _systemUnderTest.GetLatest(registrationId, area) as OkObjectResult;
+            var result = await _systemUnderTest.GetLatest(registrationId, controller, area) as OkObjectResult;
 
             result.Should().BeOfType<OkObjectResult>();
             result.Should().NotBeNull();
@@ -72,11 +72,12 @@ namespace Epr.Reproccessor.Exporter.Facade.Tests.API.Controllers
         [TestMethod]
         public async Task GetLatest_InternalServerError_ReturnsBadRequest()
         {
-            _mockSaveAndContinueService.Setup(x => x.GetLatestAsync(It.IsAny<int>(), It.IsAny<string>())).Throws<ArgumentException>();
+            _mockSaveAndContinueService.Setup(x => x.GetLatestAsync(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>())).Throws<ArgumentException>();
             var registrationId = 1;
             var area = "Registration";
+            var controller = "Controller";
 
-            var result = await _systemUnderTest.GetLatest(registrationId, area) as BadRequestResult;
+            var result = await _systemUnderTest.GetLatest(registrationId, controller, area) as BadRequestResult;
 
             result.Should().BeOfType<BadRequestResult>();
             result.Should().NotBeNull();

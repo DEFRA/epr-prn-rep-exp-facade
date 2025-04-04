@@ -26,19 +26,19 @@ namespace Epr.Reproccessor.Exporter.Facade.Api.Controllers
         }
 
         [HttpGet]
-        [Route("GetLastet")]
+        [Route("GetLastet/{registraionId}/{area}/{controller}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetLatest(int registtrationId, string area)
+        public async Task<IActionResult> GetLatest(int registrationId, string controller, string area)
         {
             try
             {
-                var response = await service.GetLatestAsync(registtrationId, area);
+                var response = await service.GetLatestAsync(registrationId, controller, area);
                 return Ok(response);
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "SaveAndContinueController - GetLatest: registrationId:{registratioId} and area:{area}: Recieved Unhandled exception", registtrationId, area);
+                logger.LogError(ex, "SaveAndContinueController - GetLatest: registrationId:{registratioId} and area:{area}: Recieved Unhandled exception", registrationId, area);
             }
             return BadRequest();
         }

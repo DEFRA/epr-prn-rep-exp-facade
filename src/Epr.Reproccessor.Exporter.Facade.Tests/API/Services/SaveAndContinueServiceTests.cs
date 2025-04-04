@@ -89,9 +89,10 @@ namespace Epr.Reproccessor.Exporter.Facade.Tests.API.Services
             var apiResponse = _fixture.Create<SaveAndContinueResponse>();
             var registrationId = 1;
             var area = "Registration";
+            var controller = "Controller";
 
             var expectedUrl =
-                $"{BaseAddress}/{_options.Object.Value.Endpoints.SaveAndContinueGetLatestUri}/{registrationId}/{area}";
+                $"{BaseAddress}/{_options.Object.Value.Endpoints.SaveAndContinueGetLatestUri}/{registrationId}/{area}/{controller}";
 
             _httpMessageHandlerMock.Protected()
                 .Setup<Task<HttpResponseMessage>>("SendAsync",
@@ -109,7 +110,7 @@ namespace Epr.Reproccessor.Exporter.Facade.Tests.API.Services
             var sut = new SaveAndContinueService(httpClient, _logger, _options.Object);
 
             // Act
-            var response = await sut.GetLatestAsync(registrationId, area);
+            var response = await sut.GetLatestAsync(registrationId, controller, area);
 
             // Assert
             response.Should().BeEquivalentTo(apiResponse);
@@ -121,13 +122,15 @@ namespace Epr.Reproccessor.Exporter.Facade.Tests.API.Services
             // Arrange
             var registrationId = 1;
             var area = "Registration";
+            var controller = "Controller";
+
             var httpClient = new HttpClient(_httpMessageHandlerMock.Object);
             httpClient.BaseAddress = new Uri(BaseAddress);
 
             var sut = new SaveAndContinueService(httpClient, _logger, _options.Object);
 
             // Act
-            Func<Task> act = () => sut.GetLatestAsync(registrationId, area);
+            Func<Task> act = () => sut.GetLatestAsync(registrationId, controller, area);
 
             // Assert
             await act.Should().ThrowAsync<InvalidOperationException>();

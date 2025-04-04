@@ -32,9 +32,9 @@ namespace Epr.Reproccessor.Exporter.Facade.Api.Services
             return response;
         }
 
-        public async Task<SaveAndContinueResponse?> GetLatestAsync(int registrationId, string area)
+        public async Task<SaveAndContinueResponse?> GetLatestAsync(int registrationId, string controller, string area)
         {
-            var response = await httpClient.GetAsync($"{settings.Value.Endpoints?.SaveAndContinueGetLatestUri}/{registrationId}/{area}");
+            var response = await httpClient.GetAsync($"{settings.Value.Endpoints?.SaveAndContinueGetLatestUri}/{registrationId}/{area}/{controller}");
             
             if (response.StatusCode == HttpStatusCode.NoContent)
             {
