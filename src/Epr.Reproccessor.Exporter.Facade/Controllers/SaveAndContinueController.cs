@@ -26,7 +26,7 @@ namespace Epr.Reproccessor.Exporter.Facade.Api.Controllers
         }
 
         [HttpGet]
-        [Route("GetLastet/{registraionId}/{area}/{controller}")]
+        [Route("GetLastet/{registrationId}/{area}/{controller}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetLatest(int registrationId, string controller, string area)
