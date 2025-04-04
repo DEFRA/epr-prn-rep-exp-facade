@@ -12,7 +12,7 @@ namespace Epr.Reproccessor.Exporter.Facade.App.Config
         public string Certificate { get; set; } = null!;
         public int Timeout { get; set; }
 
-        public PrnBackendServiceEndpoint Endpoints { get; set; } = null!;
+        public PrnBackendServiceEndpoint Endpoints { get; set; } = new PrnBackendServiceEndpoint();
     }
 
     public class PrnBackendServiceEndpoint

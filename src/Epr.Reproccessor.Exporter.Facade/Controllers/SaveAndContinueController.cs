@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Epr.Reproccessor.Exporter.Facade.Api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class SaveAndContinueController (ISaveAndContinueService service, ILogger<SaveAndContinueController> logger) : Controller
     {
         [HttpPost]
