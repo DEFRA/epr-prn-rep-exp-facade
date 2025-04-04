@@ -1,4 +1,5 @@
 
+using Epr.Reproccessor.Exporter.Facade.Api.Extensions;
 using Epr.Reproccessor.Exporter.Facade.HealthChecks;
 using Epr.Reproccessor.Exporter.Facade.Swagger;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -13,10 +14,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services
     .AddApplicationInsightsTelemetry()
     .AddHealthChecks();
-  
 
-// Logging
+//logging
+builder.Services.RegisterComponents(builder.Configuration);
 builder.Services.AddLogging();
+
+// Services & HttpClients
+builder.Services.AddServicesAndHttpClients();
 
 // Authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
