@@ -5,6 +5,8 @@ using Microsoft.IdentityModel.Logging;
 using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
 using Epr.Reprocessor.Exporter.Facade.Api.Swagger;
+using System.Diagnostics.CodeAnalysis;
+[assembly: ExcludeFromCodeCoverage]
 
 var builder = WebApplication.CreateBuilder(args);
 
