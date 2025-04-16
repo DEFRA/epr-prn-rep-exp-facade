@@ -23,7 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Epr.Reproccessor.Exporter.Facade.Api\Epr.Reprocessor.Exporter.Facade.Api.csproj" />
     <ProjectReference Include="..\Epr.Reprocessor.Exporter.Facade.Api\Epr.Reprocessor.Exporter.Facade.Api.csproj" />
   </ItemGroup>
   <ItemGroup>
