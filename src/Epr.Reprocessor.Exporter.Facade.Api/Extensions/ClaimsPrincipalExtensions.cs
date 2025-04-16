@@ -1,7 +1,9 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Claims;
 using Microsoft.Identity.Web;
 
 namespace Epr.Reprocessor.Exporter.Facade.Api.Extensions;
+
 
 public static class ClaimsPrincipalExtensions
 {
