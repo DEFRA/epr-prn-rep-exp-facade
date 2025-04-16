@@ -27,7 +27,7 @@
 	<ItemGroup>
 		<SonarQubeSetting Include="sonar.coverage.exclusions">
 			<!-- Entry point files -->
-			<Value>Program.cs</Value>
+			<Value>**/Program.cs</Value>
 			<!-- Auto-generated files -->
 			<Value>**/*.g.cs</Value>
 			<Value>**/*.Designer.cs</Value>
