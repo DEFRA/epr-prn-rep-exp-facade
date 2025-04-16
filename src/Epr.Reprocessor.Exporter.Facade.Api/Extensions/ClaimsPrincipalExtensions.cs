@@ -4,7 +4,7 @@ using Microsoft.Identity.Web;
 
 namespace Epr.Reprocessor.Exporter.Facade.Api.Extensions;
 
-
+[ExcludeFromCodeCoverage]
 public static class ClaimsPrincipalExtensions
 {
 	private const string ClaimConstantEmails = "emails";
