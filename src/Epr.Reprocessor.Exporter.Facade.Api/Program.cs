@@ -1,12 +1,10 @@
-
-using Epr.Reproccessor.Exporter.Facade.HealthChecks;
-using Epr.Reproccessor.Exporter.Facade.Swagger;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Identity.Web;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
+using Epr.Reprocessor.Exporter.Facade.Api.Swagger;
 
 var builder = WebApplication.CreateBuilder(args);
 

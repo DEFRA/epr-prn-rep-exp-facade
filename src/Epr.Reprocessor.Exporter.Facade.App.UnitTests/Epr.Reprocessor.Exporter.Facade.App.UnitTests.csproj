@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Epr.Reproccessor.Exporter.Facade.App\Epr.Reproccessor.Exporter.Facade.App.csproj" />
+    <ProjectReference Include="..\Epr.Reproccessor.Exporter.Facade.App\Epr.Reprocessor.Exporter.Facade.App.csproj" />
   </ItemGroup>
 
   <ItemGroup>
