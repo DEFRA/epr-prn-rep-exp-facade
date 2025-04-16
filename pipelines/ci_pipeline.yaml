@@ -30,7 +30,7 @@ variables:
   - name: solutionFolder
     value: src
   - name: projectFolder
-    value: 'Epr.Reproccessor.Exporter.Facade'
+    value: 'Epr.Reproccessor.Exporter.Facade.Api'
   - name: testProjectFolder
     value: 'Epr.Reproccessor.Exporter.Facade.Tests'
   - name: sonarQubeProjectKey
