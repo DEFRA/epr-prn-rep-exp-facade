@@ -9,6 +9,7 @@ EXPOSE ${PORT}
 FROM defradigital/dotnetcore-development:dotnet8.0 AS build
 USER root
 WORKDIR /src
+
 COPY ["Epr.Reprocessor.Exporter.Facade.Api/Epr.Reprocessor.Exporter.Facade.Api.csproj", "Epr.Reprocessor.Exporter.Facade.Api/"]
 COPY ["Epr.Reprocessor.Exporter.Facade.App/Epr.Reprocessor.Exporter.Facade.App.csproj", "Epr.Reprocessor.Exporter.Facade.App/"]
 COPY ["NuGet.Config",""]
@@ -16,11 +17,16 @@ COPY ["NuGet.Config",""]
 # Use Build Argument to insert PAT into Nuget file
 ARG PAT=localhost
 RUN sed -i "s|</configuration>|<packageSourceCredentials><epr-packaging-common><add key=\"Username\" value=\"PAT\" /><add key=\"ClearTextPassword\" value=\"${PAT}\" /></epr-packaging-common></packageSourceCredentials></configuration>|" NuGet.Config
- 
+  
 # Restore as distinct layers
 COPY Directory.Build.props ./
 RUN dotnet restore "Epr.Reprocessor.Exporter.Facade.Api/Epr.Reprocessor.Exporter.Facade.Api.csproj" --configfile "./NuGet.Config"
+
+# Install NPM
+USER root
+RUN apk update && apk add --no-cache npm
  
+ENV NODE_EXTRA_CA_CERTS=/usr/local/share/ca-certificates/internal-ca.crt
 # Build and publish a release
 COPY Epr.Reprocessor.Exporter.Facade.Api/. ./Epr.Reprocessor.Exporter.Facade.Api/.
 COPY Epr.Reprocessor.Exporter.Facade.App/. ./Epr.Reprocessor.Exporter.Facade.App/.
@@ -35,7 +41,17 @@ RUN dotnet publish -c Release -o out
 # Build runtime image
 FROM defradigital/dotnetcore:dotnet8.0
 COPY --from=build-env /home/dotnet/Epr.Reprocessor.Exporter.Facade.Api/out .
+
+# Install tzdata
+USER root
+RUN apk add --no-cache tzdata
  
+# Add internationalisation support
+USER root
+RUN apk add --no-cache icu-libs icu-data-full libintl
+ 
+ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=0
+FROM base AS final 
 USER dotnet
  
 WORKDIR /app
