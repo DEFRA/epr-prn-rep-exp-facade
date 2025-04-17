@@ -7,8 +7,8 @@ ENV ASPNETCORE_URLS=http://*:${PORT}
 EXPOSE ${PORT}
 
 # Copy files
-COPY WebApiGateway.Api/. ./Epr.Reprocessor.Exporter.Facade.Api/.
-COPY WebApiGateway.Core/. ./Epr.Reprocessor.Exporter.Facade.App/.
+COPY Epr.Reprocessor.Exporter.Facade.Api/. ./Epr.Reprocessor.Exporter.Facade.Api/.
+COPY Epr.Reprocessor.Exporter.Facade.App/. ./Epr.Reprocessor.Exporter.Facade.App/.
 COPY NuGet.Config ./
 COPY Directory.Build.props ./
 
@@ -20,7 +20,7 @@ RUN sed -i "s|</configuration>|<packageSourceCredentials><defra-epr-common><add 
 RUN dotnet restore "Epr.Reprocessor.Exporter.Facade.Api.csproj" --configfile "NuGet.Config"
 
 # Build and publish a release
-WORKDIR /home/dotnet/WebApiGateway.Api
+WORKDIR /home/dotnet/Epr.Reprocessor.Exporter.Facade.Api
 RUN dotnet publish -c Release -o out
 
 # Build runtime image
