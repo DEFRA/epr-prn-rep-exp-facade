@@ -22,11 +22,6 @@ RUN sed -i "s|</configuration>|<packageSourceCredentials><epr-packaging-common><
 COPY Directory.Build.props ./
 RUN dotnet restore "Epr.Reprocessor.Exporter.Facade.Api/Epr.Reprocessor.Exporter.Facade.Api.csproj" --configfile "./NuGet.Config"
 
-# Install NPM
-USER root
-RUN apk update && apk add --no-cache npm
- 
-ENV NODE_EXTRA_CA_CERTS=/usr/local/share/ca-certificates/internal-ca.crt
 # Build and publish a release
 COPY Epr.Reprocessor.Exporter.Facade.Api/. ./Epr.Reprocessor.Exporter.Facade.Api/.
 COPY Epr.Reprocessor.Exporter.Facade.App/. ./Epr.Reprocessor.Exporter.Facade.App/.
@@ -42,14 +37,6 @@ RUN dotnet publish -c Release -o out
 FROM defradigital/dotnetcore:dotnet8.0
 COPY --from=build-env /home/dotnet/Epr.Reprocessor.Exporter.Facade.Api/out .
 
-# Install tzdata
-USER root
-RUN apk add --no-cache tzdata
- 
-# Add internationalisation support
-USER root
-RUN apk add --no-cache icu-libs icu-data-full libintl
- 
 ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=0
 FROM base AS final 
 USER dotnet
