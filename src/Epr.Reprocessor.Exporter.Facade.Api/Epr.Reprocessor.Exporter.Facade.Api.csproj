@@ -20,14 +20,38 @@
 		<PackageReference Include="Microsoft.Identity.Web" Version="3.0.1" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
 	</ItemGroup>
-
 	<ItemGroup>
-	  <ProjectReference Include="..\Epr.Reproccessor.Exporter.Facade.App\Epr.Reproccessor.Exporter.Facade.App.csproj" />
+		<SonarQubeSetting Include="sonar.coverage.exclusions">
+			<!-- Entry point files -->
+			<Value>**/Program.cs</Value>
+			<!-- Auto-generated files -->
+			<Value>**/*.g.cs</Value>
+			<Value>**/*.Designer.cs</Value>
+			<Value>**/*.Generated.cs</Value>
+			<Value>**/Migrations/*.cs</Value>
+			<!-- Test files -->
+			<Value>**/Test/*.cs</Value>
+			<Value>**/Tests/*.cs</Value>
+			<Value>**/*.Test.cs</Value>
+			<Value>**/*.Tests.cs</Value>
+			<!-- Configuration files -->
+			<Value>**/*.json</Value>
+			<Value>**/*.xml</Value>
+			<Value>**/*.config</Value>
+			<!-- Dependency injection and extensions -->
+			<Value>**/Extensions/*.cs</Value>
+			<Value>**/DependencyInjection/*.cs</Value>
+		</SonarQubeSetting>
 	</ItemGroup>
-	
 	<ItemGroup>
 		<PackageReference Update="Microsoft.CodeAnalysis.CSharp" Version="4.10.0" />
 		<PackageReference Update="SonarAnalyzer.CSharp" Version="9.30.0.95878" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Controllers\" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\Epr.Reprocessor.Exporter.Facade.App\Epr.Reprocessor.Exporter.Facade.App.csproj" />
 	</ItemGroup>
 
 </Project>

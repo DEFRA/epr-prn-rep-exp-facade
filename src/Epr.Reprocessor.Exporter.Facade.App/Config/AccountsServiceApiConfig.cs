@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace Epr.Reproccessor.Exporter.Facade.App.Config;
+namespace Epr.Reprocessor.Exporter.Facade.App.Config;
 
 [ExcludeFromCodeCoverage]
 public class AccountsServiceApiConfig

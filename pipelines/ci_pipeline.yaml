@@ -30,15 +30,15 @@ variables:
   - name: solutionFolder
     value: src
   - name: projectFolder
-    value: 'Epr.Reproccessor.Exporter.Facade'
+    value: 'Epr.Reprocessor.Exporter.Facade.Api'
   - name: testProjectFolder
-    value: 'Epr.Reproccessor.Exporter.Facade.Tests'
+    value: 'Epr.Reprocessor.Exporter.Facade.Api.UnitTests'
   - name: sonarQubeProjectKey
     value: epr-prn-rep-exp-facade
   - name: sonarQubeProjectName
     value: epr-prn-rep-exp-facade
   - name: runNugetTasks
-    value: false
+    value: true
   - name: dotnetVersion
     value: dotnetVersion8
 
