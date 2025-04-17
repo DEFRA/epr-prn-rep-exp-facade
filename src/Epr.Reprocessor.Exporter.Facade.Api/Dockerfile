@@ -6,14 +6,6 @@ ARG PORT=3000
 ENV ASPNETCORE_URLS=http://*:${PORT}
 EXPOSE ${PORT}
 WORKDIR /src
-
-     FROM defradigital/dotnetcore-development:dotnet8.0 AS build
-     USER root
-     WORKDIR /src
-
-    COPY ["Epr.Reprocessor.Exporter.Facade.Api/Epr.Reprocessor.Exporter.Facade.Api.csproj", "Epr.Reprocessor.Exporter.Facade.Api/"]
-    COPY ["Epr.Reprocessor.Exporter.Facade.App/Epr.Reprocessor.Exporter.Facade.App.csproj", "Epr.Reprocessor.Exporter.Facade.App/"]
-    COPY ["NuGet.Config",""]
     
 COPY Epr.Reprocessor.Exporter.Facade.Api/. ./Epr.Reprocessor.Exporter.Facade.Api/.
 COPY Epr.Reprocessor.Exporter.Facade.App/. ./Epr.Reprocessor.Exporter.Facade.App/.
@@ -41,7 +33,7 @@ USER dotnet
 COPY --from=build-env /src/Epr.Reprocessor.Exporter.Facade.Api/out .
 
 ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=0
-FROM base AS final 
+FROM build-env AS final 
 
 WORKDIR /app
 
