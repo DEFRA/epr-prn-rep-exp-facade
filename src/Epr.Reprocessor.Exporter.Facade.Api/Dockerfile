@@ -15,12 +15,7 @@ COPY Directory.Build.props ./
 # Use build argument to insert PAT into Nuget file
 ARG PAT=localhost
 RUN sed -i "s|</configuration>|<packageSourceCredentials><defra-epr-common><add key=\"Username\" value=\"PAT\" /><add key=\"ClearTextPassword\" value=\"${PAT}\" /></defra-epr-common></packageSourceCredentials></configuration>|" NuGet.Config
-# Use Build Argument to insert PAT into Nuget file
-# ARG PAT=localhost
-# RUN sed -i "s|</configuration>|<packageSourceCredentials><epr-packaging-common><add key=\"Username\" value=\"PAT\" /><add key=\"ClearTextPassword\" value=\"${PAT}\" /></epr-packaging-common></packageSourceCredentials></configuration>|" NuGet.Config
 
-COPY Directory.Build.props ./
-RUN dotnet restore "Epr.Reprocessor.Exporter.UI/Epr.Reprocessor.Exporter.UI.csproj" --configfile "./NuGet.Config"
 # Restore as distinct layers
 RUN dotnet restore "Epr.Reprocessor.Exporter.Facade.Api/Epr.Reprocessor.Exporter.Facade.Api.csproj" --configfile "./NuGet.Config"
 
