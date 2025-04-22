@@ -1,6 +1,0 @@
-@Epr.Reproccessor.Exporter.Facade_HostAddress = http://localhost:5178
-
-GET {{Epr.Reproccessor.Exporter.Facade_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
