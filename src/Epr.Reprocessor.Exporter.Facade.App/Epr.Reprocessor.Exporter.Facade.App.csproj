@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+	<ItemGroup>
+		<SonarQubeSetting Include="sonar.coverage.exclusions">
+			<!-- Entry point files -->
+			<Value>**/Program.cs</Value>
+			<!-- Auto-generated files -->
+			<Value>**/*.g.cs</Value>
+			<Value>**/*.Designer.cs</Value>
+			<Value>**/*.Generated.cs</Value>
+			<Value>**/Migrations/*.cs</Value>
+			<!-- Test files -->
+			<Value>**/Test/*.cs</Value>
+			<Value>**/Tests/*.cs</Value>
+			<Value>**/*.Test.cs</Value>
+			<Value>**/*.Tests.cs</Value>
+			<!-- Configuration files -->
+			<Value>**/*.json</Value>
+			<Value>**/*.xml</Value>
+			<Value>**/*.config</Value>
+			<!-- Dependency injection and extensions -->
+			<Value>**/Extensions/*.cs</Value>
+			<Value>**/DependencyInjection/*.cs</Value>
+		</SonarQubeSetting>
+	</ItemGroup>
+</Project>

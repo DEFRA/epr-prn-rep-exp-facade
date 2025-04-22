@@ -1,0 +1,54 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+	  <PackageReference Include="coverlet.collector" Version="3.2.0" />
+	  <PackageReference Include="coverlet.msbuild" Version="3.2.0">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	  </PackageReference>
+	  <PackageReference Include="FluentAssertions" Version="8.2.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+    <PackageReference Include="Moq" Version="4.20.72" />
+    <PackageReference Include="MSTest.TestAdapter" Version="3.1.1" />
+    <PackageReference Include="MSTest.TestFramework" Version="3.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Epr.Reprocessor.Exporter.Facade.Api\Epr.Reprocessor.Exporter.Facade.Api.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Using Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
+  </ItemGroup>
+	<ItemGroup>
+		<SonarQubeSetting Include="sonar.coverage.exclusions">
+			<!-- Entry point files -->
+			<Value>**/Program.cs</Value>
+			<!-- Auto-generated files -->
+			<Value>**/*.g.cs</Value>
+			<Value>**/*.Designer.cs</Value>
+			<Value>**/*.Generated.cs</Value>
+			<Value>**/Migrations/*.cs</Value>
+			<!-- Test files -->
+			<Value>**/Test/*.cs</Value>
+			<Value>**/Tests/*.cs</Value>
+			<Value>**/*.Test.cs</Value>
+			<Value>**/*.Tests.cs</Value>
+			<!-- Configuration files -->
+			<Value>**/*.json</Value>
+			<Value>**/*.xml</Value>
+			<Value>**/*.config</Value>
+			<!-- Dependency injection and extensions -->
+			<Value>**/Extensions/*.cs</Value>
+			<Value>**/DependencyInjection/*.cs</Value>
+		</SonarQubeSetting>
+	</ItemGroup>
+</Project>
