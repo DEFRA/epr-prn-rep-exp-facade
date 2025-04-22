@@ -28,7 +28,6 @@
 			<Value>**/*.g.cs</Value>
 			<Value>**/*.Designer.cs</Value>
 			<Value>**/*.Generated.cs</Value>
-			<Value>**/Migrations/*.cs</Value>
 			<!-- Test files -->
 			<Value>**/Test/*.cs</Value>
 			<Value>**/Tests/*.cs</Value>
