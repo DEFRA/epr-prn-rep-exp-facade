@@ -47,9 +47,6 @@
 		<PackageReference Update="SonarAnalyzer.CSharp" Version="9.30.0.95878" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Folder Include="Controllers\" />
-	</ItemGroup>
-	<ItemGroup>
 	  <ProjectReference Include="..\Epr.Reprocessor.Exporter.Facade.App\Epr.Reprocessor.Exporter.Facade.App.csproj" />
 	</ItemGroup>
 
