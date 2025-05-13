@@ -5,7 +5,8 @@
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS> 
-		<NoWarn>S3903, S6967, S6934, S5144</NoWarn>
+		<NoWarn>S3903, S6967, S6934, S5144</NoWarn> 
+		<UserSecretsId>5d74fe18-9a4e-4efb-9dc4-31a057303bf0</UserSecretsId>
 	</PropertyGroup>
 
 	<ItemGroup>
