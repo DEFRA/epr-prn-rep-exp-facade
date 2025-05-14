@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Epr.Reprocessor.Exporter.Facade.Api.Handlers;
+using Epr.Reprocessor.Exporter.Facade.App.Clients.Accreditation;
 using Epr.Reprocessor.Exporter.Facade.App.Clients.Registrations;
 using Epr.Reprocessor.Exporter.Facade.App.Config;
 using Microsoft.Extensions.Options;
@@ -20,6 +21,22 @@ public static class HttpClientServiceCollectionExtension
             .GetRequiredService<IOptions<PrnBackendServiceApiConfig>>().Value;
 
         services.AddHttpClient<IRegistrationServiceClient, RegistrationServiceClient>((sp, client) =>
+        {
+            client.BaseAddress = new Uri(prnServiceApiSettings.BaseUrl);
+            client.Timeout = TimeSpan.FromSeconds(prnServiceApiSettings.Timeout);
+        })
+        .AddHttpMessageHandler<PrnBackendServiceAuthorisationHandler>()
+        .AddPolicyHandler(GetRetryPolicy(prnServiceApiSettings.ServiceRetryCount));
+
+        services.AddHttpClient<IAccreditationServiceClient, AccreditationServiceClient>((sp, client) =>
+        {
+            client.BaseAddress = new Uri(prnServiceApiSettings.BaseUrl);
+            client.Timeout = TimeSpan.FromSeconds(prnServiceApiSettings.Timeout);
+        })
+        .AddHttpMessageHandler<PrnBackendServiceAuthorisationHandler>()
+        .AddPolicyHandler(GetRetryPolicy(prnServiceApiSettings.ServiceRetryCount));
+
+        services.AddHttpClient<IAccreditationPrnIssueAuthServiceClient, AccreditationPrnIssueAuthServiceClient>((sp, client) =>
         {
             client.BaseAddress = new Uri(prnServiceApiSettings.BaseUrl);
             client.Timeout = TimeSpan.FromSeconds(prnServiceApiSettings.Timeout);
