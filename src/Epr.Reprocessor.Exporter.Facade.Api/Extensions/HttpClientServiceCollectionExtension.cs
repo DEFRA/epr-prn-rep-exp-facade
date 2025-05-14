@@ -30,19 +30,19 @@ public static class HttpClientServiceCollectionExtension
 
         services.AddHttpClient<IAccreditationServiceClient, AccreditationServiceClient>((sp, client) =>
         {
-            client.BaseAddress = new Uri(PrnServiceApiSettings.BaseUrl);
-            client.Timeout = TimeSpan.FromSeconds(PrnServiceApiSettings.Timeout);
+            client.BaseAddress = new Uri(prnServiceApiSettings.BaseUrl);
+            client.Timeout = TimeSpan.FromSeconds(prnServiceApiSettings.Timeout);
         })
         .AddHttpMessageHandler<PrnBackendServiceAuthorisationHandler>()
-        .AddPolicyHandler(GetRetryPolicy(PrnServiceApiSettings.ServiceRetryCount));
+        .AddPolicyHandler(GetRetryPolicy(prnServiceApiSettings.ServiceRetryCount));
 
         services.AddHttpClient<IAccreditationPrnIssueAuthServiceClient, AccreditationPrnIssueAuthServiceClient>((sp, client) =>
         {
-            client.BaseAddress = new Uri(PrnServiceApiSettings.BaseUrl);
-            client.Timeout = TimeSpan.FromSeconds(PrnServiceApiSettings.Timeout);
+            client.BaseAddress = new Uri(prnServiceApiSettings.BaseUrl);
+            client.Timeout = TimeSpan.FromSeconds(prnServiceApiSettings.Timeout);
         })
         .AddHttpMessageHandler<PrnBackendServiceAuthorisationHandler>()
-        .AddPolicyHandler(GetRetryPolicy(PrnServiceApiSettings.ServiceRetryCount));
+        .AddPolicyHandler(GetRetryPolicy(prnServiceApiSettings.ServiceRetryCount));
 
         return services;
     }
