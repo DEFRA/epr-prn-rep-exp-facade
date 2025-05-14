@@ -25,13 +25,12 @@ public static class ServiceCollectionExtension
     {
         // Service Clients
         services.AddScoped<IRegistrationServiceClient, RegistrationServiceClient>();
+        services.AddScoped<IAccreditationServiceClient, AccreditationServiceClient>();
+        services.AddScoped<IAccreditationPrnIssueAuthServiceClient, AccreditationPrnIssueAuthServiceClient>();
 
         // Services
         services.AddScoped<IRegistrationService, RegistrationService>();
-
         services.AddScoped<IAccreditationService, AccreditationService>();
-        services.AddScoped<IAccreditationServiceClient, AccreditationServiceClient>();
         services.AddScoped<IAccreditationPrnIssueAuthService, AccreditationPrnIssueAuthService>();
-        services.AddScoped<IAccreditationPrnIssueAuthServiceClient, AccreditationPrnIssueAuthServiceClient>();
     }
 }
