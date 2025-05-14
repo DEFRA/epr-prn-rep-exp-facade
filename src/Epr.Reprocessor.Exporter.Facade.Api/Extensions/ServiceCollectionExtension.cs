@@ -1,6 +1,8 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using Epr.Reprocessor.Exporter.Facade.App.Clients.Accreditation;
 using Epr.Reprocessor.Exporter.Facade.App.Clients.Registrations;
 using Epr.Reprocessor.Exporter.Facade.App.Config;
+using Epr.Reprocessor.Exporter.Facade.App.Services.Accreditation;
 using Epr.Reprocessor.Exporter.Facade.App.Services.Registration;
 
 namespace Epr.Reprocessor.Exporter.Facade.Api.Extensions;
@@ -23,5 +25,10 @@ public static class ServiceCollectionExtension
     {
         services.AddScoped<IRegistrationServiceClient, RegistrationServiceClient>();
         services.AddScoped<IRegistrationService, RegistrationService>();
+
+        services.AddScoped<IAccreditationService, AccreditationService>();
+        services.AddScoped<IAccreditationServiceClient, AccreditationServiceClient>();
+        services.AddScoped<IAccreditationPrnIssueAuthService, AccreditationPrnIssueAuthService>();
+        services.AddScoped<IAccreditationPrnIssueAuthServiceClient, AccreditationPrnIssueAuthServiceClient>();
     }
 }
