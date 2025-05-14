@@ -23,7 +23,7 @@ public class RegistrationController : ControllerBase
         _logger = logger;
     }
 
-    [HttpPost(ApiUrls.UpdateSiteAddressAndContactDetails)]
+    [HttpPost("registrations/{id:int}/siteAddress")]
     [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(NoContentResult))]
     [ProducesResponseType(typeof(ValidationProblemDetails), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
@@ -34,11 +34,11 @@ public class RegistrationController : ControllerBase
     [SwaggerResponse(StatusCodes.Status204NoContent, $"Returns No Content", typeof(NoContentResult))]
     [SwaggerResponse(StatusCodes.Status400BadRequest, "If the request is invalid or a validation error occurs.", typeof(ProblemDetails))]
     [SwaggerResponse(StatusCodes.Status500InternalServerError, "If an unexpected error occurs.", typeof(ContentResult))]
-    public async Task<IActionResult> UpdateSiteAddressAndContactDetails([FromBody] UpdateSiteAddressAndContactDetailsDto request)
+    public async Task<IActionResult> UpdateSiteAddress([FromRoute] int id, [FromBody] UpdateSiteAddressDto request)
     {
-        _logger.LogInformation(LogMessages.UpdateSiteAddressAndContactDetails);
+        _logger.LogInformation(LogMessages.UpdateSiteAddress);
 
-        await _registrationService.UpdateSiteAddressAndContactDetails(request);
+        await _registrationService.UpdateSiteAddress(id, request);
 
         return NoContent();
     }

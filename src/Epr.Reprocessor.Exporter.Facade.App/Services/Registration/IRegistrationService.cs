@@ -4,5 +4,5 @@ namespace Epr.Reprocessor.Exporter.Facade.App.Services.Registration;
 
 public interface IRegistrationService
 {
-    Task<bool> UpdateSiteAddressAndContactDetails(UpdateSiteAddressAndContactDetailsDto dto);
+    Task<bool> UpdateSiteAddress(int registrationId, UpdateSiteAddressDto dto);
 }

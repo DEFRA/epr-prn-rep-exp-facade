@@ -28,14 +28,15 @@ public class RegistrationServiceTests
     public async Task UpdateSiteAddressAndContactDetails_ShouldReturnExpectedResult()
     {
         // Arrange
-        var requestDto = _fixture.Create<UpdateSiteAddressAndContactDetailsDto>();
+        var registrationId = 1;
+        var requestDto = _fixture.Create<UpdateSiteAddressDto>();
 
         _mockRegistrationServiceClient
-            .Setup(client => client.UpdateSiteAddressAndContactDetails(requestDto))
+            .Setup(client => client.UpdateSiteAddress(registrationId, requestDto))
             .ReturnsAsync(true);
         
         // Act
-        var result = await _service.UpdateSiteAddressAndContactDetails(requestDto);
+        var result = await _service.UpdateSiteAddress(registrationId, requestDto);
 
         // Assert
         result.Should().BeTrue();
