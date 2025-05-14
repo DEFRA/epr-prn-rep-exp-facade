@@ -2,7 +2,6 @@
 using AutoFixture;
 using Epr.Reprocessor.Exporter.Facade.App.Clients.Registrations;
 using Epr.Reprocessor.Exporter.Facade.App.Config;
-using Epr.Reprocessor.Exporter.Facade.App.Constants;
 using Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
@@ -44,7 +43,7 @@ public class RegistrationServiceClientTests
             ServiceRetryCount = 3,
             Endpoints = new PrnServiceApiConfigEndpoints
             {
-                UpdateSiteAddressAndContactDetails = $"api/v{0}/{ApiUrls.UpdateSiteAddressAndContactDetails}",
+                UpdateSiteAddress = $"api/v{0}/registrations/{1}/siteAddress",
             }
         });
 
@@ -52,17 +51,17 @@ public class RegistrationServiceClientTests
     }
 
     [TestMethod]
-    public async Task UpdateSiteAddressAndContactDetails_ShouldReturnExpectedResult()
+    public async Task UpdateSiteAddress_ShouldReturnExpectedResult()
     {
         // Arrange
-        var requestDto = _fixture.Create<UpdateSiteAddressAndContactDetailsDto>();
-
+        var registrationId = 1;
+        var requestDto = _fixture.Create<UpdateSiteAddressDto>();
         _mockHttpMessageHandler.Protected()
             .Setup<Task<HttpResponseMessage>>(
                 "SendAsync",
                 ItExpr.Is<HttpRequestMessage>(msg =>
                     msg.Method == HttpMethod.Post &&
-                    msg.RequestUri!.ToString().Contains(ApiUrls.UpdateSiteAddressAndContactDetails)),
+                    msg.RequestUri!.ToString().Contains("siteAddress")),
                 ItExpr.IsAny<CancellationToken>()
             )
             .ReturnsAsync(new HttpResponseMessage 
@@ -72,7 +71,7 @@ public class RegistrationServiceClientTests
             });
 
         // Act
-        var result = await _client.UpdateSiteAddressAndContactDetails(requestDto);
+        var result = await _client.UpdateSiteAddress(registrationId, requestDto);
 
         // Assert
         result.Should().BeTrue();
