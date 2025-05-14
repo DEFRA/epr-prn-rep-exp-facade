@@ -22,5 +22,5 @@ public class PrnBackendServiceApiConfig
 
 public class PrnServiceApiConfigEndpoints
 {
-    public string UpdateSiteAddressAndContactDetails { get; set; }
+    public string UpdateSiteAddress { get; set; }
 }

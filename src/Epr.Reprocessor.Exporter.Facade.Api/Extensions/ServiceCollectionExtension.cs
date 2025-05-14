@@ -21,7 +21,10 @@ public static class ServiceCollectionExtension
 
     private static void RegisterServices(this IServiceCollection services, IConfiguration configuration)
     {
+        // Service Clients
         services.AddScoped<IRegistrationServiceClient, RegistrationServiceClient>();
+
+        // Services
         services.AddScoped<IRegistrationService, RegistrationService>();
     }
 }

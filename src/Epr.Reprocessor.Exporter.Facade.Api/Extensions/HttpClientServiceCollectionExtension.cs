@@ -13,18 +13,19 @@ public static class HttpClientServiceCollectionExtension
 {
     public static IServiceCollection AddServicesAndHttpClients(this IServiceCollection services)
     {
+        // PRN Backend Service
         services.AddTransient<PrnBackendServiceAuthorisationHandler>();
 
-        var PrnServiceApiSettings =
-            services.BuildServiceProvider().GetRequiredService<IOptions<PrnBackendServiceApiConfig>>().Value;
+        var prnServiceApiSettings = services.BuildServiceProvider()
+            .GetRequiredService<IOptions<PrnBackendServiceApiConfig>>().Value;
 
         services.AddHttpClient<IRegistrationServiceClient, RegistrationServiceClient>((sp, client) =>
         {
-            client.BaseAddress = new Uri(PrnServiceApiSettings.BaseUrl);
-            client.Timeout = TimeSpan.FromSeconds(PrnServiceApiSettings.Timeout);
+            client.BaseAddress = new Uri(prnServiceApiSettings.BaseUrl);
+            client.Timeout = TimeSpan.FromSeconds(prnServiceApiSettings.Timeout);
         })
         .AddHttpMessageHandler<PrnBackendServiceAuthorisationHandler>()
-        .AddPolicyHandler(GetRetryPolicy(PrnServiceApiSettings.ServiceRetryCount));
+        .AddPolicyHandler(GetRetryPolicy(prnServiceApiSettings.ServiceRetryCount));
 
         return services;
     }

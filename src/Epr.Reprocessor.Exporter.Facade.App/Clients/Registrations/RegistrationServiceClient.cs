@@ -13,13 +13,13 @@ ILogger<RegistrationServiceClient> logger)
 {
     private readonly PrnBackendServiceApiConfig _config = options.Value;
 
-    public async Task<bool> UpdateSiteAddressAndContactDetails(UpdateSiteAddressAndContactDetailsDto request)
+    public async Task<bool> UpdateSiteAddress(int registrationId, UpdateSiteAddressDto request)
     {
-        logger.LogInformation("UpdateSiteAddressAndContactDetails for ID: {0}", request.Id);
+        logger.LogInformation("UpdateSiteAddress for Registration ID: {0}", registrationId);
 
-        // e.g. api/v{0}/registrations/siteaddressandcontactdetails
-        var url = string.Format(_config.Endpoints.UpdateSiteAddressAndContactDetails, _config.ApiVersion);
+        // e.g. api/v{0}/registrations/{1}/siteAddress
+        var url = string.Format(_config.Endpoints.UpdateSiteAddress, _config.ApiVersion, registrationId);
         
-        return await this.PostAsync<UpdateSiteAddressAndContactDetailsDto, bool>(url, request);
+        return await this.PostAsync<UpdateSiteAddressDto, bool>(url, request);
     }
 }
