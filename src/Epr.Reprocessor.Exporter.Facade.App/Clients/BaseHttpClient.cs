@@ -53,6 +53,14 @@ public abstract class BaseHttpClient
         return await response.Content.ReadFromJsonAsync<TResponse>(options);
     }
 
+    protected async Task PostAsync<TRequest>(string url, TRequest data)
+    {
+        var content = CreateJsonContent(data);
+        var response = await _httpClient.PostAsync(url, content);
+
+        response.EnsureSuccessStatusCode();
+    }
+
     protected async Task<TResponse> PutAsync<TRequest, TResponse>(string url, TRequest data)
     {
         var content = CreateJsonContent(data);

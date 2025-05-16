@@ -34,6 +34,7 @@
 		</SonarQubeSetting>
 	</ItemGroup>
 	<ItemGroup>
+	  <Folder Include="Models\Accreditations\" />
 	  <Folder Include="Services\Registration\" />
 	</ItemGroup>
 </Project>
