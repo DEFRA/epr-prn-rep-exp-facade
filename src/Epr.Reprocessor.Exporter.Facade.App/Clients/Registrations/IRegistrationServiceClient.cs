@@ -4,5 +4,6 @@ namespace Epr.Reprocessor.Exporter.Facade.App.Clients.Registrations;
 
 public interface IRegistrationServiceClient
 {
-    Task<bool> UpdateSiteAddress(int registrationId, UpdateSiteAddressDto request);
+    Task<bool> UpdateRegistrationTaskStatusAsync(int registrationId, UpdateRegistrationTaskStatusDto request);
+    Task<bool> UpdateSiteAddressAsync(int registrationId, UpdateRegistrationSiteAddressDto request);
 }

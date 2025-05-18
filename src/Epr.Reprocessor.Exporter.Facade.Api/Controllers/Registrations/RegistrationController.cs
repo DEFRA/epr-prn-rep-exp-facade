@@ -7,7 +7,8 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace Epr.Reprocessor.Exporter.Facade.Api.Controllers.Registrations;
 
-[Route("api/v1")]
+[Route("api/v{version:apiVersion}/Registrations")]
+[ApiVersion("1.0")]
 [ApiController]
 public class RegistrationController : ControllerBase
 {
@@ -23,7 +24,27 @@ public class RegistrationController : ControllerBase
         _logger = logger;
     }
 
-    [HttpPost("registrations/{id:int}/siteAddress")]
+    [HttpPost("{registrationId:int}/TaskStatus")]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(NoContentResult))]
+    [ProducesResponseType(typeof(ValidationProblemDetails), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
+    [SwaggerOperation(
+            Summary = "update the task status of an application registration",
+            Description = "attempting to update the task status of an application registration."
+        )]
+    [SwaggerResponse(StatusCodes.Status204NoContent, $"Returns No Content", typeof(NoContentResult))]
+    [SwaggerResponse(StatusCodes.Status400BadRequest, "If the request is invalid or a validation error occurs.", typeof(ProblemDetails))]
+    [SwaggerResponse(StatusCodes.Status500InternalServerError, "If an unexpected error occurs.", typeof(ContentResult))]
+    public async Task<IActionResult> UpdateRegistrationTaskStatus([FromRoute] int registrationId, [FromBody] UpdateRegistrationTaskStatusDto request)
+    {
+        _logger.LogInformation(LogMessages.UpdateRegistrationTaskStatus);
+
+        await _registrationService.UpdateRegistrationTaskStatusAsync(registrationId, request);
+
+        return NoContent();
+    }
+
+    [HttpPost("{registrationId:int}/SiteAddress")]
     [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(NoContentResult))]
     [ProducesResponseType(typeof(ValidationProblemDetails), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
@@ -34,11 +55,11 @@ public class RegistrationController : ControllerBase
     [SwaggerResponse(StatusCodes.Status204NoContent, $"Returns No Content", typeof(NoContentResult))]
     [SwaggerResponse(StatusCodes.Status400BadRequest, "If the request is invalid or a validation error occurs.", typeof(ProblemDetails))]
     [SwaggerResponse(StatusCodes.Status500InternalServerError, "If an unexpected error occurs.", typeof(ContentResult))]
-    public async Task<IActionResult> UpdateSiteAddress([FromRoute] int id, [FromBody] UpdateSiteAddressDto request)
+    public async Task<IActionResult> UpdateSiteAddress([FromRoute] int registrationId, [FromBody] UpdateRegistrationSiteAddressDto request)
     {
-        _logger.LogInformation(LogMessages.UpdateSiteAddress);
+        _logger.LogInformation(LogMessages.UpdateRegistrationSiteAddress);
 
-        await _registrationService.UpdateSiteAddress(id, request);
+        await _registrationService.UpdateSiteAddressAsync(registrationId, request);
 
         return NoContent();
     }

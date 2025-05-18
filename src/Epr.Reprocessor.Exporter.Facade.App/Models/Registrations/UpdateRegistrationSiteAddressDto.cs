@@ -1,6 +1,6 @@
 ﻿namespace Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
 
-public class UpdateSiteAddressDto
+public class UpdateRegistrationSiteAddressDto
 {
     /// <summary>
     /// Gets or sets the identifier for the reprocessing site address

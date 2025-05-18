@@ -1,5 +1,6 @@
 ﻿namespace Epr.Reprocessor.Exporter.Facade.App.Constants;
 public static class LogMessages
 {
-    public const string UpdateSiteAddress = "Attempting to update registration site address and contact details";
+    public const string UpdateRegistrationTaskStatus = "Attempting to update registration site address and contact details";
+    public const string UpdateRegistrationSiteAddress = "Attempting to update registration site address and contact details";
 }

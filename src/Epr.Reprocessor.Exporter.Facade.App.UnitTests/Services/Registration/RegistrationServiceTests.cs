@@ -25,18 +25,36 @@ public class RegistrationServiceTests
     }
 
     [TestMethod]
-    public async Task UpdateSiteAddressAndContactDetails_ShouldReturnExpectedResult()
+    public async Task UpdateSiteAddressAsync_ShouldReturnExpectedResult()
     {
         // Arrange
         var registrationId = 1;
-        var requestDto = _fixture.Create<UpdateSiteAddressDto>();
+        var requestDto = _fixture.Create<UpdateRegistrationSiteAddressDto>();
 
         _mockRegistrationServiceClient
-            .Setup(client => client.UpdateSiteAddress(registrationId, requestDto))
+            .Setup(client => client.UpdateSiteAddressAsync(registrationId, requestDto))
             .ReturnsAsync(true);
         
         // Act
-        var result = await _service.UpdateSiteAddress(registrationId, requestDto);
+        var result = await _service.UpdateSiteAddressAsync(registrationId, requestDto);
+
+        // Assert
+        result.Should().BeTrue();
+    }
+
+    [TestMethod]
+    public async Task UpdateRegistrationTaskStatusAsync_ShouldReturnExpectedResult()
+    {
+        // Arrange
+        var registrationId = 1;
+        var requestDto = _fixture.Create<UpdateRegistrationTaskStatusDto>();
+
+        _mockRegistrationServiceClient
+            .Setup(client => client.UpdateRegistrationTaskStatusAsync(registrationId, requestDto))
+            .ReturnsAsync(true);
+
+        // Act
+        var result = await _service.UpdateRegistrationTaskStatusAsync(registrationId, requestDto);
 
         // Assert
         result.Should().BeTrue();
