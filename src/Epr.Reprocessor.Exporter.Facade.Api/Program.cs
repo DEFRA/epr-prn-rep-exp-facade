@@ -1,8 +1,10 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
+using Epr.Reprocessor.Exporter.Facade.Api.Extensions;
 using Epr.Reprocessor.Exporter.Facade.Api.Swagger;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.FeatureManagement;
 using Microsoft.Identity.Web;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.OpenApi.Models;
@@ -12,60 +14,71 @@ namespace Epr.Reprocessor.Exporter.Facade.Api;
 [ExcludeFromCodeCoverage]
 public class Program
 {
-    private static async Task Main(string[] args)
-    {
-        var builder = WebApplication.CreateBuilder(args);
-        builder.Services
-            .AddApplicationInsightsTelemetry()
-            .AddHealthChecks();
+	private static async Task Main(string[] args)
+	{
+		var builder = WebApplication.CreateBuilder(args);
+		builder.Services
+			.AddApplicationInsightsTelemetry()
+			.AddHealthChecks();
+
+        builder.Services.RegisterComponents(builder.Configuration);
+
+        // Services & HttpClients
+        builder.Services.AddServicesAndHttpClients();
 
         // Logging
         builder.Services.AddLogging();
 
         // Authentication
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddMicrosoftIdentityWebApi(options =>
-            {
-                builder.Configuration.Bind("AzureAdB2C", options);
-            }, options =>
-            {
-                builder.Configuration.Bind("AzureAdB2C", options);
-            });
+			.AddMicrosoftIdentityWebApi(options =>
+			{
+				builder.Configuration.Bind("AzureAdB2C", options);
+			}, options =>
+			{
+				builder.Configuration.Bind("AzureAdB2C", options);
+			});
 
-        // Authorization
-        var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
-        builder.Services.AddAuthorizationBuilder().AddPolicy("AuthUser", policy);
+		// Authorization
+		var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+		builder.Services.AddAuthorizationBuilder().AddPolicy("AuthUser", policy);
 
-        // General Config
+		// General Config
+        builder.Services.AddFeatureManagement();
+        builder.Services.AddApiVersioning();
         builder.Services.AddControllers()
-            .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+			.AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+		builder.Services.AddEndpointsApiExplorer();
+		builder.Services.AddSwaggerGen(options =>
+		{
+			options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+			{
+				Type = SecuritySchemeType.Http,
+				Scheme = "Bearer"
+			});
+			options.OperationFilter<AddAuthHeaderOperationFilter>();
+		});
 
-        builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen(options =>
-        {
-            options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-            {
-                Type = SecuritySchemeType.Http,
-                Scheme = "Bearer"
-            });
-            options.OperationFilter<AddAuthHeaderOperationFilter>();
-        });
+		// App
+		var app = builder.Build();
+		app.UseExceptionHandler(app.Environment.IsDevelopment() ? "/error-development" : "/error");
+		app.UseSwagger();
+		app.UseSwaggerUI();
 
-        // App
-        var app = builder.Build();
-        app.UseExceptionHandler(app.Environment.IsDevelopment() ? "/error-development" : "/error");
-        app.UseSwagger();
-        app.UseSwaggerUI();
+		if (app.Environment.IsDevelopment())
+		{
+			IdentityModelEventSource.ShowPII = true;
+		}
 
-        if (app.Environment.IsDevelopment())
-        {
-            IdentityModelEventSource.ShowPII = true;
-        }
-        app.UseHttpsRedirection();
-        app.UseAuthentication();
-        app.UseAuthorization();
-        app.MapControllers();
+		app.UseHttpsRedirection();
+		app.UseAuthentication();
+		app.UseAuthorization();
+		app.MapControllers();
 
-        await app.RunAsync();
-    }
+		//app.MapHealthChecks(
+		//    builder.Configuration.GetValue<string>("HealthCheckPath"),
+		//    HealthCheckOptionBuilder.Build()).AllowAnonymous();
+
+		await app.RunAsync();
+	}
 }
