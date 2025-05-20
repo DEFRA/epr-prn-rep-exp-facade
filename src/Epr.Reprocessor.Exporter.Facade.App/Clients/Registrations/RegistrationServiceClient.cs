@@ -1,4 +1,5 @@
-﻿using Epr.Reprocessor.Exporter.Facade.App.Config;
+﻿using System.Diagnostics.CodeAnalysis;
+using Epr.Reprocessor.Exporter.Facade.App.Config;
 using Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -12,6 +13,17 @@ ILogger<RegistrationServiceClient> logger)
 : BaseHttpClient(httpClient), IRegistrationServiceClient
 {
     private readonly PrnBackendServiceApiConfig _config = options.Value;
+
+    [ExcludeFromCodeCoverage(Justification = "TODO: Unit tests to be added as part of create registration user story")]
+    public async Task<int> CreateRegistrationAsync(CreateRegistrationDto request)
+    {
+        logger.LogInformation("CreateRegistrationAsync for ApplicationTypeId ID: {ApplicationTypeId}", request.ApplicationTypeId);
+
+        // e.g. api/v{0}/registrations
+        var url = string.Format(_config.Endpoints.CreateRegistration, _config.ApiVersion);
+
+        return await this.PostAsync<CreateRegistrationDto, int>(url, request);
+    }
 
     public async Task<bool> UpdateRegistrationTaskStatusAsync(int registrationId, UpdateRegistrationTaskStatusDto request)
     {

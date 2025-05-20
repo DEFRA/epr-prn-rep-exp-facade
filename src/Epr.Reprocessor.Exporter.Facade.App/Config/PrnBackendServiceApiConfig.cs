@@ -22,6 +22,7 @@ public class PrnBackendServiceApiConfig
 
 public class PrnServiceApiConfigEndpoints
 {
+    public string CreateRegistration { get; set; }
     public string RegistrationUpdateTaskStatus { get; set; }
     public string RegistrationUpdateSiteAddress { get; set; }
     public string AccreditationGet { get; set; }

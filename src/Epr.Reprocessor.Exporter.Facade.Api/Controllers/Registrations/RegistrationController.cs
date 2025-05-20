@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Net;
 using Epr.Reprocessor.Exporter.Facade.App.Constants;
 using Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
 using Epr.Reprocessor.Exporter.Facade.App.Services.Registration;
@@ -22,6 +23,27 @@ public class RegistrationController : ControllerBase
 
         _registrationService = registrationService;
         _logger = logger;
+    }
+
+    [HttpPost]
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(int))]
+    [ProducesResponseType(typeof(ValidationProblemDetails), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
+    [SwaggerOperation(
+            Summary = "create an application registration",
+            Description = "attempting to create an application registration."
+        )]
+    [SwaggerResponse(StatusCodes.Status201Created, $"Returns Registration Id", typeof(int))]
+    [SwaggerResponse(StatusCodes.Status400BadRequest, "If the request is invalid or a validation error occurs.", typeof(ProblemDetails))]
+    [SwaggerResponse(StatusCodes.Status500InternalServerError, "If an unexpected error occurs.", typeof(ContentResult))]
+    [ExcludeFromCodeCoverage(Justification = "TODO: Unit tests to be added as part of create registration user story")]
+    public async Task<IActionResult> CreateRegistration([FromBody] CreateRegistrationDto request)
+    {
+        _logger.LogInformation(LogMessages.CreateRegistration);
+
+        var registrationId = await _registrationService.CreateRegistrationAsync(request);
+
+        return new CreatedResult(string.Empty, registrationId);
     }
 
     [HttpPost("{registrationId:int}/TaskStatus")]
