@@ -17,12 +17,22 @@ public class AccreditationServiceClient : BaseHttpClient, IAccreditationServiceC
         httpClient.DefaultRequestHeaders.AddIfNotExists("X-EPR-USER", Guid.NewGuid().ToString()); // TODO
     }
 
+    public async Task<Guid> GetOrCreateAccreditation(
+        Guid organisationId,
+        int materialId,
+        int applicationTypeId)
+    {
+        var url = string.Format(config.Endpoints.AccreditationGetOrCreate, config.ApiVersion, organisationId, materialId, applicationTypeId);
+
+        return await GetAsync<Guid>(url);
+    }
+
     public async Task<AccreditationDto> GetAccreditationById(Guid accreditationId)
     {
         var url = string.Format(config.Endpoints.AccreditationGet, config.ApiVersion, accreditationId);
 
         return await GetAsync<AccreditationDto>(url);
-    }
+    }    
 
     public async Task<AccreditationDto> UpsertAccreditation(AccreditationRequestDto requestDto)
     {

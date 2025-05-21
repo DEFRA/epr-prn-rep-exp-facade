@@ -21,6 +21,28 @@ public class AccreditationControllerTests
     }
 
     [TestMethod]
+    public async Task GetOrCreateAccreditation_ShouldReturnOk()
+    {
+        // Arrange
+        var accreditationId = Guid.NewGuid();
+        var organisationId = Guid.NewGuid();
+        var materialId = 2;
+        var applicationTypeId = 1;
+
+        _serviceMock.Setup(s => s.GetOrCreateAccreditation(organisationId, materialId, applicationTypeId))
+            .ReturnsAsync(accreditationId);
+
+        // Act
+        var result = await _controller.Get(organisationId, materialId, applicationTypeId);
+
+        // Assert
+        result.Should().BeOfType<OkObjectResult>();
+        var okResult = result as OkObjectResult;
+        okResult!.Value.Should().Be(accreditationId);
+        _serviceMock.Verify(s => s.GetOrCreateAccreditation(organisationId, materialId, applicationTypeId), Times.Once);
+    }
+
+    [TestMethod]
     public async Task Get_ShouldReturnOk_WhenAccreditationExists()
     {
         // Arrange
