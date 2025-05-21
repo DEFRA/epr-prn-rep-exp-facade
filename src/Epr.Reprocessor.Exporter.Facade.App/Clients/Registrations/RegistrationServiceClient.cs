@@ -27,7 +27,7 @@ ILogger<RegistrationServiceClient> logger)
 
     public async Task<bool> UpdateRegistrationTaskStatusAsync(int registrationId, UpdateRegistrationTaskStatusDto request)
     {
-        logger.LogInformation("UpdateRegistrationTaskStatusAsync for Registration ID: {0}", registrationId);
+        logger.LogInformation("UpdateRegistrationTaskStatusAsync for Registration ID: {RegistrationId}", registrationId);
 
         // e.g. api/v{0}/registrations/{1}/siteAddress
         var url = string.Format(_config.Endpoints.RegistrationUpdateTaskStatus, _config.ApiVersion, registrationId);
@@ -37,7 +37,7 @@ ILogger<RegistrationServiceClient> logger)
 
     public async Task<bool> UpdateSiteAddressAsync(int registrationId, UpdateRegistrationSiteAddressDto request)
     {
-        logger.LogInformation("UpdateSiteAddressAsync for Registration ID: {0}", registrationId);
+        logger.LogInformation("UpdateSiteAddressAsync for Registration ID: {RegistrationId}", registrationId);
 
         // e.g. api/v{0}/registrations/{1}/siteAddress
         var url = string.Format(_config.Endpoints.RegistrationUpdateSiteAddress, _config.ApiVersion, registrationId);
