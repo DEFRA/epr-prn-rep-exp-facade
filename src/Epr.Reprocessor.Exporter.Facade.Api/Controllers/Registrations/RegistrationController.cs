@@ -31,9 +31,6 @@ public class RegistrationController : ControllerBase
             Summary = "create an application registration",
             Description = "attempting to create an application registration."
         )]
-    [SwaggerResponse(StatusCodes.Status201Created, $"Returns Registration Id", typeof(int))]
-    [SwaggerResponse(StatusCodes.Status400BadRequest, "If the request is invalid or a validation error occurs.", typeof(ProblemDetails))]
-    [SwaggerResponse(StatusCodes.Status500InternalServerError, "If an unexpected error occurs.", typeof(ContentResult))]
     [ExcludeFromCodeCoverage(Justification = "TODO: Unit tests to be added as part of create registration user story")]
     public async Task<IActionResult> CreateRegistration([FromBody] CreateRegistrationDto request)
     {
@@ -45,14 +42,11 @@ public class RegistrationController : ControllerBase
     }
 
     [HttpPost("{registrationId:int}/TaskStatus")]
-    [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(NoContentResult))]
     [SwaggerOperation(
             Summary = "update the task status of an application registration",
             Description = "attempting to update the task status of an application registration."
         )]
-    [SwaggerResponse(StatusCodes.Status204NoContent, $"Returns No Content", typeof(NoContentResult))]
-    [SwaggerResponse(StatusCodes.Status400BadRequest, "If the request is invalid or a validation error occurs.", typeof(ProblemDetails))]
-    [SwaggerResponse(StatusCodes.Status500InternalServerError, "If an unexpected error occurs.", typeof(ContentResult))]
     public async Task<IActionResult> UpdateRegistrationTaskStatus([FromRoute] int registrationId, [FromBody] UpdateRegistrationTaskStatusDto request)
     {
         _logger.LogInformation(LogMessages.UpdateRegistrationTaskStatus);
@@ -68,9 +62,6 @@ public class RegistrationController : ControllerBase
             Summary = "update the site address and contact details of an application registration",
             Description = "attempting to update the site address and contact details of an application registration."
         )]
-    [SwaggerResponse(StatusCodes.Status204NoContent, $"Returns No Content", typeof(NoContentResult))]
-    [SwaggerResponse(StatusCodes.Status400BadRequest, "If the request is invalid or a validation error occurs.", typeof(ProblemDetails))]
-    [SwaggerResponse(StatusCodes.Status500InternalServerError, "If an unexpected error occurs.", typeof(ContentResult))]
     public async Task<IActionResult> UpdateSiteAddress([FromRoute] int registrationId, [FromBody] UpdateRegistrationSiteAddressDto request)
     {
         _logger.LogInformation(LogMessages.UpdateRegistrationSiteAddress);
