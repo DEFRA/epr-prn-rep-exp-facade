@@ -23,6 +23,26 @@ public class AccreditationServiceTests
     }
 
     [TestMethod]
+    public async Task GetOrCreateAccreditation_ShouldReturn_AccreditationId_FromClient()
+    {
+        // Arrange
+        var accreditationId = Guid.NewGuid();
+        var organisationId = Guid.NewGuid();
+        var materialId = 2;
+        var applicationTypeId = 1;
+
+        _mockClient.Setup(c => c.GetOrCreateAccreditation(organisationId, materialId, applicationTypeId))
+            .ReturnsAsync(accreditationId);
+
+        // Act
+        var result = await _service.GetOrCreateAccreditation(organisationId, materialId, applicationTypeId);
+
+        // Assert
+        result.Should().Be(accreditationId);
+        _mockClient.Verify(c => c.GetOrCreateAccreditation(organisationId, materialId, applicationTypeId), Times.Once);
+    }
+
+    [TestMethod]
     public async Task GetAccreditationById_ShouldReturnDtoFromClient()
     {
         // Arrange
