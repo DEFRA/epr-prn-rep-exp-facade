@@ -31,6 +31,7 @@ public class AccreditationServiceClientTests
             ApiVersion = 1,
             Endpoints = new PrnServiceApiConfigEndpoints
             {
+                AccreditationGetOrCreate = "api/v{0}/accreditation/{1}/{2}/{3}",
                 AccreditationGet = "api/v{0}/accreditation/{1}",
                 AccreditationPost = "api/v{0}/accreditation"
             }
@@ -43,6 +44,39 @@ public class AccreditationServiceClientTests
         };
 
         _client = new AccreditationServiceClient(httpClient, _mockOptions.Object);
+    }
+
+    [TestMethod]
+    public async Task GetOrCreateAccreditation_ShouldReturn_AccreditationId()
+    {
+        // Arrange
+        var accreditationId = Guid.NewGuid();
+        var organisationId = Guid.NewGuid();
+        var materialId = 2;
+        var applicationTypeId = 1;
+        var json = SerializeCamelCase(accreditationId);
+        var url = $"api/v1/accreditation/{organisationId}/{materialId}/{applicationTypeId}";
+
+        _mockHttpMessageHandler.Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.Is<HttpRequestMessage>(msg =>
+                    msg.Method == HttpMethod.Get &&
+                    msg.RequestUri!.PathAndQuery.EndsWith(url)
+                    ),
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .ReturnsAsync(new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = new StringContent(json)
+            });
+
+        // Act
+        var result = await _client.GetOrCreateAccreditation(organisationId, materialId, applicationTypeId);
+
+        // Assert
+        result.Should().Be(accreditationId);
     }
 
     [TestMethod]
