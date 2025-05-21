@@ -27,8 +27,6 @@ public class RegistrationController : ControllerBase
 
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(int))]
-    [ProducesResponseType(typeof(ValidationProblemDetails), (int)HttpStatusCode.BadRequest)]
-    [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
     [SwaggerOperation(
             Summary = "create an application registration",
             Description = "attempting to create an application registration."
@@ -47,8 +45,6 @@ public class RegistrationController : ControllerBase
     }
 
     [HttpPost("{registrationId:int}/TaskStatus")]
-    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(NoContentResult))]
-    [ProducesResponseType(typeof(ValidationProblemDetails), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
     [SwaggerOperation(
             Summary = "update the task status of an application registration",
@@ -68,8 +64,6 @@ public class RegistrationController : ControllerBase
 
     [HttpPost("{registrationId:int}/SiteAddress")]
     [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(NoContentResult))]
-    [ProducesResponseType(typeof(ValidationProblemDetails), (int)HttpStatusCode.BadRequest)]
-    [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
     [SwaggerOperation(
             Summary = "update the site address and contact details of an application registration",
             Description = "attempting to update the site address and contact details of an application registration."
