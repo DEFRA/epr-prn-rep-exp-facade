@@ -20,6 +20,7 @@ public class PrnBackendServiceApiConfig
     public PrnServiceApiConfigEndpoints Endpoints { get; set; } = null!;
 }
 
+[ExcludeFromCodeCoverage]
 public class PrnServiceApiConfigEndpoints
 {
     public string CreateRegistration { get; set; }
