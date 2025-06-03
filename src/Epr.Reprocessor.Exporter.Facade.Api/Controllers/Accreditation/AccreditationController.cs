@@ -1,5 +1,6 @@
 ﻿namespace Epr.Reprocessor.Exporter.Facade.Api.Controllers.Accreditation;
 
+using System.Diagnostics.CodeAnalysis;
 using Epr.Reprocessor.Exporter.Facade.Api.Constants;
 using Epr.Reprocessor.Exporter.Facade.App.Models.Accreditations;
 using Epr.Reprocessor.Exporter.Facade.App.Services.Accreditation;
@@ -42,5 +43,16 @@ public class AccreditationController(IAccreditationService service) : Controller
     {
         var accreditation = await service.UpsertAccreditation(request);
         return Ok(accreditation);
+    }
+
+    [HttpPost("clear-down-database")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ExcludeFromCodeCoverage]
+    public async Task<IActionResult> ClearDownDatabase()
+    {
+        // Temporary: Aid to QA whilst Accreditation uses in-memory database.
+        await service.ClearDownDatabase();
+
+        return Ok();
     }
 }

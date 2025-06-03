@@ -14,4 +14,6 @@ public interface IAccreditationServiceClient
     Task<AccreditationDto> GetAccreditationById(Guid accreditationId);
 
     Task<AccreditationDto> UpsertAccreditation(AccreditationRequestDto requestDto);
+
+    Task ClearDownDatabase();
 }
