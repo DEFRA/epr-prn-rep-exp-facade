@@ -1,5 +1,6 @@
 ﻿namespace Epr.Reprocessor.Exporter.Facade.App.Clients.Accreditation;
 
+using System.Diagnostics.CodeAnalysis;
 using Epr.Reprocessor.Exporter.Facade.App.Config;
 using Epr.Reprocessor.Exporter.Facade.App.Extensions;
 using Epr.Reprocessor.Exporter.Facade.App.Models.Accreditations;
@@ -39,5 +40,14 @@ public class AccreditationServiceClient : BaseHttpClient, IAccreditationServiceC
         var url = string.Format(config.Endpoints.AccreditationPost, config.ApiVersion);
 
         return await PostAsync<AccreditationRequestDto, AccreditationDto>(url, requestDto);
+    }
+
+    [ExcludeFromCodeCoverage]
+    public async Task ClearDownDatabase()
+    {
+        // Temporary: Aid to QA whilst Accreditation uses in-memory database.
+        var url = string.Format("api/v{0}/accreditation/clear-down-database", config.ApiVersion);
+        
+        await PostAsync<Object>(url, null);
     }
 }
