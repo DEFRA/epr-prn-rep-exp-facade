@@ -1,6 +1,7 @@
 ﻿namespace Epr.Reprocessor.Exporter.Facade.App.Services.Accreditation;
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using Epr.Reprocessor.Exporter.Facade.App.Clients.Accreditation;
 using Epr.Reprocessor.Exporter.Facade.App.Models.Accreditations;
@@ -26,5 +27,12 @@ public class AccreditationService(IAccreditationServiceClient serviceClient) : I
     public async Task<AccreditationDto> UpsertAccreditation(AccreditationRequestDto requestDto)
     {
         return await serviceClient.UpsertAccreditation(requestDto);
+    }
+
+    [ExcludeFromCodeCoverage]
+    public async Task ClearDownDatabase()
+    {
+        // Temporary: Aid to QA whilst Accreditation uses in-memory database.
+        await serviceClient.ClearDownDatabase();
     }
 }
