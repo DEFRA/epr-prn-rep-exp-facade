@@ -23,9 +23,6 @@ public class PrnBackendServiceApiConfig
 [ExcludeFromCodeCoverage]
 public class PrnServiceApiConfigEndpoints
 {
-    public string CreateRegistration { get; set; }
-    public string RegistrationUpdateTaskStatus { get; set; }
-    public string RegistrationUpdateSiteAddress { get; set; }
     public string AccreditationGetOrCreate { get; set; }
     public string AccreditationGet { get; set; }
     public string AccreditationPost { get; set; }
