@@ -1,10 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Net;
-using Epr.Reprocessor.Exporter.Facade.App.Constants;
-using Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
-using Epr.Reprocessor.Exporter.Facade.App.Services.Registration;
-using Microsoft.AspNetCore.Mvc;
-using Swashbuckle.AspNetCore.Annotations;
 
 namespace Epr.Reprocessor.Exporter.Facade.Api.Controllers.Registrations;
 

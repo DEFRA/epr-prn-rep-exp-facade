@@ -27,6 +27,8 @@ public abstract class BaseHttpClient
         var response = await _httpClient.GetAsync(url);
         response.EnsureSuccessStatusCode();
 
+        var json = await response.Content.ReadAsStringAsync(CancellationToken.None);
+
         return await response.Content.ReadFromJsonAsync<TResponse>(new JsonSerializerOptions
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
