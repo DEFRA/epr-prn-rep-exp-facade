@@ -43,8 +43,6 @@ public class RegistrationServiceClientTests
             ServiceRetryCount = 3,
             Endpoints = new PrnServiceApiConfigEndpoints
             {
-                RegistrationUpdateSiteAddress = $"api/v{0}/registrations/{1}/siteAddress",
-                RegistrationUpdateTaskStatus = $"api/v{0}/registrations/{1}/taskStatus",
             }
         });
 
