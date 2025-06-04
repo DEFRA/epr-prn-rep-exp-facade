@@ -20,9 +20,10 @@ public class PrnBackendServiceApiConfig
     public PrnServiceApiConfigEndpoints Endpoints { get; set; } = null!;
 }
 
+[ExcludeFromCodeCoverage]
 public class PrnServiceApiConfigEndpoints
 {
-    public string UpdateSiteAddress { get; set; }
+    public string AccreditationGetOrCreate { get; set; }
     public string AccreditationGet { get; set; }
     public string AccreditationPost { get; set; }
     public string AccreditationPrnIssueAuthGet { get; set; }

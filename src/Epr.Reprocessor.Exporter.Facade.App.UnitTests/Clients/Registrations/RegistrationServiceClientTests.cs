@@ -43,7 +43,6 @@ public class RegistrationServiceClientTests
             ServiceRetryCount = 3,
             Endpoints = new PrnServiceApiConfigEndpoints
             {
-                UpdateSiteAddress = $"api/v{0}/registrations/{1}/siteAddress",
             }
         });
 
@@ -51,11 +50,11 @@ public class RegistrationServiceClientTests
     }
 
     [TestMethod]
-    public async Task UpdateSiteAddress_ShouldReturnExpectedResult()
+    public async Task UpdateSiteAddressAsync_ShouldReturnExpectedResult()
     {
         // Arrange
         var registrationId = 1;
-        var requestDto = _fixture.Create<UpdateSiteAddressDto>();
+        var requestDto = _fixture.Create<UpdateRegistrationSiteAddressDto>();
         _mockHttpMessageHandler.Protected()
             .Setup<Task<HttpResponseMessage>>(
                 "SendAsync",
@@ -71,10 +70,36 @@ public class RegistrationServiceClientTests
             });
 
         // Act
-        var result = await _client.UpdateSiteAddress(registrationId, requestDto);
+        var result = await _client.UpdateSiteAddressAsync(registrationId, requestDto);
 
         // Assert
         result.Should().BeTrue();
     }
 
+    [TestMethod]
+    public async Task UpdateTaskStatusAsync_ShouldReturnExpectedResult()
+    {
+        // Arrange
+        var registrationId = 1;
+        var requestDto = _fixture.Create<UpdateRegistrationTaskStatusDto>();
+        _mockHttpMessageHandler.Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.Is<HttpRequestMessage>(msg =>
+                    msg.Method == HttpMethod.Post &&
+                    msg.RequestUri!.ToString().Contains("taskStatus")),
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .ReturnsAsync(new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = new StringContent("true")
+            });
+
+        // Act
+        var result = await _client.UpdateRegistrationTaskStatusAsync(registrationId, requestDto);
+
+        // Assert
+        result.Should().BeTrue();
+    }
 }
