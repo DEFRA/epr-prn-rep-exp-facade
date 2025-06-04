@@ -46,19 +46,32 @@ public class RegistrationControllerTests
     }
 
     [TestMethod]
-    public async Task UpdateSiteAddressAndContactDetails_ShouldReturnNoContentResult()
+    public async Task UpdateSiteAddress_ShouldReturnNoContentResult()
     {
         // Arrange
         var registrationId = 1;
-        var request = new UpdateSiteAddressDto();
+        var request = new UpdateRegistrationSiteAddressDto();
 
         // Act
         var result = await _controller.UpdateSiteAddress(registrationId, request);
 
         // Assert
         result.Should().BeOfType<NoContentResult>();
-        _registrationServiceMock.Verify(s => s.UpdateSiteAddress(registrationId, request), Times.Once);
+        _registrationServiceMock.Verify(s => s.UpdateSiteAddressAsync(registrationId, request), Times.Once);
     }
 
+    [TestMethod]
+    public async Task UpdateRegistrationTaskStatus_ShouldReturnNoContentResult()
+    {
+        // Arrange
+        var registrationId = 1;
+        var request = new UpdateRegistrationTaskStatusDto();
 
+        // Act
+        var result = await _controller.UpdateRegistrationTaskStatus(registrationId, request);
+
+        // Assert
+        result.Should().BeOfType<NoContentResult>();
+        _registrationServiceMock.Verify(s => s.UpdateRegistrationTaskStatusAsync(registrationId, request), Times.Once);
+    }
 }
