@@ -22,7 +22,7 @@ ILogger<RegistrationServiceClient> logger)
         logger.LogInformation("CreateRegistrationAsync for ApplicationTypeId ID: {ApplicationTypeId}", request.ApplicationTypeId);
 
         // e.g. api/v{0}/registrations
-        var url = string.Format(Endpoints.CreateRegistration, _config.ApiVersion);
+        var url = string.Format(Endpoints.Registration.CreateRegistration, _config.ApiVersion);
 
         return await this.PostAsync<CreateRegistrationDto, CreateRegistrationResponseDto>(url, request);
     }
@@ -32,7 +32,7 @@ ILogger<RegistrationServiceClient> logger)
         logger.LogInformation("UpdateRegistrationTaskStatusAsync for Registration ID: {RegistrationId}", registrationId);
 
         // e.g. api/v{0}/registrations/{1}/siteAddress
-        var url = string.Format(Endpoints.RegistrationUpdateTaskStatus, _config.ApiVersion, registrationId);
+        var url = string.Format(Endpoints.Registration.RegistrationUpdateTaskStatus, _config.ApiVersion, registrationId);
 
         return await this.PostAsync<UpdateRegistrationTaskStatusDto, bool>(url, request);
     }
@@ -42,7 +42,7 @@ ILogger<RegistrationServiceClient> logger)
         logger.LogInformation("UpdateSiteAddressAsync for Registration ID: {RegistrationId}", registrationId);
 
         // e.g. api/v{0}/registrations/{1}/siteAddress
-        var url = string.Format(Endpoints.RegistrationUpdateSiteAddress, _config.ApiVersion, registrationId);
+        var url = string.Format(Endpoints.Registration.RegistrationUpdateSiteAddress, _config.ApiVersion, registrationId);
         
         return await this.PostAsync<UpdateRegistrationSiteAddressDto, bool>(url, request);
     }
