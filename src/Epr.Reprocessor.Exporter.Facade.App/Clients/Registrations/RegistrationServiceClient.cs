@@ -1,9 +1,4 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using Epr.Reprocessor.Exporter.Facade.App.Config;
-using Epr.Reprocessor.Exporter.Facade.App.Constants;
-using Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace Epr.Reprocessor.Exporter.Facade.App.Clients.Registrations;
 
