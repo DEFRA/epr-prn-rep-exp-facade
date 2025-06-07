@@ -32,5 +32,9 @@ public static class ServiceCollectionExtension
         services.AddScoped<IRegistrationService, RegistrationService>();
         services.AddScoped<IAccreditationService, AccreditationService>();
         services.AddScoped<IAccreditationPrnIssueAuthService, AccreditationPrnIssueAuthService>();
+
+        services.AddScoped<IMaterialExemptionReferenceServiceClient, MaterialExemptionReferenceServiceClient>();
+        services.AddScoped<IMaterialExemptionReferenceService, MaterialExemptionReferenceService>();
+
     }
 }
