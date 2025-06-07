@@ -18,10 +18,10 @@ public class MaterialExemptionReferenceController : ControllerBase
     private readonly ILogger<MaterialExemptionReferenceController> _logger;
 
     public MaterialExemptionReferenceController(
-        IMaterialExemptionReferenceService materialExemptionReferenceService, 
+        IMaterialExemptionReferenceService materialExemptionReferenceService,
         ILogger<MaterialExemptionReferenceController> logger)
     {
-        _materialExemptionReferenceService = materialExemptionReferenceService; 
+        _materialExemptionReferenceService = materialExemptionReferenceService;
         _logger = logger;
     }
 
@@ -42,7 +42,7 @@ public class MaterialExemptionReferenceController : ControllerBase
         _logger.LogInformation(LogMessages.CreateRegistration);
 
         var result = await _materialExemptionReferenceService.CreateMaterialExemptionReferencesAsync(dto);
-        
+
         if (result)
         {
             _logger.LogInformation(LogMessages.MaterialExemptionReferencesCreated);

@@ -7,4 +7,7 @@ public static class LogMessages
     public const string InvalidRequest = "Invalid Request";
     public const string  MaterialExemptionReferencesCreated = "Material Exemption References created successfully";
     public const string MaterialExemptionReferenceNotCreated = "Material Exemption Reference not created. Please check the request and try again.";
+
+    public const string CreateRegistrationMaterialAndExemptionReferences = "Attempting to create registration material and exemption references";
+    public const string RegistrationMaterialAndExemptionReferencesNotCreated = "Registration Material and Exemption References not created";
 }

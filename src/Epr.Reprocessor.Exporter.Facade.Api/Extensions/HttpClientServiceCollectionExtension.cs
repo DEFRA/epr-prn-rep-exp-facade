@@ -50,6 +50,12 @@ public static class HttpClientServiceCollectionExtension
             client.Timeout = TimeSpan.FromSeconds(prnServiceApiSettings.Timeout);
         });
 
+        services.AddHttpClient<IRegistrationMaterialServiceClient, RegistrationMaterialServiceClient>((sp, client) =>
+        {
+            client.BaseAddress = new Uri(prnServiceApiSettings.BaseUrl);
+            client.Timeout = TimeSpan.FromSeconds(prnServiceApiSettings.Timeout);
+        });
+
         return services;
     }
 

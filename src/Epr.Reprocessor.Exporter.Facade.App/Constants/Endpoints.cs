@@ -11,5 +11,7 @@ public static class Endpoints
 
 
     public const string CreateMaterialExemptionReferences = "api/v{0}/createxemptionreferences";
+
+    public const string CreateRegistrationMaterialAndExemptionReferences = "api/v{0}/registrationMaterials/createRegistrationMaterialAndExemptionReferences";
 }
 

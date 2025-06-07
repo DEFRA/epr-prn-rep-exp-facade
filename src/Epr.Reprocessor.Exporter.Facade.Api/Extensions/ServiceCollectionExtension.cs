@@ -27,14 +27,14 @@ public static class ServiceCollectionExtension
         services.AddScoped<IRegistrationServiceClient, RegistrationServiceClient>();
         services.AddScoped<IAccreditationServiceClient, AccreditationServiceClient>();
         services.AddScoped<IAccreditationPrnIssueAuthServiceClient, AccreditationPrnIssueAuthServiceClient>();
+        services.AddScoped<IMaterialExemptionReferenceServiceClient, MaterialExemptionReferenceServiceClient>();
+        services.AddScoped<IRegistrationMaterialServiceClient, RegistrationMaterialServiceClient>();
 
         // Services
         services.AddScoped<IRegistrationService, RegistrationService>();
         services.AddScoped<IAccreditationService, AccreditationService>();
-        services.AddScoped<IAccreditationPrnIssueAuthService, AccreditationPrnIssueAuthService>();
-
-        services.AddScoped<IMaterialExemptionReferenceServiceClient, MaterialExemptionReferenceServiceClient>();
-        services.AddScoped<IMaterialExemptionReferenceService, MaterialExemptionReferenceService>();
-
+        services.AddScoped<IAccreditationPrnIssueAuthService, AccreditationPrnIssueAuthService>();        
+        services.AddScoped<IMaterialExemptionReferenceService, MaterialExemptionReferenceService>();        
+        services.AddScoped<IRegistrationMaterialService, RegistrationMaterialService>();
     }
 }
