@@ -10,4 +10,5 @@ public static class LogMessages
 
     public const string CreateRegistrationMaterialAndExemptionReferences = "Attempting to create registration material and exemption references";
     public const string RegistrationMaterialAndExemptionReferencesNotCreated = "Registration Material and Exemption References not created";
+    public const string UnExpectedError = "An unexpected error occurred.";
 }

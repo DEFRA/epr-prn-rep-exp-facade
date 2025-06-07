@@ -43,9 +43,10 @@ namespace Epr.Reprocessor.Exporter.Facade.Api.Controllers.Registrations
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
-                return BadRequest(ex.Message);
+                _logger.LogError(ex, ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, LogMessages.UnExpectedError);
             }
         }
     }
 }
+
