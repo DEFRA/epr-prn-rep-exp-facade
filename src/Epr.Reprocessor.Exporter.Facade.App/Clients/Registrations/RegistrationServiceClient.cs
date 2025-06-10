@@ -54,4 +54,13 @@ ILogger<RegistrationServiceClient> logger)
 
         return await GetAsync<RegistrationDto>(url);
     }
+
+    public async Task<bool> UpdateAsync(int registrationId, UpdateRegistrationDto request)
+    {
+        logger.LogInformation("Attempting to update an existing registration with ID {RegistrationId}", registrationId);
+
+        var url = string.Format(Endpoints.UpdateRegistration, _config.ApiVersion, registrationId);
+
+        return await PostAsync<UpdateRegistrationDto, bool>(url, request);
+    }
 }

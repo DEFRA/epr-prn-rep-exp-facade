@@ -7,5 +7,6 @@ public interface IRegistrationServiceClient
     Task<int> CreateRegistrationAsync(CreateRegistrationDto request);
     Task<bool> UpdateRegistrationTaskStatusAsync(int registrationId, UpdateRegistrationTaskStatusDto request);
     Task<bool> UpdateSiteAddressAsync(int registrationId, UpdateRegistrationSiteAddressDto request);
-    Task<RegistrationDto?> GetRegistrationByOrganisationAsync(int applicationTypeId, int organisationId);
+    Task<RegistrationDto> GetRegistrationByOrganisationAsync(int applicationTypeId, int organisationId);
+    Task<bool> UpdateAsync(int registrationId, UpdateRegistrationDto request);
 }

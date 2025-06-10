@@ -138,4 +138,32 @@ public class RegistrationServiceClientTests
         // Assert
         result.Should().BeEquivalentTo(registrationDto);
     }
+
+    [TestMethod]
+    public async Task UpdateAsync_ShouldReturnExpectedResult()
+    {
+        // Arrange
+        var registrationId = 1;
+        var requestDto = _fixture.Create<UpdateRegistrationDto>();
+        var url = "api/v1/registrations/1/update";
+        _mockHttpMessageHandler.Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.Is<HttpRequestMessage>(msg =>
+                    msg.Method == HttpMethod.Post &&
+                    msg.RequestUri!.ToString().EndsWith(url)),
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .ReturnsAsync(new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = new StringContent("true")
+            });
+
+        // Act
+        var result = await _client.UpdateAsync(registrationId, requestDto);
+
+        // Assert
+        result.Should().BeTrue();
+    }
 }

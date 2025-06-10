@@ -84,4 +84,22 @@ public class RegistrationServiceTests
             Id = 1
         });
     }
+
+    [TestMethod]
+    public async Task UpdateAsync_ShouldReturnExpectedResult()
+    {
+        // Arrange
+        var registrationId = 1;
+        var requestDto = _fixture.Create<UpdateRegistrationDto>();
+
+        _mockRegistrationServiceClient
+            .Setup(client => client.UpdateAsync(registrationId, requestDto))
+            .ReturnsAsync(true);
+
+        // Act
+        var result = await _service.UpdateAsync(registrationId, requestDto);
+
+        // Assert
+        result.Should().BeTrue();
+    }
 }

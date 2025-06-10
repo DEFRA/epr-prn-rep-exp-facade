@@ -64,6 +64,21 @@ public class RegistrationController : ControllerBase
         return new CreatedResult(string.Empty, registrationId);
     }
 
+    [HttpPost("{registrationId:int}/update")]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(NoContentResult))]
+    [SwaggerOperation(
+        Summary = "update an application registration",
+        Description = "attempting to update an application registration."
+    )]
+    public async Task<IActionResult> UpdateAsync([FromRoute] int registrationId, [FromBody] UpdateRegistrationDto request)
+    {
+        _logger.LogInformation(LogMessages.UpdateRegistrationTaskStatus);
+
+        await _registrationService.UpdateAsync(registrationId, request);
+
+        return NoContent();
+    }
+
     [HttpPost("{registrationId:int}/TaskStatus")]
     [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(NoContentResult))]
     [SwaggerOperation(
