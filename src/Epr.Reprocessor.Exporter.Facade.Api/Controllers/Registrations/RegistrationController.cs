@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Net;
+using Azure.Core;
 using Epr.Reprocessor.Exporter.Facade.App.Constants;
 using Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
 using Epr.Reprocessor.Exporter.Facade.App.Services.Registration;
@@ -23,6 +24,28 @@ public class RegistrationController : ControllerBase
 
         _registrationService = registrationService;
         _logger = logger;
+    }
+
+    [HttpGet("{applicationTypeId:int}/organisations/{organisationId:int}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RegistrationDto))]
+    [SwaggerResponse(StatusCodes.Status404NotFound, "If an existing registration isn not found.", typeof(ProblemDetails))]
+    [SwaggerOperation(
+        Summary = "gets an existing registration by the organisation ID.",
+        Description = "attempting to get an existing registration using the organisation ID."
+    )]
+    [ExcludeFromCodeCoverage(Justification = "TODO: To be done as part of create registration user story")]
+    public async Task<IActionResult> GetRegistrationByOrganisation([FromRoute] int applicationTypeId, [FromRoute] int organisationId)
+    {
+        _logger.LogInformation(string.Format(LogMessages.GetRegistrationByOrganisation, applicationTypeId, organisationId));
+
+        var registration = await _registrationService.GetRegistrationByOrganisationAsync(applicationTypeId, organisationId);
+
+        if (registration is null)
+        {
+            return NotFound();
+        }
+
+        return Ok(registration);
     }
 
     [HttpPost]

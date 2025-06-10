@@ -45,4 +45,13 @@ ILogger<RegistrationServiceClient> logger)
         
         return await this.PostAsync<UpdateRegistrationSiteAddressDto, bool>(url, request);
     }
+
+    public async Task<RegistrationDto> GetRegistrationByOrganisationAsync(int applicationTypeId, int organisationId)
+    {
+        logger.LogInformation("Attempting to get existing registration for organisation with ID {OrganisationId}", organisationId);
+
+        var url = string.Format(Endpoints.GetRegistrationByOrganisation, _config.ApiVersion, applicationTypeId, organisationId);
+
+        return await GetAsync<RegistrationDto>(url);
+    }
 }

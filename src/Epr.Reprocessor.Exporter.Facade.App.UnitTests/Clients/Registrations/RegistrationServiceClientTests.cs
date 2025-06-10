@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Text.Json;
 using AutoFixture;
 using Epr.Reprocessor.Exporter.Facade.App.Clients.Registrations;
 using Epr.Reprocessor.Exporter.Facade.App.Config;
@@ -101,5 +102,40 @@ public class RegistrationServiceClientTests
 
         // Assert
         result.Should().BeTrue();
+    }
+
+    [TestMethod]
+    public async Task GetRegistrationByOrganisationAsync_Exists_ReturnDto()
+    {
+        // Arrange
+        var registrationDto = new RegistrationDto
+        {
+            Id = 1,
+            ApplicationTypeId = 2
+        };
+
+        var url = "api/v1/registrations/1/organisations/1";
+        _mockHttpMessageHandler.Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.Is<HttpRequestMessage>(msg =>
+                    msg.Method == HttpMethod.Get &&
+                    msg.RequestUri!.ToString().EndsWith(url)),
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .ReturnsAsync(new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = new StringContent(JsonSerializer.Serialize(registrationDto, new JsonSerializerOptions
+                {
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                }))
+            });
+
+        // Act
+        var result = await _client.GetRegistrationByOrganisationAsync(1, 1);
+
+        // Assert
+        result.Should().BeEquivalentTo(registrationDto);
     }
 }
