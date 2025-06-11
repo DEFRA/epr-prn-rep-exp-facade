@@ -108,13 +108,15 @@ public class RegistrationServiceClientTests
     public async Task GetRegistrationByOrganisationAsync_Exists_ReturnDto()
     {
         // Arrange
+        var organisationId = Guid.NewGuid();
         var registrationDto = new RegistrationDto
         {
             Id = 1,
-            ApplicationTypeId = 2
+            ApplicationTypeId = 2,
+            OrganisationId = organisationId
         };
 
-        var url = "api/v1/registrations/1/organisations/1";
+        var url = $"api/v1/registrations/1/organisations/{organisationId}";
         _mockHttpMessageHandler.Protected()
             .Setup<Task<HttpResponseMessage>>(
                 "SendAsync",
@@ -133,7 +135,7 @@ public class RegistrationServiceClientTests
             });
 
         // Act
-        var result = await _client.GetRegistrationByOrganisationAsync(1, Guid.NewGuid());
+        var result = await _client.GetRegistrationByOrganisationAsync(1, organisationId);
 
         // Assert
         result.Should().BeEquivalentTo(registrationDto);
