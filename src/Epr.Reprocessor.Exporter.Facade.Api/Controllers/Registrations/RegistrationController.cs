@@ -83,6 +83,11 @@ public class RegistrationController : ControllerBase
 
         var overview = await _registrationService.GetRegistrationOverviewAsync(registrationId);
 
+        if(overview == null)
+        {
+            return NoContent();
+        }
+        
         return Ok(overview);
     }
 }
