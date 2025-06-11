@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Net;
 using Epr.Reprocessor.Exporter.Facade.App.Config;
 using Epr.Reprocessor.Exporter.Facade.App.Constants;
 using Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
@@ -46,13 +47,25 @@ ILogger<RegistrationServiceClient> logger)
         return await this.PostAsync<UpdateRegistrationSiteAddressDto, bool>(url, request);
     }
 
-    public async Task<RegistrationDto> GetRegistrationByOrganisationAsync(int applicationTypeId, int organisationId)
+    public async Task<RegistrationDto?> GetRegistrationByOrganisationAsync(int applicationTypeId, Guid organisationId)
     {
         logger.LogInformation("Attempting to get existing registration for organisation with ID {OrganisationId}", organisationId);
 
         var url = string.Format(Endpoints.GetRegistrationByOrganisation, _config.ApiVersion, applicationTypeId, organisationId);
 
-        return await GetAsync<RegistrationDto>(url);
+        try
+        {
+            return await GetAsync<RegistrationDto>(url);
+        }
+        catch (HttpRequestException ex) when (ex.StatusCode is HttpStatusCode.NotFound)
+        {
+            return null;
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "An error occurred while trying to get registration for organisation with ID {OrganisationId}", organisationId);
+            throw;
+        }
     }
 
     public async Task<bool> UpdateAsync(int registrationId, UpdateRegistrationDto request)

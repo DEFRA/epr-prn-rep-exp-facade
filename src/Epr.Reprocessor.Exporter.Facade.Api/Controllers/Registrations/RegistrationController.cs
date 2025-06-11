@@ -1,7 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Net;
-using Azure.Core;
-using Epr.Reprocessor.Exporter.Facade.App.Constants;
+﻿using Epr.Reprocessor.Exporter.Facade.App.Constants;
 using Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
 using Epr.Reprocessor.Exporter.Facade.App.Services.Registration;
 using Microsoft.AspNetCore.Mvc;
@@ -26,15 +23,14 @@ public class RegistrationController : ControllerBase
         _logger = logger;
     }
 
-    [HttpGet("{applicationTypeId:int}/organisations/{organisationId:int}")]
+    [HttpGet("{applicationTypeId:int}/organisations/{organisationId:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RegistrationDto))]
     [SwaggerResponse(StatusCodes.Status404NotFound, "If an existing registration isn not found.", typeof(ProblemDetails))]
     [SwaggerOperation(
         Summary = "gets an existing registration by the organisation ID.",
         Description = "attempting to get an existing registration using the organisation ID."
     )]
-    [ExcludeFromCodeCoverage(Justification = "TODO: To be done as part of create registration user story")]
-    public async Task<IActionResult> GetRegistrationByOrganisation([FromRoute] int applicationTypeId, [FromRoute] int organisationId)
+    public async Task<IActionResult> GetRegistrationByOrganisation([FromRoute] int applicationTypeId, [FromRoute] Guid organisationId)
     {
         _logger.LogInformation(string.Format(LogMessages.GetRegistrationByOrganisation, applicationTypeId, organisationId));
 
@@ -54,10 +50,14 @@ public class RegistrationController : ControllerBase
             Summary = "create an application registration",
             Description = "attempting to create an application registration."
         )]
-    [ExcludeFromCodeCoverage(Justification = "TODO: Unit tests to be added as part of create registration user story")]
     public async Task<IActionResult> CreateRegistration([FromBody] CreateRegistrationDto request)
     {
         _logger.LogInformation(LogMessages.CreateRegistration);
+
+        if (request.ApplicationTypeId is 0 || request.OrganisationId == Guid.Empty)
+        {
+            return BadRequest($"The {nameof(request.ApplicationTypeId)} and {nameof(request.OrganisationId)} must have a valid non 0/empty value.");
+        }
 
         var registrationId = await _registrationService.CreateRegistrationAsync(request);
 

@@ -133,7 +133,7 @@ public class RegistrationServiceClientTests
             });
 
         // Act
-        var result = await _client.GetRegistrationByOrganisationAsync(1, 1);
+        var result = await _client.GetRegistrationByOrganisationAsync(1, Guid.NewGuid());
 
         // Assert
         result.Should().BeEquivalentTo(registrationDto);

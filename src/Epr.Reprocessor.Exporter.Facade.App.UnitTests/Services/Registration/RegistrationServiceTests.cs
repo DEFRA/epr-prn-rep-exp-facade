@@ -64,6 +64,7 @@ public class RegistrationServiceTests
     public async Task GetRegistrationByOrganisationAsync_ShouldReturnExpectedResult()
     {
         // Arrange
+        var organisationId = Guid.Empty;
         var registration = new RegistrationDto
         {
             ApplicationTypeId = 1,
@@ -71,11 +72,11 @@ public class RegistrationServiceTests
         };
 
         _mockRegistrationServiceClient
-            .Setup(client => client.GetRegistrationByOrganisationAsync(1, 1))
+            .Setup(client => client.GetRegistrationByOrganisationAsync(1, organisationId))
             .ReturnsAsync(registration);
 
         // Act
-        var result = await _service.GetRegistrationByOrganisationAsync(1, 1);
+        var result = await _service.GetRegistrationByOrganisationAsync(1, organisationId);
 
         // Assert
         result.Should().BeEquivalentTo(new RegistrationDto

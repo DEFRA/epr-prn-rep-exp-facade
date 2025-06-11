@@ -11,7 +11,7 @@ public class RegistrationDto
 
     public int ApplicationTypeId { get; set; }
 
-    public int OrganisationId { get; set; }
+    public Guid OrganisationId { get; set; }
 
     public int RegistrationStatusId { get; set; }
 

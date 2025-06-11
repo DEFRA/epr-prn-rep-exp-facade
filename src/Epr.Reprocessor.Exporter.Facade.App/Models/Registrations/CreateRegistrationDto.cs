@@ -19,7 +19,7 @@ public class CreateRegistrationDto
     /// The unique identifier for the organisation.
     /// </summary>
     [Required]
-    public int OrganisationId { get; set; }
+    public Guid OrganisationId { get; set; }
 
     /// <summary>
     /// Gets or sets the identifier for the reprocessing site address
