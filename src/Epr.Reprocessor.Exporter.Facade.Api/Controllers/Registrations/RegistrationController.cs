@@ -70,4 +70,19 @@ public class RegistrationController : ControllerBase
 
         return NoContent();
     }
+
+    [HttpPost("{registrationId:int}/RegistrationOverview")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RegistrationOverviewDto))]
+    [SwaggerOperation(
+        Summary = "get an over view of a registration include task statuses",
+        Description = "retrieving an over view details of an application registration."
+    )]
+    public async Task<IActionResult> RegistrationOverview([FromRoute] int registrationId )
+    {
+        _logger.LogInformation(LogMessages.GetRegistrationOverview,registrationId);
+
+        var overview = await _registrationService.GetRegistrationOverviewAsync(registrationId);
+
+        return Ok(overview);
+    }
 }

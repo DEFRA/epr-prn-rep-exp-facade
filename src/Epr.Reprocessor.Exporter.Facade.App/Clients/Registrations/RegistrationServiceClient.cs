@@ -26,6 +26,14 @@ ILogger<RegistrationServiceClient> logger)
         return await this.PostAsync<CreateRegistrationDto, int>(url, request);
     }
 
+    public async Task<RegistrationOverviewDto> GetRegistrationOverviewAsync(int registrationId)
+    {
+        logger.LogInformation("GetRegistrationOverviewAsync for Registration ID: {RegistrationId}", registrationId);
+        var url = string.Format(Endpoints.RegistrationGetById, _config.ApiVersion, registrationId);
+        
+        return await this.GetAsync<RegistrationOverviewDto>(url); 
+    }
+
     public async Task<bool> UpdateRegistrationTaskStatusAsync(int registrationId, UpdateRegistrationTaskStatusDto request)
     {
         logger.LogInformation("UpdateRegistrationTaskStatusAsync for Registration ID: {RegistrationId}", registrationId);

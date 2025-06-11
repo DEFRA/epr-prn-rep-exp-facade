@@ -21,4 +21,9 @@ public class RegistrationService(IRegistrationServiceClient registrationServiceC
     {
         return await registrationServiceClient.UpdateRegistrationTaskStatusAsync(registrationId, dto);
     }
+
+    public async Task<RegistrationOverviewDto> GetRegistrationOverviewAsync(int registrationId)
+    {
+        return await registrationServiceClient.GetRegistrationOverviewAsync(registrationId);
+    }
 }
