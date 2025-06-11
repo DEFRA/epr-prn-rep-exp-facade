@@ -1,6 +1,8 @@
-﻿namespace Epr.Reprocessor.Exporter.Facade.App.Services.ExporterJourney.Interfaces
+﻿using Epr.Reprocessor.Exporter.Facade.App.Models.ExporterJourney;
+
+namespace Epr.Reprocessor.Exporter.Facade.App.Services.ExporterJourney.Interfaces
 {
-	public interface IOtherPermitsService<TDtoIn, TDtoOut> : IExporterService<TDtoIn, TDtoOut>
+    public interface IOtherPermitsService : IBaseReprocessorExporterService<OtherPermitsDto>
 	{
 	}
 }

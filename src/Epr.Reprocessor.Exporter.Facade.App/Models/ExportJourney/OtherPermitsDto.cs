@@ -1,6 +1,6 @@
 ﻿namespace Epr.Reprocessor.Exporter.Facade.App.Models.ExporterJourney
 {
-	public class OtherPermitsInDto
+	public class OtherPermitsDto
     {
 		public int Id { get; set; }
 

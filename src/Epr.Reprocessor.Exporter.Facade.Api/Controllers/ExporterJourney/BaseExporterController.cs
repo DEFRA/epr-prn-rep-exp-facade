@@ -1,14 +1,14 @@
-﻿using Epr.Reprocessor.Exporter.Facade.App.Services.ExporterJourney.Interfaces;
+﻿using Epr.Reprocessor.Exporter.Facade.App.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Epr.Reprocessor.Exporter.Facade.Api.Controllers.ExporterJourney
 {
-	public class BaseExporterController<TController, TDtoIn, TDtoOut> : Controller
+    public class BaseExporterController<TController, TDto> : Controller
 	{
-		protected readonly IExporterService<TDtoIn, TDtoOut> ExporterService;
+		protected readonly IBaseReprocessorExporterService<TDto> ExporterService;
 		protected readonly ILogger<TController> _logger;
 
-		public BaseExporterController(IExporterService<TDtoIn, TDtoOut> exporterService, ILogger<TController> logger)
+		public BaseExporterController(IBaseReprocessorExporterService<TDto> exporterService, ILogger<TController> logger)
 		{
 			ArgumentNullException.ThrowIfNull(exporterService);
 			ArgumentNullException.ThrowIfNull(logger);
@@ -36,7 +36,7 @@ namespace Epr.Reprocessor.Exporter.Facade.Api.Controllers.ExporterJourney
 		}
 
 		[HttpPost]
-		public async virtual Task<IActionResult> Post([FromBody] TDtoIn value)
+		public async virtual Task<IActionResult> Post([FromBody] TDto value)
 		{
 			await ExporterService.Create(value);
 			return Ok();
@@ -44,7 +44,7 @@ namespace Epr.Reprocessor.Exporter.Facade.Api.Controllers.ExporterJourney
 
 		[HttpPut("{id}")]
 		[ProducesResponseType(StatusCodes.Status202Accepted)]
-		public async virtual Task<IActionResult> Put(int id, [FromBody] TDtoIn value)
+		public async virtual Task<IActionResult> Put(int id, [FromBody] TDto value)
 		{
 			await ExporterService.Create(value);
 			return Accepted();

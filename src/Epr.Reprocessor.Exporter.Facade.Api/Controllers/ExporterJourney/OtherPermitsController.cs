@@ -7,9 +7,9 @@ namespace Epr.Reprocessor.Exporter.Facade.Api.Controllers.ExporterJourney
 	[Route("api/v{version:apiVersion}/ExporterRegistrations")]
 	[ApiVersion("1.0")]
 	[ApiController]
-	public class OtherPermitsController : BaseExporterController<OtherPermitsController, OtherPermitsInDto, OtherPermitsInDto>
+	public class OtherPermitsController : BaseExporterController<OtherPermitsController, OtherPermitsDto>
 	{
-		public OtherPermitsController(IOtherPermitsService<OtherPermitsInDto, OtherPermitsInDto> service, ILogger<OtherPermitsController> logger) 
+		public OtherPermitsController(IOtherPermitsService service, ILogger<OtherPermitsController> logger)
 			: base(service, logger)
 		{
 		}
