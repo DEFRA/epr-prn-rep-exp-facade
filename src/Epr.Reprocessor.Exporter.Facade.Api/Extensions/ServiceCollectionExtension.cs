@@ -3,6 +3,8 @@ using Epr.Reprocessor.Exporter.Facade.App.Clients.Accreditation;
 using Epr.Reprocessor.Exporter.Facade.App.Clients.Registrations;
 using Epr.Reprocessor.Exporter.Facade.App.Config;
 using Epr.Reprocessor.Exporter.Facade.App.Services.Accreditation;
+using Epr.Reprocessor.Exporter.Facade.App.Services.ExporterJourney.Implementations;
+using Epr.Reprocessor.Exporter.Facade.App.Services.ExporterJourney.Interfaces;
 using Epr.Reprocessor.Exporter.Facade.App.Services.Registration;
 
 namespace Epr.Reprocessor.Exporter.Facade.Api.Extensions;
@@ -32,5 +34,9 @@ public static class ServiceCollectionExtension
         services.AddScoped<IRegistrationService, RegistrationService>();
         services.AddScoped<IAccreditationService, AccreditationService>();
         services.AddScoped<IAccreditationPrnIssueAuthService, AccreditationPrnIssueAuthService>();
+
+        // Services (Export journey)
+		services.AddScoped<IOtherPermitsService, OtherPermitsService>();
+        services.AddScoped<IWasteCarrierBrokerDealerRefService, IWasteCarrierBrokerDealerRefService>();
     }
 }

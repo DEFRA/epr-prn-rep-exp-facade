@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Epr.Reprocessor.Exporter.Facade.Api.Handlers;
 using Epr.Reprocessor.Exporter.Facade.App.Clients.Accreditation;
+using Epr.Reprocessor.Exporter.Facade.App.Clients.ExporterJourney;
 using Epr.Reprocessor.Exporter.Facade.App.Clients.Registrations;
 using Epr.Reprocessor.Exporter.Facade.App.Config;
 using Microsoft.Extensions.Options;
@@ -44,7 +45,16 @@ public static class HttpClientServiceCollectionExtension
         .AddHttpMessageHandler<PrnBackendServiceAuthorisationHandler>()
         .AddPolicyHandler(GetRetryPolicy(prnServiceApiSettings.ServiceRetryCount));
 
-        return services;
+        // TODO: Confirm these settings are correct
+		services.AddHttpClient<IExporterServiceClient, ExporterServiceClient>((sp, client) =>
+		{
+			client.BaseAddress = new Uri(prnServiceApiSettings.BaseUrl);
+			client.Timeout = TimeSpan.FromSeconds(prnServiceApiSettings.Timeout);
+		})
+        .AddHttpMessageHandler<PrnBackendServiceAuthorisationHandler>()
+        .AddPolicyHandler(GetRetryPolicy(prnServiceApiSettings.ServiceRetryCount));
+
+		return services;
     }
 
     private static Polly.Retry.AsyncRetryPolicy<HttpResponseMessage> GetRetryPolicy(int retryCount)
