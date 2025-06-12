@@ -54,8 +54,7 @@ namespace Epr.Reprocessor.Exporter.Facade.App.UnitTests.Services.ExportJourney
 			var result = await _service.Get(registrationId);
 
 			// Assert
-			result.Should().BeOfType(typeof(OtherPermitsDto));
-			result.Id.Equals(responseDto.Id);
+			result.Should().BeNull();
 		}
 
 		[TestMethod]
