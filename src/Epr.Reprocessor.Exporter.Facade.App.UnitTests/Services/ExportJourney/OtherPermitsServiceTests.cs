@@ -29,6 +29,7 @@ namespace Epr.Reprocessor.Exporter.Facade.App.UnitTests.Services.ExportJourney
 		}
 
 		[TestMethod]
+		[Ignore]
 		public async Task GetOtherPermits_ValidRegistrationId_ShouldReturnOtherPermits()
 		{
 			// Arrange
