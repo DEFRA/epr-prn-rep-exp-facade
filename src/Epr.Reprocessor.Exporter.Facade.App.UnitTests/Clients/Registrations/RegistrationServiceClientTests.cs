@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Text.Json;
 using AutoFixture;
 using Epr.Reprocessor.Exporter.Facade.App.Clients.Registrations;
 using Epr.Reprocessor.Exporter.Facade.App.Config;
@@ -98,6 +99,125 @@ public class RegistrationServiceClientTests
 
         // Act
         var result = await _client.UpdateRegistrationTaskStatusAsync(registrationId, requestDto);
+
+        // Assert
+        result.Should().BeTrue();
+    }
+
+    [TestMethod]
+    public async Task GetRegistrationByOrganisationAsync_Exists_ReturnDto()
+    {
+        // Arrange
+        var organisationId = Guid.NewGuid();
+        var registrationDto = new RegistrationDto
+        {
+            Id = 1,
+            ApplicationTypeId = 2,
+            OrganisationId = organisationId
+        };
+
+        var url = $"api/v1/registrations/1/organisations/{organisationId}";
+        _mockHttpMessageHandler.Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.Is<HttpRequestMessage>(msg =>
+                    msg.Method == HttpMethod.Get &&
+                    msg.RequestUri!.ToString().EndsWith(url)),
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .ReturnsAsync(new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = new StringContent(JsonSerializer.Serialize(registrationDto, new JsonSerializerOptions
+                {
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                }))
+            });
+
+        // Act
+        var result = await _client.GetRegistrationByOrganisationAsync(1, organisationId);
+
+        // Assert
+        result.Should().BeEquivalentTo(registrationDto);
+    }
+
+    [TestMethod]
+    public async Task GetRegistrationByOrganisationAsync_NotFound_ShouldReturnNull()
+    {
+        // Arrange
+        var organisationId = Guid.NewGuid();
+      
+        var url = $"api/v1/registrations/1/organisations/{organisationId}";
+        _mockHttpMessageHandler.Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.Is<HttpRequestMessage>(msg =>
+                    msg.Method == HttpMethod.Get &&
+                    msg.RequestUri!.ToString().EndsWith(url)),
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .ReturnsAsync(new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.NotFound
+            });
+
+        // Act
+        var result = await _client.GetRegistrationByOrganisationAsync(1, organisationId);
+
+        // Assert
+        result.Should().BeNull();
+    }
+
+    [TestMethod]
+    public async Task GetRegistrationByOrganisationAsync_SomeOtherError_ShouldThrowException()
+    {
+        // Arrange
+        var organisationId = Guid.NewGuid();
+
+        var url = $"api/v1/registrations/1/organisations/{organisationId}";
+        _mockHttpMessageHandler.Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.Is<HttpRequestMessage>(msg =>
+                    msg.Method == HttpMethod.Get &&
+                    msg.RequestUri!.ToString().EndsWith(url)),
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .ReturnsAsync(new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.InternalServerError
+            });
+
+        // Act
+        var act = async () => await _client.GetRegistrationByOrganisationAsync(1, organisationId);
+
+        // Assert
+        await act.Should().ThrowAsync<Exception>();
+    }
+
+    [TestMethod]
+    public async Task UpdateAsync_ShouldReturnExpectedResult()
+    {
+        // Arrange
+        var registrationId = 1;
+        var requestDto = _fixture.Create<UpdateRegistrationDto>();
+        var url = "api/v1/registrations/1/update";
+        _mockHttpMessageHandler.Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.Is<HttpRequestMessage>(msg =>
+                    msg.Method == HttpMethod.Post &&
+                    msg.RequestUri!.ToString().EndsWith(url)),
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .ReturnsAsync(new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = new StringContent("true")
+            });
+
+        // Act
+        var result = await _client.UpdateAsync(registrationId, requestDto);
 
         // Assert
         result.Should().BeTrue();
