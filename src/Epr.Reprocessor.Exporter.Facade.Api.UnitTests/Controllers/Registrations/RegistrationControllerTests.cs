@@ -247,8 +247,7 @@ public class RegistrationControllerTests
 
         // Assert
         result.Should().BeEquivalentTo(expectedResult);
-    }
-}
+    } 
 
     [TestMethod]
     public async Task RegistrationOverview_ShouldReturnNoContentResult()

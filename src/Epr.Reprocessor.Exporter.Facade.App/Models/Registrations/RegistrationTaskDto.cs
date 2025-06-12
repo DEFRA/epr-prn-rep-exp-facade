@@ -17,8 +17,7 @@ public class RegistrationTaskDto
     /// <summary>
     /// The name of the task.
     /// </summary>
-    public required string TaskName { get; set; }
-    public required string Status { get; set; }
+    public required string TaskName { get; set; } 
 
     /// <summary>
     /// The current status of the task.
