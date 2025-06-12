@@ -1,5 +1,4 @@
 ﻿using Epr.Reprocessor.Exporter.Facade.Api.Controllers.ExporterJourney;
-using Epr.Reprocessor.Exporter.Facade.App.Models.Accreditations;
 using Epr.Reprocessor.Exporter.Facade.App.Models.ExporterJourney;
 using Epr.Reprocessor.Exporter.Facade.App.Services.ExporterJourney.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -83,7 +82,7 @@ namespace Epr.Reprocessor.Exporter.Facade.Api.UnitTests.Controllers.ExporterJour
 			var registrationId = 1;
 			var request = new OtherPermitsDto { RegistrationId = registrationId };
 			var response = new OtherPermitsDto { RegistrationId = request.RegistrationId, Id = 1 };
-			_serviceMock.Setup(s => s.Create(request))
+			_serviceMock.Setup(s => s.Create(registrationId, request))
 				.ReturnsAsync(response.Id);
 
 			// Act
@@ -93,7 +92,7 @@ namespace Epr.Reprocessor.Exporter.Facade.Api.UnitTests.Controllers.ExporterJour
 			result.Should().BeOfType<OkObjectResult>();
 			var okResult = result as OkObjectResult;
 			result.Equals(response.Id);
-			_serviceMock.Verify(s => s.Create(request), Times.Once);
+			_serviceMock.Verify(s => s.Create(registrationId, request), Times.Once);
 		}
 
 		[TestMethod]

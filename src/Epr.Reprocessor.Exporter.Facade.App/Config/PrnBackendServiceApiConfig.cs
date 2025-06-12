@@ -37,4 +37,5 @@ public class PrnServiceApiConfigExportEndpoints
 {
 	public string OtherPermitsGet { get; set; }
 	public string OtherPermitsPost { get; set; }
+    public string OtherPermitsPut { get; set; }
 }

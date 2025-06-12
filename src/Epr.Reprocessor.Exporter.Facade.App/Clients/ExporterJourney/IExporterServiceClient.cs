@@ -4,6 +4,7 @@ public interface IExporterServiceClient
 {
 	Task<TOut> SendGetRequest<TOut>(string uri);
 
-	Task<TOut> SendPostRequest<TBody, TOut>(string uri, TBody body);
+	Task<int> SendPostRequest<TBody>(string uri, TBody body);
 
+	Task<bool> SendPutRequest<TBody>(string uri, TBody body);
 }

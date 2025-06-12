@@ -33,7 +33,7 @@ namespace Epr.Reprocessor.Exporter.Facade.Api.Controllers.ExporterJourney
 		[HttpPost]
 		public async virtual Task<IActionResult> Post([FromBody] OtherPermitsDto value)
 		{
-			var result = await _service.Create(value);
+			var result = await _service.Create(value.RegistrationId, value);
 			return Ok(result);
 		}
 
