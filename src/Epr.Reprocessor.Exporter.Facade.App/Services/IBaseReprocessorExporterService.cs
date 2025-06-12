@@ -4,7 +4,7 @@
     {
         Task<IEnumerable<TDto>> Get();
 
-        Task<TDto> Get(int id);
+        Task<TDto> Get(int registrationId);
 
         Task<int> Create(TDto value);
 

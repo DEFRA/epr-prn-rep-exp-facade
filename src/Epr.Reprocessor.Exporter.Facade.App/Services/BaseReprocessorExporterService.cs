@@ -9,6 +9,7 @@ namespace Epr.Reprocessor.Exporter.Facade.App.Services
         protected readonly PrnBackendServiceApiConfig Config;
         protected string BaseGetUrl;
         protected string BasePostUrl;
+        protected int ApiVersion;
 
         private readonly IExporterServiceClient apiClient;
 
@@ -16,6 +17,7 @@ namespace Epr.Reprocessor.Exporter.Facade.App.Services
         {
             Config = options.Value;
             this.apiClient = apiClient;
+            ApiVersion = Config.ApiVersion;
         }
 
         public async virtual Task<IEnumerable<TDto>> Get()

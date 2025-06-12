@@ -45,9 +45,7 @@ public static class HttpClientServiceCollectionExtension
         .AddHttpMessageHandler<PrnBackendServiceAuthorisationHandler>()
         .AddPolicyHandler(GetRetryPolicy(prnServiceApiSettings.ServiceRetryCount));
 
-
-
-
+        // TODO: Confirm these settings are correct
 		services.AddHttpClient<IExporterServiceClient, ExporterServiceClient>((sp, client) =>
 		{
 			client.BaseAddress = new Uri(prnServiceApiSettings.BaseUrl);
@@ -55,9 +53,6 @@ public static class HttpClientServiceCollectionExtension
 		})
         .AddHttpMessageHandler<PrnBackendServiceAuthorisationHandler>()
         .AddPolicyHandler(GetRetryPolicy(prnServiceApiSettings.ServiceRetryCount));
-
-
-
 
 		return services;
     }
