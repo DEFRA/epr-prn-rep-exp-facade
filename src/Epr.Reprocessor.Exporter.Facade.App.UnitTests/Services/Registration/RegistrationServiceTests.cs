@@ -59,4 +59,48 @@ public class RegistrationServiceTests
         // Assert
         result.Should().BeTrue();
     }
+
+    [TestMethod]
+    public async Task GetRegistrationByOrganisationAsync_ShouldReturnExpectedResult()
+    {
+        // Arrange
+        var organisationId = Guid.Empty;
+        var registration = new RegistrationDto
+        {
+            ApplicationTypeId = 1,
+            Id = 1
+        };
+
+        _mockRegistrationServiceClient
+            .Setup(client => client.GetRegistrationByOrganisationAsync(1, organisationId))
+            .ReturnsAsync(registration);
+
+        // Act
+        var result = await _service.GetRegistrationByOrganisationAsync(1, organisationId);
+
+        // Assert
+        result.Should().BeEquivalentTo(new RegistrationDto
+        {
+            ApplicationTypeId = 1,
+            Id = 1
+        });
+    }
+
+    [TestMethod]
+    public async Task UpdateAsync_ShouldReturnExpectedResult()
+    {
+        // Arrange
+        var registrationId = 1;
+        var requestDto = _fixture.Create<UpdateRegistrationDto>();
+
+        _mockRegistrationServiceClient
+            .Setup(client => client.UpdateAsync(registrationId, requestDto))
+            .ReturnsAsync(true);
+
+        // Act
+        var result = await _service.UpdateAsync(registrationId, requestDto);
+
+        // Assert
+        result.Should().BeTrue();
+    }
 }
