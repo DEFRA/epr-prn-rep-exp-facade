@@ -142,6 +142,60 @@ public class RegistrationServiceClientTests
     }
 
     [TestMethod]
+    public async Task GetRegistrationByOrganisationAsync_NotFound_ShouldReturnNull()
+    {
+        // Arrange
+        var organisationId = Guid.NewGuid();
+      
+        var url = $"api/v1/registrations/1/organisations/{organisationId}";
+        _mockHttpMessageHandler.Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.Is<HttpRequestMessage>(msg =>
+                    msg.Method == HttpMethod.Get &&
+                    msg.RequestUri!.ToString().EndsWith(url)),
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .ReturnsAsync(new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.NotFound
+            });
+
+        // Act
+        var result = await _client.GetRegistrationByOrganisationAsync(1, organisationId);
+
+        // Assert
+        result.Should().BeNull();
+    }
+
+    [TestMethod]
+    public async Task GetRegistrationByOrganisationAsync_SomeOtherError_ShouldThrowException()
+    {
+        // Arrange
+        var organisationId = Guid.NewGuid();
+
+        var url = $"api/v1/registrations/1/organisations/{organisationId}";
+        _mockHttpMessageHandler.Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.Is<HttpRequestMessage>(msg =>
+                    msg.Method == HttpMethod.Get &&
+                    msg.RequestUri!.ToString().EndsWith(url)),
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .ReturnsAsync(new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.InternalServerError
+            });
+
+        // Act
+        var act = async () => await _client.GetRegistrationByOrganisationAsync(1, organisationId);
+
+        // Assert
+        await act.Should().ThrowAsync<Exception>();
+    }
+
+    [TestMethod]
     public async Task UpdateAsync_ShouldReturnExpectedResult()
     {
         // Arrange
