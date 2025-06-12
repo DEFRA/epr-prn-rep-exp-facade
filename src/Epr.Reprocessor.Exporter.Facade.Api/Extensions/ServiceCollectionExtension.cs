@@ -37,5 +37,6 @@ public static class ServiceCollectionExtension
 
         // Services (Export journey)
 		services.AddScoped<IOtherPermitsService, OtherPermitsService>();
-	}
+        services.AddScoped<IWasteCarrierBrokerDealerRefService, IWasteCarrierBrokerDealerRefService>();
+    }
 }

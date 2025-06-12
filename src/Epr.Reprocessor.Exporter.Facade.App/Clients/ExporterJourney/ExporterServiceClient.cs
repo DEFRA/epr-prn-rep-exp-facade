@@ -1,9 +1,11 @@
-﻿using Epr.Reprocessor.Exporter.Facade.App.Config;
+﻿using System.Diagnostics.CodeAnalysis;
+using Epr.Reprocessor.Exporter.Facade.App.Config;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace Epr.Reprocessor.Exporter.Facade.App.Clients.ExporterJourney;
 
+[ExcludeFromCodeCoverage]
 public class ExporterServiceClient(
 	HttpClient httpClient, 
 	IOptions<PrnBackendServiceApiConfig> options, 

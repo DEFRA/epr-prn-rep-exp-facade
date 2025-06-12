@@ -1,6 +1,9 @@
-﻿namespace Epr.Reprocessor.Exporter.Facade.App.Models.ExporterJourney
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Epr.Reprocessor.Exporter.Facade.App.Models.ExporterJourney
 {
-	public class OtherPermitsDto
+    [ExcludeFromCodeCoverage]
+    public class OtherPermitsDto
     {
 		public int Id { get; set; }
 
