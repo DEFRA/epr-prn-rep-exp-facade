@@ -1,4 +1,5 @@
-﻿using Epr.Reprocessor.Exporter.Facade.App.Constants;
+﻿using Azure.Core;
+using Epr.Reprocessor.Exporter.Facade.App.Constants;
 using Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
 using Epr.Reprocessor.Exporter.Facade.App.Services.Registration;
 using Microsoft.AspNetCore.Mvc;
@@ -18,6 +19,35 @@ namespace Epr.Reprocessor.Exporter.Facade.Api.Controllers.Registrations
         {
             _registrationMaterialService = registrationMaterialService ?? throw new ArgumentNullException(nameof(registrationMaterialService));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        }
+
+        [HttpPost("CreateRegistrationMaterial")]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(bool))]
+        [SwaggerOperation(
+            Summary = "creates a new registration material",
+            Description = "attempting to create new registration material"
+        )]
+        public async Task<IActionResult> CreateRegistrationMaterial([FromBody] CreateRegistrationMaterialDto dto)
+        {
+            if (dto == null)
+            {
+                _logger.LogWarning(LogMessages.InvalidRequest);
+                return BadRequest(LogMessages.InvalidRequest);
+            }
+
+            _logger.LogInformation(LogMessages.CreateRegistrationMaterial);
+
+            try
+            {
+                var registrationMaterialId = await _registrationMaterialService.CreateRegistrationMaterial(dto);
+                
+                return new CreatedResult(string.Empty, registrationMaterialId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, LogMessages.UnExpectedError);
+            }
         }
 
         [HttpPost("CreateExemptionReferences")]
