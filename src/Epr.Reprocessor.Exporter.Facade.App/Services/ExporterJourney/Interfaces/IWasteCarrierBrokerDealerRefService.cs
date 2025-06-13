@@ -6,7 +6,7 @@ namespace Epr.Reprocessor.Exporter.Facade.App.Services.ExporterJourney.Interface
     {
         Task<WasteCarrierBrokerDealerRefDto> Get(int registrationId);
 
-        Task<int> Create(int registrationId, WasteCarrierBrokerDealerRefDto value);
+        Task<Guid> Create(int registrationId, WasteCarrierBrokerDealerRefDto value);
 
         Task<bool> Update(int registrationId, WasteCarrierBrokerDealerRefDto value);
     }
