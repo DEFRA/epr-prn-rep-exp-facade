@@ -247,5 +247,36 @@ public class RegistrationControllerTests
 
         // Assert
         result.Should().BeEquivalentTo(expectedResult);
+    } 
+
+    [TestMethod]
+    public async Task RegistrationOverview_ShouldReturnNoContentResult()
+    {
+        // Arrange
+        var registrationId = 1;
+        var request = new RegistrationOverviewDto { OrganisationName = "Org Name",Regulator = "UK"};
+
+        // Act
+        var result = await _controller.RegistrationTaskStatus(registrationId);
+
+        // Assert
+        result.Should().BeOfType<NoContentResult>();
+        _registrationServiceMock.Verify(s => s.GetRegistrationOverviewAsync(registrationId), Times.Once);
+    }
+
+    [TestMethod]
+    public async Task RegistrationOverview_ShouldReturnContentResult()
+    {
+        // Arrange
+        var registrationId = 1;
+        var request = new RegistrationOverviewDto { OrganisationName = "Org Name", Regulator = "UK" };
+        _registrationServiceMock.Setup(r => r.GetRegistrationOverviewAsync(registrationId)).ReturnsAsync(request);
+
+        // Act
+        var result = await _controller.RegistrationTaskStatus(registrationId);
+
+        // Assert
+        result.Should().BeOfType<OkObjectResult>(); 
+        _registrationServiceMock.Verify(s => s.GetRegistrationOverviewAsync(registrationId), Times.Once);
     }
 }
