@@ -257,7 +257,7 @@ public class RegistrationControllerTests
         var request = new RegistrationOverviewDto { OrganisationName = "Org Name",Regulator = "UK"};
 
         // Act
-        var result = await _controller.RegistrationOverview(registrationId);
+        var result = await _controller.RegistrationTaskStatus(registrationId);
 
         // Assert
         result.Should().BeOfType<NoContentResult>();
@@ -273,7 +273,7 @@ public class RegistrationControllerTests
         _registrationServiceMock.Setup(r => r.GetRegistrationOverviewAsync(registrationId)).ReturnsAsync(request);
 
         // Act
-        var result = await _controller.RegistrationOverview(registrationId);
+        var result = await _controller.RegistrationTaskStatus(registrationId);
 
         // Assert
         result.Should().BeOfType<OkObjectResult>(); 
