@@ -33,7 +33,7 @@ namespace Epr.Reprocessor.Exporter.Facade.App.Services.ExporterJourney.Implement
 			return dto;
 		}
 
-		public async virtual Task<int> Create(int registrationId, OtherPermitsDto value)
+		public async virtual Task<Guid> Create(int registrationId, OtherPermitsDto value)
 		{
 			var uri = string.Format(_basePostUrl, _apiVersion, registrationId);
 			var result = await _apiClient.SendPostRequest<OtherPermitsDto>(uri, value);
@@ -44,7 +44,7 @@ namespace Epr.Reprocessor.Exporter.Facade.App.Services.ExporterJourney.Implement
 		{
 			var uri = string.Format(_basePutUrl, _apiVersion, registrationId, value.Id);
 			var result = await _apiClient.SendPutRequest<OtherPermitsDto>(uri, value);
-			return result;
+			return true;
 		}
 	}
 }
