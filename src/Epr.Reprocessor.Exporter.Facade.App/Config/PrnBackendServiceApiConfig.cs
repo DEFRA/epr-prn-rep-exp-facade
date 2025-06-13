@@ -38,4 +38,8 @@ public class PrnServiceApiConfigExportEndpoints
 	public string OtherPermitsGet { get; set; }
 	public string OtherPermitsPost { get; set; }
     public string OtherPermitsPut { get; set; }
+
+	public string WasteCarrierBrokerDealerRefGet { get; set; }
+	public string WasteCarrierBrokerDealerRefPost { get; set; }
+	public string WasteCarrierBrokerDealerRefPut { get; set; }
 }

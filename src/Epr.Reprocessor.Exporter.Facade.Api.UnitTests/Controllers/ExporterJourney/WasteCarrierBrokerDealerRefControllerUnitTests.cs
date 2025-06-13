@@ -69,7 +69,7 @@ namespace Epr.Reprocessor.Exporter.Facade.Api.UnitTests.Controllers.ExporterJour
         {
             var registrationId = 1;
             var request = new WasteCarrierBrokerDealerRefDto { RegistrationId = registrationId };
-            var createdId = 42;
+            var createdId = Guid.NewGuid();
             _serviceMock.Setup(s => s.Create(registrationId, request)).ReturnsAsync(createdId);
 
             var result = await _controller.Post(request);
