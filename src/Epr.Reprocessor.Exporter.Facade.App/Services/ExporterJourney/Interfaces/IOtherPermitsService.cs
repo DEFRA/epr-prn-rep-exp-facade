@@ -6,7 +6,7 @@ namespace Epr.Reprocessor.Exporter.Facade.App.Services.ExporterJourney.Interface
 	{
 		Task<OtherPermitsDto> Get(int registrationId);
 
-		Task<int> Create(int registrationId, OtherPermitsDto value);
+		Task<Guid> Create(int registrationId, OtherPermitsDto value);
 
 		Task<bool> Update(int registrationId, OtherPermitsDto value);
 	}

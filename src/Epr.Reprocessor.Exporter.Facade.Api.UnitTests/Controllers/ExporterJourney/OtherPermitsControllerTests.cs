@@ -81,7 +81,7 @@ namespace Epr.Reprocessor.Exporter.Facade.Api.UnitTests.Controllers.ExporterJour
 			// Arrange
 			var registrationId = 1;
 			var request = new OtherPermitsDto { RegistrationId = registrationId };
-			var response = new OtherPermitsDto { RegistrationId = request.RegistrationId, Id = 1 };
+			var response = new OtherPermitsDto { RegistrationId = request.RegistrationId, Id = Guid.NewGuid() };
 			_serviceMock.Setup(s => s.Create(registrationId, request))
 				.ReturnsAsync(response.Id);
 

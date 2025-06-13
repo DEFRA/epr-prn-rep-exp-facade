@@ -37,7 +37,7 @@ namespace Epr.Reprocessor.Exporter.Facade.App.UnitTests.Services.ExportJourney
 			var registrationId = 1;
 			var responseDto = new OtherPermitsDto
 			{
-				Id = 1,
+				Id = Guid.NewGuid(),
 				RegistrationId = registrationId,
 				PpcNumber = "ppcNumber",
 				WasteExemptionReference = new List<string>() { "ref1" },
@@ -71,7 +71,7 @@ namespace Epr.Reprocessor.Exporter.Facade.App.UnitTests.Services.ExportJourney
 				WasteLicenseOrPermitNumber = "permitNumber"
 			};
 
-			var newId = 1;
+			var newId = Guid.NewGuid();
 
 			_mockServiceClient
 				.Setup(client => client.SendPostRequest(It.IsAny<string>(), requestDto))
@@ -93,7 +93,7 @@ namespace Epr.Reprocessor.Exporter.Facade.App.UnitTests.Services.ExportJourney
 
 			var requestDto = new OtherPermitsDto
 			{
-				Id = 1,
+				Id = Guid.NewGuid(),
 				RegistrationId = registrationId,
 				PpcNumber = "ppcNumber",
 				WasteExemptionReference = new List<string> { "ref1" },
@@ -102,7 +102,7 @@ namespace Epr.Reprocessor.Exporter.Facade.App.UnitTests.Services.ExportJourney
 
 			_mockServiceClient
 				.Setup(client => client.SendPutRequest(It.IsAny<string>(), requestDto))
-				.ReturnsAsync(true);
+				.ReturnsAsync(requestDto);
 
 			// Act
 			var result = await _service.Update(registrationId, requestDto);

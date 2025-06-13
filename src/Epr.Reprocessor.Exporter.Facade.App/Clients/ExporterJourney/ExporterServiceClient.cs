@@ -17,13 +17,13 @@ public class ExporterServiceClient(
 		return await GetAsync<TOut>(uri);
 	}
 
-	public async Task<int> SendPostRequest<TBody>(string uri, TBody body)
+	public async Task<Guid> SendPostRequest<TBody>(string uri, TBody body)
 	{
-		return await this.PostAsync<TBody, int>(uri, body);
+		return await this.PostAsync<TBody, Guid>(uri, body);
 	}
 
-	public async Task<bool> SendPutRequest<TBody>(string uri, TBody body)
+	public async Task<TBody> SendPutRequest<TBody>(string uri, TBody body)
 	{
-		return await this.PutAsync<TBody, bool>(uri, body);
+		return await this.PutAsync<TBody, TBody>(uri, body);
 	}
 }

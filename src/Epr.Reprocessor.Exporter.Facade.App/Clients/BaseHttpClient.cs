@@ -64,12 +64,12 @@ public abstract class BaseHttpClient
     protected async Task<TResponse> PutAsync<TRequest, TResponse>(string url, TRequest data)
     {
         var content = CreateJsonContent(data);
-        var response = await _httpClient.PutAsync(url, content);
-        response.EnsureSuccessStatusCode();
+		var response = await _httpClient.PutAsync(url, content);
+		response.EnsureSuccessStatusCode();
 
-        var json = await response.Content.ReadAsStringAsync();
-        return JsonSerializer.Deserialize<TResponse>(json, _jsonOptions);
-    }
+		var json = await response.Content.ReadAsStringAsync();
+		return JsonSerializer.Deserialize<TResponse>(json, _jsonOptions);
+	}
 
     protected async Task<bool> PatchAsync<TRequest>(string url, TRequest data)
     {
