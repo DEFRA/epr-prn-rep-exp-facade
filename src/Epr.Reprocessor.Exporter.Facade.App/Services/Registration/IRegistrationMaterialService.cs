@@ -4,5 +4,5 @@ namespace Epr.Reprocessor.Exporter.Facade.App.Services.Registration;
 
 public interface IRegistrationMaterialService
 {
-    Task CreateRegistrationMaterialAndExemptionReferences(CreateRegistrationMaterialAndExemptionReferencesDto dto);
+    Task CreateExemptionReferences(CreateExemptionReferencesDto dto);
 }

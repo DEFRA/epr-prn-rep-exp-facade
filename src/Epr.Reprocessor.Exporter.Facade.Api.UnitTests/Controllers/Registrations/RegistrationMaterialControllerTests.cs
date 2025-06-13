@@ -46,10 +46,10 @@ public class RegistrationMaterialControllerTests
         _ = new RegistrationMaterialController(_registrationMaterialService.Object, loggerMock?.Object);
     }
     [TestMethod]
-    public async Task CreateRegistrationMaterialAndExemptionReferences_ShouldReturnBadRequest_WhenDtoIsNull()
+    public async Task CreateExemptionReferences_ShouldReturnBadRequest_WhenDtoIsNull()
     {
         // Act
-        var result = await _controller.CreateRegistrationMaterialAndExemptionReferences(null);
+        var result = await _controller.CreateExemptionReferences(null);
 
         // Assert
         Assert.IsInstanceOfType(result, typeof(BadRequestObjectResult));
@@ -70,31 +70,27 @@ public class RegistrationMaterialControllerTests
     public async Task CreateRegistrationMaterialAndExemptionReferences_ShouldCallServiceAndLogMessage_WhenDtoIsValid()
     {
         // Arrange
-        var dto = new CreateRegistrationMaterialAndExemptionReferencesDto
+        var dto = new CreateExemptionReferencesDto
         {
-            MaterialExemptionReferences = new List<MaterialExemptionReferenceDto>(),
-            RegistrationMaterial = new RegistrationMaterialDto
-            {
-                MaterialName = "SampleMaterial"
-            }
+            MaterialExemptionReferences = new List<MaterialExemptionReferenceDto>(),          
         };
 
         _registrationMaterialService
-            .Setup(s => s.CreateRegistrationMaterialAndExemptionReferences(dto))
+            .Setup(s => s.CreateExemptionReferences(dto))
             .Returns(Task.CompletedTask);
 
         // Act
-        var result = await _controller.CreateRegistrationMaterialAndExemptionReferences(dto);
+        var result = await _controller.CreateExemptionReferences(dto);
 
         // Assert
         Assert.IsInstanceOfType(result, typeof(OkResult));
-        _registrationMaterialService.Verify(s => s.CreateRegistrationMaterialAndExemptionReferences(dto), Times.Once);
+        _registrationMaterialService.Verify(s => s.CreateExemptionReferences(dto), Times.Once);
 
         _loggerMock.Verify(
             x => x.Log(
                 LogLevel.Information,
                 It.IsAny<EventId>(),
-                It.Is<It.IsAnyType>((v, t) => v.ToString().Contains(LogMessages.CreateRegistrationMaterialAndExemptionReferences)),
+                It.Is<It.IsAnyType>((v, t) => v.ToString().Contains(LogMessages.CreateExemptionReferences)),
                 null,
                 It.IsAny<Func<It.IsAnyType, Exception, string>>()
             ),
@@ -106,22 +102,18 @@ public class RegistrationMaterialControllerTests
     public async Task CreateRegistrationMaterialAndExemptionReferences_ShouldReturnInternalServerError_WhenServiceThrowsException()
     {
         // Arrange
-        var dto = new CreateRegistrationMaterialAndExemptionReferencesDto
+        var dto = new CreateExemptionReferencesDto
         {
-            MaterialExemptionReferences = new List<MaterialExemptionReferenceDto>(),
-            RegistrationMaterial = new RegistrationMaterialDto
-            {
-                MaterialName = "SampleMaterial"
-            }
+            MaterialExemptionReferences = new List<MaterialExemptionReferenceDto>(),          
         };
 
         var exception = new Exception("Service error");
         _registrationMaterialService
-            .Setup(s => s.CreateRegistrationMaterialAndExemptionReferences(dto))
+            .Setup(s => s.CreateExemptionReferences(dto))
             .ThrowsAsync(exception);
 
         // Act
-        var result = await _controller.CreateRegistrationMaterialAndExemptionReferences(dto);
+        var result = await _controller.CreateExemptionReferences(dto);
 
         // Assert
         var objectResult = result as ObjectResult;

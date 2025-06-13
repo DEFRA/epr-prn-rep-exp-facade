@@ -20,13 +20,13 @@ namespace Epr.Reprocessor.Exporter.Facade.Api.Controllers.Registrations
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        [HttpPost("CreateRegistrationMaterialAndExemptionReferences")]
+        [HttpPost("CreateExemptionReferences")]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(bool))]
         [SwaggerOperation(
-            Summary = "creates a new registration material and exemption references",
-            Description = "attempting to create registration material and exemption references"
+            Summary = "creates a new exemption references",
+            Description = "attempting to create new exemption references"
         )]
-        public async Task<IActionResult> CreateRegistrationMaterialAndExemptionReferences([FromBody] CreateRegistrationMaterialAndExemptionReferencesDto dto)
+        public async Task<IActionResult> CreateExemptionReferences([FromBody] CreateExemptionReferencesDto dto)
         {
             if (dto == null)
             {
@@ -34,11 +34,11 @@ namespace Epr.Reprocessor.Exporter.Facade.Api.Controllers.Registrations
                 return BadRequest(LogMessages.InvalidRequest);
             }
 
-            _logger.LogInformation(LogMessages.CreateRegistrationMaterialAndExemptionReferences);
+            _logger.LogInformation(LogMessages.CreateExemptionReferences);
 
             try
             {
-                await _registrationMaterialService.CreateRegistrationMaterialAndExemptionReferences(dto);
+                await _registrationMaterialService.CreateExemptionReferences(dto);
                 return Ok();
             }
             catch (Exception ex)

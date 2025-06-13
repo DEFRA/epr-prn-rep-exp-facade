@@ -5,6 +5,6 @@ namespace Epr.Reprocessor.Exporter.Facade.App.Services.Registration;
 
 public class RegistrationMaterialService(IRegistrationMaterialServiceClient registrationMaterialServiceClient) : IRegistrationMaterialService
 {
-    public async Task CreateRegistrationMaterialAndExemptionReferences(CreateRegistrationMaterialAndExemptionReferencesDto dto)
-        => await registrationMaterialServiceClient.CreateRegistrationMaterialAndExemptionReferencesAsync(dto);
+    public async Task CreateExemptionReferences(CreateExemptionReferencesDto dto)
+        => await registrationMaterialServiceClient.CreateExemptionReferencesAsync(dto);
 }

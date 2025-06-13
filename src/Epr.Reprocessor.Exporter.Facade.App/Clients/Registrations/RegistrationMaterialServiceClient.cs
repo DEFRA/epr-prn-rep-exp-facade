@@ -14,11 +14,11 @@ public class RegistrationMaterialServiceClient(
     private readonly ILogger<RegistrationMaterialServiceClient> _logger = logger;
     private readonly PrnBackendServiceApiConfig _config = options.Value;
 
-    public async Task CreateRegistrationMaterialAndExemptionReferencesAsync(CreateRegistrationMaterialAndExemptionReferencesDto request)
+    public async Task CreateExemptionReferencesAsync(CreateExemptionReferencesDto request)
     {
-        var url = string.Format(Endpoints.CreateRegistrationMaterialAndExemptionReferences, _config.ApiVersion);
+        var url = string.Format(Endpoints.CreateExemptionReferences, _config.ApiVersion);
         _logger.LogInformation("Calling {Url} to save materials.", url);
 
-        await PostAsync<CreateRegistrationMaterialAndExemptionReferencesDto>(url, request);
+        await PostAsync<CreateExemptionReferencesDto>(url, request);
     }
 }

@@ -47,11 +47,11 @@ public class RegistrationMaterialServiceClientTests
     }
 
     [TestMethod]
-    public async Task CreateRegistrationMaterialAndExemptionReferencesAsync_SendsCorrectRequest()
+    public async Task CreateExemptionReferencesAsync_SendsCorrectRequest()
     {
         // Arrange
-        var dto = _fixture.Create<CreateRegistrationMaterialAndExemptionReferencesDto>();
-        var expectedUri = new Uri("https://mock-api.com/api/v1/registrationMaterials/createRegistrationMaterialAndExemptionReferences");
+        var dto = _fixture.Create<CreateExemptionReferencesDto>();
+        var expectedUri = new Uri("https://mock-api.com/api/v1/registrationMaterials/createExemptionReferences");
         HttpRequestMessage? capturedRequest = null;
 
         _mockHttpMessageHandler
@@ -63,17 +63,17 @@ public class RegistrationMaterialServiceClientTests
             .Callback<HttpRequestMessage, CancellationToken>((req, _) => capturedRequest = req)
             .ReturnsAsync(new HttpResponseMessage
             {
-                StatusCode = System.Net.HttpStatusCode.OK
+                StatusCode = System.Net.HttpStatusCode.OK,
+                Content = new StringContent(string.Empty)
             });
 
         // Act
-        await _client.CreateRegistrationMaterialAndExemptionReferencesAsync(dto);
+        await _client.CreateExemptionReferencesAsync(dto);
 
-        // Assert
         Assert.IsNotNull(capturedRequest);
         Assert.AreEqual(HttpMethod.Post, capturedRequest.Method);
         Assert.AreEqual(expectedUri, capturedRequest.RequestUri);
         var content = await capturedRequest.Content.ReadAsStringAsync();
-        Assert.IsTrue(content.Contains(dto.RegistrationMaterial?.ToString() ?? string.Empty) || content.Length > 0);
+        Assert.IsTrue(content.Contains(dto.MaterialExemptionReferences?.ToString() ?? string.Empty) || content.Length > 0);
     }
 }

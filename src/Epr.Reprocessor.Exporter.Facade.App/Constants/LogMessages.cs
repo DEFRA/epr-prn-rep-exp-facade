@@ -8,7 +8,7 @@ public static class LogMessages
     public const string  MaterialExemptionReferencesCreated = "Material Exemption References created successfully";
     public const string MaterialExemptionReferenceNotCreated = "Material Exemption Reference not created. Please check the request and try again.";
 
-    public const string CreateRegistrationMaterialAndExemptionReferences = "Attempting to create registration material and exemption references";
+    public const string CreateExemptionReferences = "Attempting to create registration exemption references";
     public const string RegistrationMaterialAndExemptionReferencesNotCreated = "Registration Material and Exemption References not created";
     public const string UnExpectedError = "An unexpected error occurred.";
     public const string GetRegistrationByOrganisation = "Attempting to get registration of type {0} for organisation with ID {1}";

@@ -27,15 +27,15 @@ public class RegistrationMaterialServiceTests
     public async Task CreateRegistrationMaterialAndExemptionReferences_CallsClientWithCorrectDto()
     {
         // Arrange
-        var dto = _fixture.Create<CreateRegistrationMaterialAndExemptionReferencesDto>();
+        var dto = _fixture.Create<CreateExemptionReferencesDto>();
 
         // Act
-        await _service.CreateRegistrationMaterialAndExemptionReferences(dto);
+        await _service.CreateExemptionReferences(dto);
 
         // Assert
         _mockRegistrationMaterialServiceClient.Verify(
-            x => x.CreateRegistrationMaterialAndExemptionReferencesAsync(
-                It.Is<CreateRegistrationMaterialAndExemptionReferencesDto>(d => d == dto)),
+            x => x.CreateExemptionReferencesAsync(
+                It.Is<CreateExemptionReferencesDto>(d => d == dto)),
             Times.Once);
     }    
 }
