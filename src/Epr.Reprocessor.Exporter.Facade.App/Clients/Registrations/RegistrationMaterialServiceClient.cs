@@ -15,8 +15,8 @@ public class RegistrationMaterialServiceClient(
     private readonly PrnBackendServiceApiConfig _config = options.Value;
 
     public async Task CreateExemptionReferencesAsync(CreateExemptionReferencesDto request)
-    {
-        var url = string.Format(Endpoints.CreateExemptionReferences, _config.ApiVersion);
+    {        
+        var url = string.Format(Endpoints.CreateExemptionReferences, _config.ApiVersion, request.RegistrationMaterialId);
         _logger.LogInformation("Calling {Url} to save materials.", url);
 
         await PostAsync<CreateExemptionReferencesDto>(url, request);
