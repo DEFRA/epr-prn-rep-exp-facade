@@ -22,11 +22,33 @@ public class RegistrationMaterialServiceClient(
         await PostAsync<CreateExemptionReferencesDto>(url, request);
     }
 
-    public async Task<Guid> CreateRegistrationMaterialAsync(CreateRegistrationMaterialDto request)
+    public async Task<CreateRegistrationMaterialResponseDto> CreateRegistrationMaterialAsync(CreateRegistrationMaterialRequestDto request)
     {
         var url = string.Format(Endpoints.CreateRegistrationMaterial, _config.ApiVersion);
         _logger.LogInformation("Calling {Url} to save materials.", url);
 
-        return await PostAsync<CreateRegistrationMaterialDto, Guid>(url, request);
+        return await PostAsync<CreateRegistrationMaterialRequestDto, CreateRegistrationMaterialResponseDto>(url, request);
     }
+}
+
+/// <summary>
+/// Represents details of a created material.
+/// </summary>
+public record CreateRegistrationMaterialResponseDto
+{
+    /// <summary>
+    /// The unique identifier for the material.
+    /// </summary>
+    public Guid Id { get; set; }
+}
+
+/// <summary>
+/// Represents the details of a created registration.
+/// </summary>
+public record CreateRegistrationResponseDto
+{
+    /// <summary>
+    /// The ID of the created registration.
+    /// </summary>
+    public Guid Id { get; set; }
 }

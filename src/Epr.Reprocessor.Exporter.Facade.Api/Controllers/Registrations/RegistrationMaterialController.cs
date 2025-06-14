@@ -26,9 +26,9 @@ public class RegistrationMaterialController : ControllerBase
         Summary = "creates a new registration material",
         Description = "attempting to create new registration material"
     )]
-    public async Task<IActionResult> CreateRegistrationMaterial([FromBody] CreateRegistrationMaterialDto dto)
+    public async Task<IActionResult> CreateRegistrationMaterial([FromBody] CreateRegistrationMaterialRequestDto requestDto)
     {
-        if (dto == null)
+        if (requestDto == null)
         {
             _logger.LogWarning(LogMessages.InvalidRequest);
             return BadRequest(LogMessages.InvalidRequest);
@@ -38,7 +38,7 @@ public class RegistrationMaterialController : ControllerBase
 
         try
         {
-            var registrationMaterialId = await _registrationMaterialService.CreateRegistrationMaterial(dto);
+            var registrationMaterialId = await _registrationMaterialService.CreateRegistrationMaterial(requestDto);
             
             return new CreatedResult(string.Empty, registrationMaterialId);
         }

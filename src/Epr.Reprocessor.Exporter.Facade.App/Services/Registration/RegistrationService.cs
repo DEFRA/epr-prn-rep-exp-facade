@@ -7,7 +7,7 @@ namespace Epr.Reprocessor.Exporter.Facade.App.Services.Registration;
 public class RegistrationService(IRegistrationServiceClient registrationServiceClient) : IRegistrationService
 {
     [ExcludeFromCodeCoverage(Justification = "TODO: Unit tests to be added as part of create registration user story")]
-    public async Task<int> CreateRegistrationAsync(CreateRegistrationDto dto)
+    public async Task<CreateRegistrationResponseDto> CreateRegistrationAsync(CreateRegistrationDto dto)
     {
         return await registrationServiceClient.CreateRegistrationAsync(dto);
     }

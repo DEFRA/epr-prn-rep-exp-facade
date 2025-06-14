@@ -1,4 +1,5 @@
 ﻿using Epr.Reprocessor.Exporter.Facade.Api.Controllers.Registrations;
+using Epr.Reprocessor.Exporter.Facade.App.Clients.Registrations;
 using Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
 using Epr.Reprocessor.Exporter.Facade.App.Services.Registration;
 using FluentAssertions;
@@ -92,6 +93,7 @@ public class RegistrationControllerTests
     public async Task CreateRegistration_PopulatedValuesShouldCallService()
     {
         // Arrange
+        var id = Guid.NewGuid();
         var request = new CreateRegistrationDto
         {
             ApplicationTypeId = 1,
@@ -108,12 +110,18 @@ public class RegistrationControllerTests
             }
         };
 
-        var expectedResult = new CreatedResult(string.Empty, 1);
+        var expectedResult = new CreatedResult(string.Empty, new CreateRegistrationResponseDto
+        {
+            Id = id
+        });
 
         // Expectations
         _registrationServiceMock
             .Setup(s => s.CreateRegistrationAsync(request))
-            .ReturnsAsync(1);
+            .ReturnsAsync(new CreateRegistrationResponseDto
+            {
+                Id = id
+            });
 
         // Act
         var result = await _controller.CreateRegistration(request);

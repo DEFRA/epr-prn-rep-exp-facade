@@ -1,6 +1,6 @@
 ﻿namespace Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
 
-public class CreateRegistrationMaterialDto
+public class CreateRegistrationMaterialRequestDto
 {
     public Guid RegistrationId { get; set; }
 
