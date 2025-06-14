@@ -17,14 +17,14 @@ ILogger<RegistrationServiceClient> logger)
     private readonly PrnBackendServiceApiConfig _config = options.Value;
 
     [ExcludeFromCodeCoverage(Justification = "TODO: Unit tests to be added as part of create registration user story")]
-    public async Task<int> CreateRegistrationAsync(CreateRegistrationDto request)
+    public async Task<CreateRegistrationResponseDto> CreateRegistrationAsync(CreateRegistrationDto request)
     {
         logger.LogInformation("CreateRegistrationAsync for ApplicationTypeId ID: {ApplicationTypeId}", request.ApplicationTypeId);
 
         // e.g. api/v{0}/registrations
         var url = string.Format(Endpoints.CreateRegistration, _config.ApiVersion);
 
-        return await this.PostAsync<CreateRegistrationDto, int>(url, request);
+        return await this.PostAsync<CreateRegistrationDto, CreateRegistrationResponseDto>(url, request);
     }
 
     public async Task<bool> UpdateRegistrationTaskStatusAsync(int registrationId, UpdateRegistrationTaskStatusDto request)

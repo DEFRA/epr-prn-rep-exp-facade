@@ -43,6 +43,12 @@ public static class HttpClientServiceCollectionExtension
         })
         .AddHttpMessageHandler<PrnBackendServiceAuthorisationHandler>()
         .AddPolicyHandler(GetRetryPolicy(prnServiceApiSettings.ServiceRetryCount));
+       
+        services.AddHttpClient<IRegistrationMaterialServiceClient, RegistrationMaterialServiceClient>((sp, client) =>
+        {
+            client.BaseAddress = new Uri(prnServiceApiSettings.BaseUrl);
+            client.Timeout = TimeSpan.FromSeconds(prnServiceApiSettings.Timeout);
+        });
 
         return services;
     }
