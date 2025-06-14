@@ -8,7 +8,7 @@ public class RegistrationMaterialService(IRegistrationMaterialServiceClient regi
     public async Task CreateExemptionReferences(CreateExemptionReferencesDto dto)
         => await registrationMaterialServiceClient.CreateExemptionReferencesAsync(dto);
 
-    public async Task<int> CreateRegistrationMaterial(CreateRegistrationMaterialDto dto)
+    public async Task<Guid> CreateRegistrationMaterial(CreateRegistrationMaterialDto dto)
         => await registrationMaterialServiceClient.CreateRegistrationMaterialAsync(dto);
 
 }

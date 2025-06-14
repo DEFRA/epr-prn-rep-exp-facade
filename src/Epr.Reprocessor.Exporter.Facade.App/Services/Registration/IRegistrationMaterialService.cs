@@ -6,5 +6,5 @@ public interface IRegistrationMaterialService
 {
     Task CreateExemptionReferences(CreateExemptionReferencesDto dto);
 
-    Task<int> CreateRegistrationMaterial(CreateRegistrationMaterialDto dto);
+    Task<Guid> CreateRegistrationMaterial(CreateRegistrationMaterialDto dto);
 }

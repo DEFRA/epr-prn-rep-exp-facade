@@ -5,7 +5,7 @@ public class CreateExemptionReferencesDto
     /// <summary>
     /// Gets or sets the registration identifier.
     /// </summary>
-    public int RegistrationMaterialId { get; set; }
+    public Guid RegistrationMaterialId { get; set; }
 
     /// <summary>
     /// Gets or sets the list of material exemption references.

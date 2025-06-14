@@ -2,7 +2,7 @@
 
 public class CreateRegistrationMaterialDto
 {
-    public int RegistrationId { get; set; }
+    public Guid RegistrationId { get; set; }
 
     public string Material { get; set; }
 }
