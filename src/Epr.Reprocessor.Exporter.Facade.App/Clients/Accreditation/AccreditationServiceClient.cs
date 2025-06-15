@@ -4,7 +4,6 @@ using System.Diagnostics.CodeAnalysis;
 using Epr.Reprocessor.Exporter.Facade.App.Config;
 using Epr.Reprocessor.Exporter.Facade.App.Extensions;
 using Epr.Reprocessor.Exporter.Facade.App.Models.Accreditations;
-using Microsoft.Extensions.Options;
 
 public class AccreditationServiceClient : BaseHttpClient, IAccreditationServiceClient
 {

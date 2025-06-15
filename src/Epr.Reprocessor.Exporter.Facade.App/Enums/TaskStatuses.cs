@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace Epr.Reprocessor.Exporter.Facade.App.Enums;
+﻿namespace Epr.Reprocessor.Exporter.Facade.App.Enums;
 
 public enum TaskStatuses
 {
