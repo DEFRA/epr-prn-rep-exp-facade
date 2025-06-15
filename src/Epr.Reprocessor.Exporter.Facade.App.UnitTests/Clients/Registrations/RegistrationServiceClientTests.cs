@@ -201,7 +201,7 @@ public class RegistrationServiceClientTests
         // Arrange
         var registrationId = Guid.NewGuid();
         var requestDto = _fixture.Create<UpdateRegistrationDto>();
-        var url = "api/v1/registrations/1/update";
+        var url = $"api/v1/registrations/{registrationId}/update";
         _mockHttpMessageHandler.Protected()
             .Setup<Task<HttpResponseMessage>>(
                 "SendAsync",
