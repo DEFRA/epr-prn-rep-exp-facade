@@ -1,7 +1,11 @@
-﻿using AutoFixture;
+﻿using System.Net;
+using System.Net.Http.Json;
+using System.Text.Json;
+using AutoFixture;
 using Epr.Reprocessor.Exporter.Facade.App.Clients.Registrations;
 using Epr.Reprocessor.Exporter.Facade.App.Config;
 using Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
+using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
@@ -73,5 +77,82 @@ public class RegistrationMaterialServiceClientTests
         Assert.AreEqual(HttpMethod.Post, capturedRequest.Method);       
         var content = await capturedRequest.Content.ReadAsStringAsync();
         Assert.IsTrue(content.Contains(dto.MaterialExemptionReferences?.ToString() ?? string.Empty) || content.Length > 0);
+    }
+
+    [TestMethod]
+    public async Task CreateRegistrationMaterial_SendsCorrectRequest()
+    {
+        // Arrange
+        var registrationId = Guid.NewGuid();
+        var dto = new CreateRegistrationMaterialRequestDto
+        {
+            RegistrationId = registrationId
+        };
+        HttpRequestMessage? capturedRequest = null;
+        var response = new CreateRegistrationMaterialResponseDto
+        {
+            Id = registrationId
+        };
+
+        _mockHttpMessageHandler
+            .Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.IsAny<HttpRequestMessage>(),
+                ItExpr.IsAny<CancellationToken>())
+            .Callback<HttpRequestMessage, CancellationToken>((req, _) => capturedRequest = req)
+            .ReturnsAsync(new HttpResponseMessage
+            {
+                StatusCode = System.Net.HttpStatusCode.OK,
+                Content = new StringContent(JsonSerializer.Serialize(response))
+            });
+
+        // Act
+        var result = await _client.CreateRegistrationMaterialAsync(dto);
+
+        Assert.IsNotNull(capturedRequest);
+        Assert.AreEqual(HttpMethod.Post, capturedRequest.Method);
+        var content = await capturedRequest.Content!.ReadFromJsonAsync<CreateRegistrationMaterialResponseDto>();
+        content.Should().NotBeNull();
+    }
+
+    [TestMethod]
+    public async Task GetAllRegistrationMaterials_SendCorrectRequest()
+    {
+        // Arrange
+        var registrationId = Guid.NewGuid();
+        var registrationMaterialsDto = new List<RegistrationMaterialDto>
+        {
+            new()
+            {
+                Id = Guid.NewGuid(),
+                RegistrationId = registrationId,
+                PPCPermitNumber = "number"
+            }
+        };
+
+        var url = $"api/v1/registrations/{registrationId}/materials";
+        _mockHttpMessageHandler.Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.Is<HttpRequestMessage>(msg =>
+                    msg.Method == HttpMethod.Get &&
+                    msg.RequestUri!.ToString().EndsWith(url)),
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .ReturnsAsync(new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = new StringContent(JsonSerializer.Serialize(registrationMaterialsDto, new JsonSerializerOptions
+                {
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                }))
+            });
+
+        // Act
+        var result = await _client.GetAllRegistrationMaterialsAsync(registrationId);
+
+        // Assert
+        result.Should().BeEquivalentTo(registrationMaterialsDto);
     }
 }

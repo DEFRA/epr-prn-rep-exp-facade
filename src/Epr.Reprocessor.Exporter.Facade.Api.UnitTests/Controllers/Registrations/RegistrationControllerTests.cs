@@ -189,8 +189,7 @@ public class RegistrationControllerTests
         var registration = new RegistrationDto
         {
             ApplicationTypeId = 1,
-            ExternalId = Guid.NewGuid(),
-            Id = 1,
+            Id = Guid.NewGuid(),
             OrganisationId = Guid.NewGuid(),
             ReprocessingSiteAddress = new()
             {

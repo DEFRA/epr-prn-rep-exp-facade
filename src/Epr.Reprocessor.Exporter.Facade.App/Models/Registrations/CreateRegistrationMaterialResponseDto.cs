@@ -1,8 +1,11 @@
-﻿namespace Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
 
 /// <summary>
 /// Represents details of a created material.
 /// </summary>
+[ExcludeFromCodeCoverage]
 public record CreateRegistrationMaterialResponseDto
 {
     /// <summary>

@@ -1,8 +1,9 @@
 ﻿using Epr.Reprocessor.Exporter.Facade.Api.Controllers.Registrations;
 using Epr.Reprocessor.Exporter.Facade.App.Constants;
-using Epr.Reprocessor.Exporter.Facade.App.Models;
 using Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
 using Epr.Reprocessor.Exporter.Facade.App.Services.Registration;
+using FluentAssertions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -12,9 +13,9 @@ namespace Epr.Reprocessor.Exporter.Facade.Api.UnitTests.Controllers.Registration
 [TestClass]
 public class RegistrationMaterialControllerTests
 {
-    private Mock<IRegistrationMaterialService> _registrationMaterialService;
-    private Mock<ILogger<RegistrationMaterialController>> _loggerMock;
-    private RegistrationMaterialController _controller;
+    private Mock<IRegistrationMaterialService> _registrationMaterialService = null!;
+    private Mock<ILogger<RegistrationMaterialController>> _loggerMock = null!;
+    private RegistrationMaterialController _controller = null!;
 
     [TestInitialize]
     public void SetUp()
@@ -97,14 +98,14 @@ public class RegistrationMaterialControllerTests
             Times.Once
         );
     }
-    
+
     [TestMethod]
     public async Task CreateRegistrationMaterialAndExemptionReferences_ShouldReturnInternalServerError_WhenServiceThrowsException()
     {
         // Arrange
         var dto = new CreateExemptionReferencesDto
         {
-            MaterialExemptionReferences = new List<MaterialExemptionReferenceDto>(),          
+            MaterialExemptionReferences = new List<MaterialExemptionReferenceDto>(),
         };
 
         var exception = new Exception("Service error");
@@ -130,5 +131,125 @@ public class RegistrationMaterialControllerTests
             ),
             Times.Once
         );
-    }      
+    }
+
+    [TestMethod]
+    public async Task CreateRegistrationMaterial_EnsureCreatedResult()
+    {
+        // Arrange
+        var registrationId = Guid.NewGuid();
+        var request = new CreateRegistrationMaterialRequestDto
+        {
+            Material = "Steel",
+            RegistrationId = registrationId
+        };
+
+        var response = new CreateRegistrationMaterialResponseDto
+        {
+            Id = Guid.NewGuid()
+        };
+
+        var expectedResult = new CreatedResult(string.Empty, response);
+
+        // Expectations
+        _registrationMaterialService.Setup(o => o.CreateRegistrationMaterial(request)).ReturnsAsync(response);
+
+        // Act
+        var result = await _controller.CreateRegistrationMaterial(request);
+
+        // Assert
+        result.Should().BeEquivalentTo(expectedResult);
+    }
+
+    [TestMethod]
+    public async Task CreateRegistrationMaterial_NullRequest_ReturnBadRequest()
+    {
+        // Arrange
+        var expectedResult = new BadRequestObjectResult(LogMessages.InvalidRequest);
+
+        // Act
+        var result = await _controller.CreateRegistrationMaterial(null);
+
+        // Assert
+        result.Should().BeEquivalentTo(expectedResult);
+    }
+
+    [TestMethod]
+    public async Task CreateRegistrationMaterial_ServiceThrowsException_ReturnInternalError()
+    {
+        // Arrange
+        var registrationId = Guid.NewGuid();
+        var request = new CreateRegistrationMaterialRequestDto
+        {
+            Material = "Steel",
+            RegistrationId = registrationId
+        };
+
+        var expectedResult = new ObjectResult(LogMessages.UnExpectedError)
+        {
+            StatusCode = StatusCodes.Status500InternalServerError
+        };
+
+        // Expectations
+        _registrationMaterialService
+            .Setup(o => o.CreateRegistrationMaterial(request)).ThrowsAsync(new Exception());
+
+        // Act
+        var result = await _controller.CreateRegistrationMaterial(request);
+
+        // Assert
+        result.Should().BeEquivalentTo(expectedResult);
+    }
+
+    [TestMethod]
+    public async Task GetAllMaterialsForRegistration_EnsureOkResult()
+    {
+        // Arrange
+        var registrationId = Guid.NewGuid();
+        var registrationMaterials = new List<RegistrationMaterialDto>
+        {
+            new()
+            {
+                Id = Guid.NewGuid(),
+                RegistrationId = registrationId,
+                PPCPermitNumber = "number"
+            }
+        };
+
+        var expectedResult = new OkObjectResult(registrationMaterials);
+
+        // Expectations
+        _registrationMaterialService
+            .Setup(s => s.GetAllRegistrationsMaterials(registrationId))
+            .ReturnsAsync(registrationMaterials);
+
+        // Act
+        var result = await _controller.GetAllRegistrationMaterials(registrationId);
+
+        // Assert
+        result.Should().BeEquivalentTo(expectedResult);
+    }
+
+    [TestMethod]
+    public async Task GetAllMaterialsForRegistration_ServiceException_ReturnInternalServerError()
+    {
+        // Arrange
+        var registrationId = Guid.NewGuid();
+     
+        var expectedResult = new ObjectResult(LogMessages.UnExpectedError)
+        {
+            StatusCode = StatusCodes.Status500InternalServerError,
+        };
+
+        // Expectations
+        _registrationMaterialService
+            .Setup(s => s.GetAllRegistrationsMaterials(registrationId))
+            .ThrowsAsync(new Exception());
+
+        // Act
+        var result = await _controller.GetAllRegistrationMaterials(registrationId);
+
+        // Assert
+        result.Should().BeEquivalentTo(expectedResult);
+    }
 }

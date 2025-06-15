@@ -1,9 +1,7 @@
 ﻿namespace Epr.Reprocessor.Exporter.Facade.App.Clients.Accreditation;
 
-using Epr.Reprocessor.Exporter.Facade.App.Config;
 using Epr.Reprocessor.Exporter.Facade.App.Extensions;
 using Epr.Reprocessor.Exporter.Facade.App.Models.Accreditations;
-using Microsoft.Extensions.Options;
 
 public class AccreditationPrnIssueAuthServiceClient : BaseHttpClient, IAccreditationPrnIssueAuthServiceClient
 {
