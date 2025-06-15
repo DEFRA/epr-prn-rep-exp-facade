@@ -26,6 +26,15 @@ public static class Endpoints
     }
 
     /// <summary>
+    /// Defines the endpoints for the registration material service.
+    /// </summary>
+    public static class RegistrationMaterial
+    {
+        public const string CreateExemptionReferences = "api/v{0}/registrationMaterials/{1}/createExemptionReferences";
+        public const string CreateRegistrationMaterial = "api/v{0}/registrationMaterials/create";
+    }
+
+    /// <summary>
     /// Defines the endpoints for the material service.
     /// </summary>
     public static class Material
