@@ -1,5 +1,8 @@
-﻿namespace Epr.Reprocessor.Exporter.Facade.App.Models;
+﻿using System.Diagnostics.CodeAnalysis;
 
+namespace Epr.Reprocessor.Exporter.Facade.App.Models;
+
+[ExcludeFromCodeCoverage]
 public class RegistrationMaterialDto
 {
     public Guid Id { get; set; }
