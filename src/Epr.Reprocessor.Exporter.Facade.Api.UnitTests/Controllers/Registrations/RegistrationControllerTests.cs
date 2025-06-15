@@ -50,7 +50,7 @@ public class RegistrationControllerTests
     public async Task UpdateSiteAddress_ShouldReturnNoContentResult()
     {
         // Arrange
-        var registrationId = 1;
+        var registrationId = Guid.NewGuid();
         var request = new UpdateRegistrationSiteAddressDto();
 
         // Act
@@ -65,7 +65,7 @@ public class RegistrationControllerTests
     public async Task UpdateRegistrationTaskStatus_ShouldReturnNoContentResult()
     {
         // Arrange
-        var registrationId = 1;
+        var registrationId = Guid.NewGuid();
         var request = new UpdateRegistrationTaskStatusDto();
 
         // Act
@@ -134,6 +134,7 @@ public class RegistrationControllerTests
     public async Task UpdateRegistration_PopulatedValuesShouldCallService()
     {
         // Arrange
+        var registrationId = Guid.NewGuid();
         var request = new UpdateRegistrationDto
         {
             ReprocessingSiteAddress = new()
@@ -170,11 +171,11 @@ public class RegistrationControllerTests
 
         // Expectations
         _registrationServiceMock
-            .Setup(s => s.UpdateAsync(1, request))
+            .Setup(s => s.UpdateAsync(registrationId, request))
             .ReturnsAsync(true);
 
         // Act
-        var result = await _controller.UpdateAsync(1, request);
+        var result = await _controller.UpdateAsync(registrationId, request);
 
         // Assert
         result.Should().BeOfType<NoContentResult>();

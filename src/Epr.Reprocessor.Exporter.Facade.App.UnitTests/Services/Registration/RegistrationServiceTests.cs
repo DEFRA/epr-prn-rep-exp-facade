@@ -28,7 +28,7 @@ public class RegistrationServiceTests
     public async Task UpdateSiteAddressAsync_ShouldReturnExpectedResult()
     {
         // Arrange
-        var registrationId = 1;
+        var registrationId = Guid.NewGuid();
         var requestDto = _fixture.Create<UpdateRegistrationSiteAddressDto>();
 
         _mockRegistrationServiceClient
@@ -46,7 +46,7 @@ public class RegistrationServiceTests
     public async Task UpdateRegistrationTaskStatusAsync_ShouldReturnExpectedResult()
     {
         // Arrange
-        var registrationId = 1;
+        var registrationId = Guid.NewGuid();
         var requestDto = _fixture.Create<UpdateRegistrationTaskStatusDto>();
 
         _mockRegistrationServiceClient
@@ -90,7 +90,7 @@ public class RegistrationServiceTests
     public async Task UpdateAsync_ShouldReturnExpectedResult()
     {
         // Arrange
-        var registrationId = 1;
+        var registrationId = Guid.NewGuid();
         var requestDto = _fixture.Create<UpdateRegistrationDto>();
 
         _mockRegistrationServiceClient

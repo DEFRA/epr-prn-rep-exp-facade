@@ -27,7 +27,7 @@ ILogger<RegistrationServiceClient> logger)
         return await this.PostAsync<CreateRegistrationDto, CreateRegistrationResponseDto>(url, request);
     }
 
-    public async Task<bool> UpdateRegistrationTaskStatusAsync(int registrationId, UpdateRegistrationTaskStatusDto request)
+    public async Task<bool> UpdateRegistrationTaskStatusAsync(Guid registrationId, UpdateRegistrationTaskStatusDto request)
     {
         logger.LogInformation("UpdateRegistrationTaskStatusAsync for Registration ID: {RegistrationId}", registrationId);
 
@@ -37,7 +37,7 @@ ILogger<RegistrationServiceClient> logger)
         return await this.PostAsync<UpdateRegistrationTaskStatusDto, bool>(url, request);
     }
 
-    public async Task<bool> UpdateSiteAddressAsync(int registrationId, UpdateRegistrationSiteAddressDto request)
+    public async Task<bool> UpdateSiteAddressAsync(Guid registrationId, UpdateRegistrationSiteAddressDto request)
     {
         logger.LogInformation("UpdateSiteAddressAsync for Registration ID: {RegistrationId}", registrationId);
 
@@ -68,7 +68,7 @@ ILogger<RegistrationServiceClient> logger)
         }
     }
 
-    public async Task<bool> UpdateAsync(int registrationId, UpdateRegistrationDto request)
+    public async Task<bool> UpdateAsync(Guid registrationId, UpdateRegistrationDto request)
     {
         logger.LogInformation("Attempting to update an existing registration with ID {RegistrationId}", registrationId);
 
