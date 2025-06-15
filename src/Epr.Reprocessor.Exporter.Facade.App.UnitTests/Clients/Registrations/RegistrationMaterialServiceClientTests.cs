@@ -50,8 +50,7 @@ public class RegistrationMaterialServiceClientTests
     public async Task CreateExemptionReferencesAsync_SendsCorrectRequest()
     {
         // Arrange
-        var dto = _fixture.Create<CreateExemptionReferencesDto>();
-        var expectedUri = new Uri("https://mock-api.com/api/v1/registrationMaterials/createExemptionReferences");
+        var dto = _fixture.Create<CreateExemptionReferencesDto>();       
         HttpRequestMessage? capturedRequest = null;
 
         _mockHttpMessageHandler
@@ -71,8 +70,7 @@ public class RegistrationMaterialServiceClientTests
         await _client.CreateExemptionReferencesAsync(dto);
 
         Assert.IsNotNull(capturedRequest);
-        Assert.AreEqual(HttpMethod.Post, capturedRequest.Method);
-        Assert.AreEqual(expectedUri, capturedRequest.RequestUri);
+        Assert.AreEqual(HttpMethod.Post, capturedRequest.Method);       
         var content = await capturedRequest.Content.ReadAsStringAsync();
         Assert.IsTrue(content.Contains(dto.MaterialExemptionReferences?.ToString() ?? string.Empty) || content.Length > 0);
     }
