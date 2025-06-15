@@ -108,10 +108,11 @@ public class RegistrationServiceClientTests
     public async Task GetRegistrationByOrganisationAsync_Exists_ReturnDto()
     {
         // Arrange
+        var registrationId = Guid.NewGuid();
         var organisationId = Guid.NewGuid();
         var registrationDto = new RegistrationDto
         {
-            Id = 1,
+            Id = registrationId,
             ApplicationTypeId = 2,
             OrganisationId = organisationId
         };

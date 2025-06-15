@@ -64,11 +64,12 @@ public class RegistrationServiceTests
     public async Task GetRegistrationByOrganisationAsync_ShouldReturnExpectedResult()
     {
         // Arrange
+        var registrationId = Guid.NewGuid();
         var organisationId = Guid.Empty;
         var registration = new RegistrationDto
         {
             ApplicationTypeId = 1,
-            Id = 1
+            Id = registrationId
         };
 
         _mockRegistrationServiceClient
@@ -82,7 +83,7 @@ public class RegistrationServiceTests
         result.Should().BeEquivalentTo(new RegistrationDto
         {
             ApplicationTypeId = 1,
-            Id = 1
+            Id = registrationId
         });
     }
 
