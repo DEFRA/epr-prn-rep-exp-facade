@@ -9,4 +9,5 @@ public interface IRegistrationServiceClient
     Task<bool> UpdateSiteAddressAsync(Guid registrationId, UpdateRegistrationSiteAddressDto request);
     Task<RegistrationDto?> GetRegistrationByOrganisationAsync(int applicationTypeId, Guid organisationId);
     Task<bool> UpdateAsync(Guid registrationId, UpdateRegistrationDto request);
+    Task<RegistrationOverviewDto> GetRegistrationOverviewAsync(Guid registrationId);
 }
