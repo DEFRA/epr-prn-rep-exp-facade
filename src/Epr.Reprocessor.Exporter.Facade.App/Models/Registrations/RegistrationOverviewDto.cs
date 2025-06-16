@@ -1,7 +1,9 @@
 ﻿using Epr.Reprocessor.Exporter.Facade.App.Enums;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
 
+[ExcludeFromCodeCoverage]
 public class RegistrationOverviewDto
 {
     public int Id { get; set; }
