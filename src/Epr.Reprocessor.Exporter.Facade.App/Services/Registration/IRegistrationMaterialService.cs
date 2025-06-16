@@ -8,5 +8,9 @@ public interface IRegistrationMaterialService
 
     Task<CreateRegistrationMaterialResponseDto> CreateRegistrationMaterial(CreateRegistrationMaterialRequestDto requestDto);
 
+    Task<bool> UpdateRegistrationMaterialPermitsAsync(Guid externalId, UpdateRegistrationMaterialPermitsDto request);
+
+    Task<List<MaterialsPermitTypeDto>> GetMaterialsPermitTypesAsync();
+
     Task<List<ApplicationRegistrationMaterialDto>> GetAllRegistrationsMaterials(Guid registrationId);
 }

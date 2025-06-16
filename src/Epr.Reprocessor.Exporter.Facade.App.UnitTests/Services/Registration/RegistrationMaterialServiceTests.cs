@@ -12,7 +12,7 @@ public class RegistrationMaterialServiceTests
 {
 
     private Fixture _fixture = null!;
-    private Mock<IRegistrationMaterialServiceClient> _mockRegistrationMaterialServiceClient = null!;
+    private Mock<IRegistrationMaterialServiceClient> _clientMock = null!;
 
     private RegistrationMaterialService _service = null!;
 
@@ -20,10 +20,11 @@ public class RegistrationMaterialServiceTests
     public void TestInitialize()
     {
         _fixture = new Fixture();
-        _mockRegistrationMaterialServiceClient = new Mock<IRegistrationMaterialServiceClient>();
+        _clientMock = new Mock<IRegistrationMaterialServiceClient>();
 
-        _service = new RegistrationMaterialService(_mockRegistrationMaterialServiceClient.Object);
+        _service = new RegistrationMaterialService(_clientMock.Object);
     }
+
     [TestMethod]
     public async Task CreateRegistrationMaterialAndExemptionReferences_CallsClientWithCorrectDto()
     {
@@ -34,7 +35,7 @@ public class RegistrationMaterialServiceTests
         await _service.CreateExemptionReferences(dto);
 
         // Assert
-        _mockRegistrationMaterialServiceClient.Verify(
+        _clientMock.Verify(
             x => x.CreateExemptionReferencesAsync(
                 It.Is<CreateExemptionReferencesDto>(d => d == dto)),
             Times.Once);
@@ -50,10 +51,60 @@ public class RegistrationMaterialServiceTests
         await _service.CreateRegistrationMaterial(dto);
 
         // Assert
-        _mockRegistrationMaterialServiceClient.Verify(
+        _clientMock.Verify(
             x => x.CreateRegistrationMaterialAsync(
                 It.Is<CreateRegistrationMaterialRequestDto>(d => d == dto)),
             Times.Once);
+    }
+
+    [TestMethod]
+    public async Task UpdateRegistrationMaterialPermitsAsync_ShouldReturnTrue_WhenClientReturnsTrue()
+    {
+        // Arrange
+        var id = Guid.NewGuid();
+        var request = _fixture.Create<UpdateRegistrationMaterialPermitsDto>();
+        _clientMock.Setup(x => x.UpdateRegistrationMaterialPermitsAsync(id, request))
+                   .ReturnsAsync(true);
+
+        // Act
+        var result = await _service.UpdateRegistrationMaterialPermitsAsync(id, request);
+
+        // Assert
+        result.Should().BeTrue();
+        _clientMock.Verify(x => x.UpdateRegistrationMaterialPermitsAsync(id, request), Times.Once);
+    }
+
+    [TestMethod]
+    public async Task UpdateRegistrationMaterialPermitsAsync_ShouldReturnFalse_WhenClientReturnsFalse()
+    {
+        // Arrange
+        var id = Guid.NewGuid();
+        var request = _fixture.Create<UpdateRegistrationMaterialPermitsDto>();
+        _clientMock.Setup(x => x.UpdateRegistrationMaterialPermitsAsync(id, request))
+                   .ReturnsAsync(false);
+
+        // Act
+        var result = await _service.UpdateRegistrationMaterialPermitsAsync(id, request);
+
+        // Assert
+        result.Should().BeFalse();
+        _clientMock.Verify(x => x.UpdateRegistrationMaterialPermitsAsync(id, request), Times.Once);
+    }
+
+    [TestMethod]
+    public async Task GetMaterialsPermitTypesAsync_ShouldReturnExpectedList()
+    {
+        // Arrange
+        var expectedList = _fixture.Create<List<MaterialsPermitTypeDto>>();
+        _clientMock.Setup(x => x.GetMaterialsPermitTypesAsync())
+                   .ReturnsAsync(expectedList);
+
+        // Act
+        var result = await _service.GetMaterialsPermitTypesAsync();
+
+        // Assert
+        result.Should().BeEquivalentTo(expectedList);
+        _clientMock.Verify(x => x.GetMaterialsPermitTypesAsync(), Times.Once);
     }
 
     [TestMethod]
@@ -70,7 +121,7 @@ public class RegistrationMaterialServiceTests
                 PPCPermitNumber = "number"
             }
         };
-        _mockRegistrationMaterialServiceClient
+        _clientMock
             .Setup(client => client.GetAllRegistrationMaterialsAsync(registrationId))
             .ReturnsAsync(registrationMaterials);
 

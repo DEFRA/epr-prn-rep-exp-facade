@@ -13,6 +13,9 @@ public static class LogMessages
     public const string RegistrationMaterialAndExemptionReferencesNotCreated = "Registration Material and Exemption References not created";
     public const string UnExpectedError = "An unexpected error occurred.";
     public const string GetRegistrationByOrganisation = "Attempting to get registration of type {0} for organisation with ID {1}";
+    public const string UpdateRegistrationMaterialPermits = "Attempting to update registration material permits with External ID {Id}";
+    public const string GetMaterialsPermitTypes = "Attempting to get material permit types";
+
     public const string GetRegistrationOverview = "Attempting to get the overview for registration id {0}";
     public const string GetAllMaterials = "Attempting to retrieve a list of applicable materials";
     public const string GetAllRegistrationMaterials = "Attempting to retrieve all registration materials for registration {0}";

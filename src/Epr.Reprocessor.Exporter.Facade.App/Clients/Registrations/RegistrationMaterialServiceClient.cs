@@ -30,6 +30,26 @@ public class RegistrationMaterialServiceClient(
         return await PostAsync<CreateRegistrationMaterialRequestDto, CreateRegistrationMaterialResponseDto>(url, request);
     }
 
+    public async Task<bool> UpdateRegistrationMaterialPermitsAsync(Guid id, UpdateRegistrationMaterialPermitsDto request)
+    {
+        logger.LogInformation("Attempting to update an existing registration material with External ID {Id}", id);
+
+        var url = string.Format(Endpoints.RegistrationMaterial.UpdateRegistrationMaterialPermits, _config.ApiVersion, id);
+
+        await PostAsync<UpdateRegistrationMaterialPermitsDto>(url, request);
+
+        return true;
+    }
+
+    public async Task<List<MaterialsPermitTypeDto>> GetMaterialsPermitTypesAsync()
+    {
+        logger.LogInformation("Attempting to get list of material permit types");
+
+        var url = string.Format(Endpoints.RegistrationMaterial.GetMaterialsPermitTypes, _config.ApiVersion);
+
+        return await GetAsync<List<MaterialsPermitTypeDto>>(url);
+    }
+
     public async Task<List<ApplicationRegistrationMaterialDto>> GetAllRegistrationMaterialsAsync(Guid registrationId)
     {
         var url = string.Format(Endpoints.RegistrationMaterial.GetAllRegistrationMaterials, _config.ApiVersion, registrationId);
