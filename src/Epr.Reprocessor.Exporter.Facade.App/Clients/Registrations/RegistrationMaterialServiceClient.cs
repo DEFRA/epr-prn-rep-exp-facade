@@ -16,7 +16,7 @@ public class RegistrationMaterialServiceClient(
 
     public async Task CreateExemptionReferencesAsync(CreateExemptionReferencesDto request)
     {        
-        var url = string.Format(Endpoints.CreateExemptionReferences, _config.ApiVersion, request.RegistrationMaterialId);
+        var url = string.Format(Endpoints.RegistrationMaterial.CreateExemptionReferences, _config.ApiVersion, request.RegistrationMaterialId);
         _logger.LogInformation("Calling {Url} to save materials.", url);
 
         await PostAsync<CreateExemptionReferencesDto>(url, request);
@@ -24,9 +24,17 @@ public class RegistrationMaterialServiceClient(
 
     public async Task<CreateRegistrationMaterialResponseDto> CreateRegistrationMaterialAsync(CreateRegistrationMaterialRequestDto request)
     {
-        var url = string.Format(Endpoints.CreateRegistrationMaterial, _config.ApiVersion);
+        var url = string.Format(Endpoints.RegistrationMaterial.CreateRegistrationMaterial, _config.ApiVersion);
         _logger.LogInformation("Calling {Url} to save materials.", url);
 
         return await PostAsync<CreateRegistrationMaterialRequestDto, CreateRegistrationMaterialResponseDto>(url, request);
+    }
+
+    public async Task<List<ApplicationRegistrationMaterialDto>> GetAllRegistrationMaterialsAsync(Guid registrationId)
+    {
+        var url = string.Format(Endpoints.RegistrationMaterial.GetAllRegistrationMaterials, _config.ApiVersion, registrationId);
+        _logger.LogInformation("Calling {Url} to retrieve all registration materials.", url);
+
+        return await GetAsync<List<ApplicationRegistrationMaterialDto>>(url);
     }
 }
