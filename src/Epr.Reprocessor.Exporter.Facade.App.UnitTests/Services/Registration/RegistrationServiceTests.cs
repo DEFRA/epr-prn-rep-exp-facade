@@ -28,7 +28,7 @@ public class RegistrationServiceTests
     public async Task UpdateSiteAddressAsync_ShouldReturnExpectedResult()
     {
         // Arrange
-        var registrationId = 1;
+        var registrationId = Guid.NewGuid();
         var requestDto = _fixture.Create<UpdateRegistrationSiteAddressDto>();
 
         _mockRegistrationServiceClient
@@ -46,7 +46,7 @@ public class RegistrationServiceTests
     public async Task UpdateRegistrationTaskStatusAsync_ShouldReturnExpectedResult()
     {
         // Arrange
-        var registrationId = 1;
+        var registrationId = Guid.NewGuid();
         var requestDto = _fixture.Create<UpdateRegistrationTaskStatusDto>();
 
         _mockRegistrationServiceClient
@@ -64,11 +64,12 @@ public class RegistrationServiceTests
     public async Task GetRegistrationByOrganisationAsync_ShouldReturnExpectedResult()
     {
         // Arrange
+        var registrationId = Guid.NewGuid();
         var organisationId = Guid.Empty;
         var registration = new RegistrationDto
         {
             ApplicationTypeId = 1,
-            Id = 1
+            Id = registrationId
         };
 
         _mockRegistrationServiceClient
@@ -82,7 +83,7 @@ public class RegistrationServiceTests
         result.Should().BeEquivalentTo(new RegistrationDto
         {
             ApplicationTypeId = 1,
-            Id = 1
+            Id = registrationId
         });
     }
 
@@ -90,7 +91,7 @@ public class RegistrationServiceTests
     public async Task UpdateAsync_ShouldReturnExpectedResult()
     {
         // Arrange
-        var registrationId = 1;
+        var registrationId = Guid.NewGuid();
         var requestDto = _fixture.Create<UpdateRegistrationDto>();
 
         _mockRegistrationServiceClient
@@ -102,44 +103,5 @@ public class RegistrationServiceTests
 
         // Assert
         result.Should().BeTrue();
-    }
-
-    [TestMethod]
-    public async Task UpdateRegistrationMaterialPermitsAsync_ShouldReturnExpectedResult()
-    {
-        // Arrange
-        var registrationMaterialId = Guid.NewGuid();
-        var requestDto = _fixture.Create<UpdateRegistrationMaterialPermitsDto>();
-
-        _mockRegistrationServiceClient
-            .Setup(client => client.UpdateRegistrationMaterialPermitsAsync(registrationMaterialId, requestDto))
-            .ReturnsAsync(true);
-
-        // Act
-        var result = await _service.UpdateRegistrationMaterialPermitsAsync(registrationMaterialId, requestDto);
-
-        // Assert
-        result.Should().BeTrue();
-    }
-
-    [TestMethod]
-    public async Task GetMaterialsPermitTypesAsync_ShouldReturnExpectedResult()
-    {
-        // Arrange
-        var permitTypes = new List<MaterialsPermitTypeDto>
-            {
-                new() { Id = 1, Name = "Type A" },
-                new() { Id = 2, Name = "Type B" }
-            };
-
-        _mockRegistrationServiceClient
-            .Setup(client => client.GetMaterialsPermitTypesAsync())
-            .ReturnsAsync(permitTypes);
-
-        // Act
-        var result = await _service.GetMaterialsPermitTypesAsync();
-
-        // Assert
-        result.Should().BeEquivalentTo(permitTypes);
     }
 }

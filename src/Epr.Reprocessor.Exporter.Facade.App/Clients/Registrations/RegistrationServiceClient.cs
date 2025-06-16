@@ -1,9 +1,7 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using Epr.Reprocessor.Exporter.Facade.App.Config;
 using Epr.Reprocessor.Exporter.Facade.App.Constants;
-using Epr.Reprocessor.Exporter.Facade.App.Models;
 using Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -19,17 +17,17 @@ ILogger<RegistrationServiceClient> logger)
     private readonly PrnBackendServiceApiConfig _config = options.Value;
 
     [ExcludeFromCodeCoverage(Justification = "TODO: Unit tests to be added as part of create registration user story")]
-    public async Task<int> CreateRegistrationAsync(CreateRegistrationDto request)
+    public async Task<CreateRegistrationResponseDto> CreateRegistrationAsync(CreateRegistrationDto request)
     {
         logger.LogInformation("CreateRegistrationAsync for ApplicationTypeId ID: {ApplicationTypeId}", request.ApplicationTypeId);
 
         // e.g. api/v{0}/registrations
         var url = string.Format(Endpoints.CreateRegistration, _config.ApiVersion);
 
-        return await this.PostAsync<CreateRegistrationDto, int>(url, request);
+        return await this.PostAsync<CreateRegistrationDto, CreateRegistrationResponseDto>(url, request);
     }
 
-    public async Task<bool> UpdateRegistrationTaskStatusAsync(int registrationId, UpdateRegistrationTaskStatusDto request)
+    public async Task<bool> UpdateRegistrationTaskStatusAsync(Guid registrationId, UpdateRegistrationTaskStatusDto request)
     {
         logger.LogInformation("UpdateRegistrationTaskStatusAsync for Registration ID: {RegistrationId}", registrationId);
 
@@ -39,7 +37,7 @@ ILogger<RegistrationServiceClient> logger)
         return await this.PostAsync<UpdateRegistrationTaskStatusDto, bool>(url, request);
     }
 
-    public async Task<bool> UpdateSiteAddressAsync(int registrationId, UpdateRegistrationSiteAddressDto request)
+    public async Task<bool> UpdateSiteAddressAsync(Guid registrationId, UpdateRegistrationSiteAddressDto request)
     {
         logger.LogInformation("UpdateSiteAddressAsync for Registration ID: {RegistrationId}", registrationId);
 
@@ -70,30 +68,12 @@ ILogger<RegistrationServiceClient> logger)
         }
     }
 
-    public async Task<bool> UpdateAsync(int registrationId, UpdateRegistrationDto request)
+    public async Task<bool> UpdateAsync(Guid registrationId, UpdateRegistrationDto request)
     {
         logger.LogInformation("Attempting to update an existing registration with ID {RegistrationId}", registrationId);
 
         var url = string.Format(Endpoints.UpdateRegistration, _config.ApiVersion, registrationId);
 
         return await PostAsync<UpdateRegistrationDto, bool>(url, request);
-    }
-
-    public async Task<bool> UpdateRegistrationMaterialPermitsAsync(Guid externalId, UpdateRegistrationMaterialPermitsDto request)
-    {
-        logger.LogInformation("Attempting to update an existing registration material with External ID {ExternalId}", externalId);
-
-        var url = string.Format(Endpoints.UpdateRegistrationMaterialPermits, _config.ApiVersion, externalId);
-
-        return await PostAsync<UpdateRegistrationMaterialPermitsDto, bool>(url, request);
-    }
-
-    public async Task<List<MaterialsPermitTypeDto>> GetMaterialsPermitTypesAsync()
-    {
-        logger.LogInformation("Attempting to get list of material permit types");
-
-        var url = string.Format(Endpoints.GetMaterialsPermitTypes, _config.ApiVersion);
-
-        return await GetAsync<List<MaterialsPermitTypeDto>>(url);
     }
 }

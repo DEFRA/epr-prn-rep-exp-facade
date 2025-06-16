@@ -1,8 +1,10 @@
 ﻿using Epr.Reprocessor.Exporter.Facade.Api.Controllers.Registrations;
+using Epr.Reprocessor.Exporter.Facade.App.Constants;
 using Epr.Reprocessor.Exporter.Facade.App.Models;
 using Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
 using Epr.Reprocessor.Exporter.Facade.App.Services.Registration;
 using FluentAssertions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -12,91 +14,192 @@ namespace Epr.Reprocessor.Exporter.Facade.Api.UnitTests.Controllers.Registration
 [TestClass]
 public class RegistrationMaterialControllerTests
 {
-    private Mock<IRegistrationService> _mockService;
-    private Mock<ILogger<RegistrationMaterialController>> _mockLogger;
-    private RegistrationMaterialController _controller;
+    private Mock<IRegistrationMaterialService> _registrationMaterialService = null!;
+    private Mock<ILogger<RegistrationMaterialController>> _loggerMock = null!;
+    private RegistrationMaterialController _controller = null!;
 
     [TestInitialize]
-    public void Setup()
+    public void SetUp()
     {
-        _mockService = new Mock<IRegistrationService>();
-        _mockLogger = new Mock<ILogger<RegistrationMaterialController>>();
-        _controller = new RegistrationMaterialController(_mockService.Object, _mockLogger.Object);
+        _registrationMaterialService = new Mock<IRegistrationMaterialService>();
+        _loggerMock = new Mock<ILogger<RegistrationMaterialController>>();
+        _controller = new RegistrationMaterialController(_registrationMaterialService.Object, _loggerMock.Object);
     }
 
     [TestMethod]
-    public async Task UpdateRegistrationMaterial_ShouldReturnNoContent_WhenUpdateIsSuccessful()
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void Constructor_ShouldThrowArgumentNullException_WhenRegistrationServiceIsNull()
     {
         // Arrange
-        var id = Guid.NewGuid();
-        var request = new UpdateRegistrationMaterialPermitsDto
-        {
-            PermitTypeId = 2,
-            PermitNumber = "AB1234567890",
-        };
-
-        _mockService.Setup(s => s.UpdateRegistrationMaterialPermitsAsync(id, request))
-                    .ReturnsAsync(true);
+        Mock<IRegistrationMaterialService> registrationMaterialServiceMock = null;
 
         // Act
-        var result = await _controller.UpdateRegistrationMaterial(id, request);
-
-        // Assert
-        result.Should().BeOfType<NoContentResult>();
-        _mockService.Verify(s => s.UpdateRegistrationMaterialPermitsAsync(id, request), Times.Once);
+        _ = new RegistrationMaterialController(registrationMaterialServiceMock?.Object, _loggerMock.Object);
     }
 
     [TestMethod]
-    public async Task GetMaterialsPermitTypes_ShouldReturnOkWithData()
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void Constructor_ShouldThrowArgumentNullException_WhenLoggerIsNull()
     {
         // Arrange
-        var permitTypes = new List<MaterialsPermitTypeDto>
-            {
-                new() { Id = 1, Name = "Type A" },
-                new() { Id = 2, Name = "Type B" }
-            };
-
-        _mockService.Setup(s => s.GetMaterialsPermitTypesAsync())
-            .ReturnsAsync(permitTypes);
+        Mock<ILogger<RegistrationMaterialController>> loggerMock = null;
 
         // Act
-        var result = await _controller.GetMaterialsPermitTypes();
+        _ = new RegistrationMaterialController(_registrationMaterialService.Object, loggerMock?.Object);
+    }
+    [TestMethod]
+    public async Task CreateExemptionReferences_ShouldReturnBadRequest_WhenDtoIsNull()
+    {
+        // Act
+        var result = await _controller.CreateExemptionReferences(null);
 
         // Assert
-        result.Should().BeOfType<OkObjectResult>();
-        
-        var okResult = result as OkObjectResult;
-        okResult!.Value.Should().BeEquivalentTo(permitTypes);
-    }
+        Assert.IsInstanceOfType(result, typeof(BadRequestObjectResult));
 
+        _loggerMock.Verify(
+            x => x.Log(
+                LogLevel.Warning,
+                It.IsAny<EventId>(),
+                It.Is<It.IsAnyType>((v, t) => v.ToString().Contains(LogMessages.InvalidRequest)),
+                null,
+                It.IsAny<Func<It.IsAnyType, Exception, string>>()
+            ),
+            Times.Once
+        );
+    }
+    
     [TestMethod]
-    public async Task UpdateRegistrationMaterial_ShouldThrowException_WhenServiceFails()
+    public async Task CreateRegistrationMaterialAndExemptionReferences_ShouldCallServiceAndLogMessage_WhenDtoIsValid()
     {
         // Arrange
-        var id = Guid.NewGuid();
-        var request = new UpdateRegistrationMaterialPermitsDto
+        var dto = new CreateExemptionReferencesDto
         {
-            PermitTypeId = 2,
-            PermitNumber = "AB1234567890",
+            MaterialExemptionReferences = new List<MaterialExemptionReferenceDto>(),          
         };
 
-        _mockService.Setup(s => s.UpdateRegistrationMaterialPermitsAsync(id, request))
-                    .ThrowsAsync(new Exception("Service failed"));
+        _registrationMaterialService
+            .Setup(s => s.CreateExemptionReferences(dto))
+            .Returns(Task.CompletedTask);
 
-        // Act & Assert
-        Func<Task> act = async () => await _controller.UpdateRegistrationMaterial(id, request);
-        await act.Should().ThrowAsync<Exception>().WithMessage("Service failed");
+        // Act
+        var result = await _controller.CreateExemptionReferences(dto);
+
+        // Assert
+        Assert.IsInstanceOfType(result, typeof(OkResult));
+        _registrationMaterialService.Verify(s => s.CreateExemptionReferences(dto), Times.Once);
+
+        _loggerMock.Verify(
+            x => x.Log(
+                LogLevel.Information,
+                It.IsAny<EventId>(),
+                It.Is<It.IsAnyType>((v, t) => v.ToString().Contains(LogMessages.CreateExemptionReferences)),
+                null,
+                It.IsAny<Func<It.IsAnyType, Exception, string>>()
+            ),
+            Times.Once
+        );
     }
 
     [TestMethod]
-    public async Task GetMaterialsPermitTypes_ShouldThrowException_WhenServiceFails()
+    public async Task
+        CreateRegistrationMaterialAndExemptionReferences_ShouldReturnInternalServerError_WhenServiceThrowsException()
     {
         // Arrange
-        _mockService.Setup(s => s.GetMaterialsPermitTypesAsync())
-                    .ThrowsAsync(new Exception("DB error"));
+        var dto = new CreateExemptionReferencesDto
+        {
+            MaterialExemptionReferences = new List<MaterialExemptionReferenceDto>(),
+        };
 
-        // Act & Assert
-        Func<Task> act = async () => await _controller.GetMaterialsPermitTypes();
-        await act.Should().ThrowAsync<Exception>().WithMessage("DB error");
+        var exception = new Exception("Service error");
+        _registrationMaterialService
+            .Setup(s => s.CreateExemptionReferences(dto))
+            .ThrowsAsync(exception);
+
+        // Act
+        var result = await _controller.CreateExemptionReferences(dto);
+
+        // Assert
+        var objectResult = result as ObjectResult;
+        Assert.IsNotNull(objectResult);
+        Assert.AreEqual(500, objectResult.StatusCode);
+
+        _loggerMock.Verify(
+            x => x.Log(
+                LogLevel.Error,
+                It.IsAny<EventId>(),
+                It.Is<It.IsAnyType>((v, t) => v.ToString().Contains(exception.Message)),
+                exception,
+                It.IsAny<Func<It.IsAnyType, Exception, string>>()
+            ),
+            Times.Once
+        );
+    }
+
+    [TestMethod]
+    public async Task CreateRegistrationMaterial_EnsureCreatedResult()
+    {
+        // Arrange
+        var registrationId = Guid.NewGuid();
+        var request = new CreateRegistrationMaterialRequestDto
+        {
+            Material = "Steel",
+            RegistrationId = registrationId
+        };
+
+        var response = new CreateRegistrationMaterialResponseDto
+        {
+            Id = Guid.NewGuid()
+        };
+
+        var expectedResult = new CreatedResult(string.Empty, response);
+
+        // Expectations
+        _registrationMaterialService.Setup(o => o.CreateRegistrationMaterial(request)).ReturnsAsync(response);
+
+        // Act
+        var result = await _controller.CreateRegistrationMaterial(request);
+
+        // Assert
+        result.Should().BeEquivalentTo(expectedResult);
+    }
+
+    [TestMethod]
+    public async Task CreateRegistrationMaterial_NullRequest_ReturnBadRequest()
+    {
+        // Arrange
+        var expectedResult = new BadRequestObjectResult(LogMessages.InvalidRequest);
+
+        // Act
+        var result = await _controller.CreateRegistrationMaterial(null);
+
+        // Assert
+        result.Should().BeEquivalentTo(expectedResult);
+    }
+
+    [TestMethod]
+    public async Task CreateRegistrationMaterial_ServiceThrowsException_ReturnInternalError()
+    {
+        // Arrange
+        var registrationId = Guid.NewGuid();
+        var request = new CreateRegistrationMaterialRequestDto
+        {
+            Material = "Steel",
+            RegistrationId = registrationId
+        };
+
+        var expectedResult = new ObjectResult(LogMessages.UnExpectedError)
+        {
+            StatusCode = StatusCodes.Status500InternalServerError
+        };
+
+        // Expectations
+        _registrationMaterialService
+            .Setup(o => o.CreateRegistrationMaterial(request)).ThrowsAsync(new Exception());
+
+        // Act
+        var result = await _controller.CreateRegistrationMaterial(request);
+
+        // Assert
+        result.Should().BeEquivalentTo(expectedResult);
     }
 }

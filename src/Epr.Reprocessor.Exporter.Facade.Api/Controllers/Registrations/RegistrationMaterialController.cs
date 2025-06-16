@@ -6,26 +6,86 @@ using Epr.Reprocessor.Exporter.Facade.App.Services.Registration;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
+
 namespace Epr.Reprocessor.Exporter.Facade.Api.Controllers.Registrations;
+
 
 [Route("api/v{version:apiVersion}/registrationMaterials")]
 [ApiVersion("1.0")]
 [ApiController]
 public class RegistrationMaterialController : ControllerBase
 {
-    private readonly IRegistrationService _registrationService;
+    private readonly IRegistrationMaterialService _registrationMaterialService;
     private readonly ILogger<RegistrationMaterialController> _logger;
 
-    public RegistrationMaterialController(IRegistrationService registrationService, ILogger<RegistrationMaterialController> logger)
+    public RegistrationMaterialController(IRegistrationMaterialService registrationMaterialService, ILogger<RegistrationMaterialController> logger)
     {
-        ArgumentNullException.ThrowIfNull(registrationService);
+        ArgumentNullException.ThrowIfNull(registrationMaterialService);
         ArgumentNullException.ThrowIfNull(logger);
 
-        _registrationService = registrationService;
+        _registrationMaterialService = registrationMaterialService;
         _logger = logger;
     }
 
-    [HttpPost("{externalId:Guid}/permits")]
+    [HttpPost("CreateRegistrationMaterial")]
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(bool))]
+    [SwaggerOperation(
+        Summary = "creates a new registration material",
+        Description = "attempting to create new registration material"
+    )]
+    public async Task<IActionResult> CreateRegistrationMaterial([FromBody] CreateRegistrationMaterialRequestDto requestDto)
+    {
+        if (requestDto == null)
+        {
+            _logger.LogWarning(LogMessages.InvalidRequest);
+            return BadRequest(LogMessages.InvalidRequest);
+        }
+
+        _logger.LogInformation(LogMessages.CreateRegistrationMaterial);
+
+        try
+        {
+            var registrationMaterialId = await _registrationMaterialService.CreateRegistrationMaterial(requestDto);
+
+            return new CreatedResult(string.Empty, registrationMaterialId);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, ex.Message);
+            return StatusCode(StatusCodes.Status500InternalServerError, LogMessages.UnExpectedError);
+        }
+    }
+
+    [HttpPost("CreateExemptionReferences")]
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(bool))]
+    [SwaggerOperation(
+        Summary = "creates a new exemption references",
+        Description = "attempting to create new exemption references"
+    )]
+    public async Task<IActionResult> CreateExemptionReferences([FromBody] CreateExemptionReferencesDto dto)
+    {
+        if (dto == null)
+        {
+            _logger.LogWarning(LogMessages.InvalidRequest);
+            return BadRequest(LogMessages.InvalidRequest);
+        }
+
+        _logger.LogInformation(LogMessages.CreateExemptionReferences);
+
+        try
+        {
+            await _registrationMaterialService.CreateExemptionReferences(dto);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, ex.Message);
+            return StatusCode(StatusCodes.Status500InternalServerError, LogMessages.UnExpectedError);
+        }
+    }
+
+
+    [HttpPost("{Id:Guid}/permits")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OkResult))]
     [ProducesResponseType(typeof(ValidationProblemDetails), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
@@ -37,11 +97,11 @@ public class RegistrationMaterialController : ControllerBase
     [SwaggerResponse(StatusCodes.Status400BadRequest, "If the request is invalid or a validation error occurs.", typeof(ProblemDetails))]
     [SwaggerResponse(StatusCodes.Status404NotFound, "If an existing registration is not found", typeof(ProblemDetails))]
     [SwaggerResponse(StatusCodes.Status500InternalServerError, "If an unexpected error occurs.", typeof(ContentResult))]
-    public async Task<IActionResult> UpdateRegistrationMaterialPermits([FromRoute] Guid externalId, [FromBody] UpdateRegistrationMaterialPermitsDto request)
+    public async Task<IActionResult> UpdateRegistrationMaterialPermits([FromRoute] Guid Id, [FromBody] UpdateRegistrationMaterialPermitsDto request)
     {
-        _logger.LogInformation(LogMessages.UpdateRegistrationMaterialPermits, externalId);
+        _logger.LogInformation(LogMessages.UpdateRegistrationMaterialPermits, Id);
 
-        _ = await _registrationService.UpdateRegistrationMaterialPermitsAsync(externalId, request);
+        _ = await _registrationMaterialService.UpdateRegistrationMaterialPermitsAsync(Id, request);
 
         return NoContent();
     }
@@ -59,7 +119,7 @@ public class RegistrationMaterialController : ControllerBase
     {
         _logger.LogInformation(LogMessages.GetMaterialsPermitTypes);
 
-        var result = await _registrationService.GetMaterialsPermitTypesAsync();
+        var result = await _registrationMaterialService.GetMaterialsPermitTypesAsync();
 
         return Ok(result);
     }
