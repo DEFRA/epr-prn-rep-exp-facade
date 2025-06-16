@@ -64,13 +64,13 @@ public class RegistrationController : ControllerBase
         return new CreatedResult(string.Empty, registrationId);
     }
 
-    [HttpPost("{registrationId:int}/update")]
+    [HttpPost("{registrationId:guid}/update")]
     [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(NoContentResult))]
     [SwaggerOperation(
         Summary = "update an application registration",
         Description = "attempting to update an application registration."
     )]
-    public async Task<IActionResult> UpdateAsync([FromRoute] int registrationId, [FromBody] UpdateRegistrationDto request)
+    public async Task<IActionResult> UpdateAsync([FromRoute] Guid registrationId, [FromBody] UpdateRegistrationDto request)
     {
         _logger.LogInformation(LogMessages.UpdateRegistrationTaskStatus);
 
@@ -79,13 +79,13 @@ public class RegistrationController : ControllerBase
         return NoContent();
     }
 
-    [HttpPost("{registrationId:int}/TaskStatus")]
+    [HttpPost("{registrationId:guid}/TaskStatus")]
     [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(NoContentResult))]
     [SwaggerOperation(
             Summary = "update the task status of an application registration",
             Description = "attempting to update the task status of an application registration."
         )]
-    public async Task<IActionResult> UpdateRegistrationTaskStatus([FromRoute] int registrationId, [FromBody] UpdateRegistrationTaskStatusDto request)
+    public async Task<IActionResult> UpdateRegistrationTaskStatus([FromRoute] Guid registrationId, [FromBody] UpdateRegistrationTaskStatusDto request)
     {
         _logger.LogInformation(LogMessages.UpdateRegistrationTaskStatus);
 
@@ -94,13 +94,13 @@ public class RegistrationController : ControllerBase
         return NoContent();
     }
 
-    [HttpPost("{registrationId:int}/SiteAddress")]
+    [HttpPost("{registrationId:guid}/SiteAddress")]
     [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(NoContentResult))]
     [SwaggerOperation(
             Summary = "update the site address and contact details of an application registration",
             Description = "attempting to update the site address and contact details of an application registration."
         )]
-    public async Task<IActionResult> UpdateSiteAddress([FromRoute] int registrationId, [FromBody] UpdateRegistrationSiteAddressDto request)
+    public async Task<IActionResult> UpdateSiteAddress([FromRoute] Guid registrationId, [FromBody] UpdateRegistrationSiteAddressDto request)
     {
         _logger.LogInformation(LogMessages.UpdateRegistrationSiteAddress);
 

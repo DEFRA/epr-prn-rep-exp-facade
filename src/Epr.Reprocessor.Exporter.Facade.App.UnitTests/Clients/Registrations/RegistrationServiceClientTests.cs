@@ -54,7 +54,7 @@ public class RegistrationServiceClientTests
     public async Task UpdateSiteAddressAsync_ShouldReturnExpectedResult()
     {
         // Arrange
-        var registrationId = 1;
+        var registrationId = Guid.NewGuid();
         var requestDto = _fixture.Create<UpdateRegistrationSiteAddressDto>();
         _mockHttpMessageHandler.Protected()
             .Setup<Task<HttpResponseMessage>>(
@@ -81,7 +81,7 @@ public class RegistrationServiceClientTests
     public async Task UpdateTaskStatusAsync_ShouldReturnExpectedResult()
     {
         // Arrange
-        var registrationId = 1;
+        var registrationId = Guid.NewGuid();
         var requestDto = _fixture.Create<UpdateRegistrationTaskStatusDto>();
         _mockHttpMessageHandler.Protected()
             .Setup<Task<HttpResponseMessage>>(
@@ -108,10 +108,11 @@ public class RegistrationServiceClientTests
     public async Task GetRegistrationByOrganisationAsync_Exists_ReturnDto()
     {
         // Arrange
+        var registrationId = Guid.NewGuid();
         var organisationId = Guid.NewGuid();
         var registrationDto = new RegistrationDto
         {
-            Id = 1,
+            Id = registrationId,
             ApplicationTypeId = 2,
             OrganisationId = organisationId
         };
@@ -199,9 +200,9 @@ public class RegistrationServiceClientTests
     public async Task UpdateAsync_ShouldReturnExpectedResult()
     {
         // Arrange
-        var registrationId = 1;
+        var registrationId = Guid.NewGuid();
         var requestDto = _fixture.Create<UpdateRegistrationDto>();
-        var url = "api/v1/registrations/1/update";
+        var url = $"api/v1/registrations/{registrationId}/update";
         _mockHttpMessageHandler.Protected()
             .Setup<Task<HttpResponseMessage>>(
                 "SendAsync",
