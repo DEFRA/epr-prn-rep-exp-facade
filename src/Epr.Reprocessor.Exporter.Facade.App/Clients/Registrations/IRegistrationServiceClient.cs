@@ -1,4 +1,5 @@
-﻿using Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
+﻿using Epr.Reprocessor.Exporter.Facade.App.Models;
+using Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
 
 namespace Epr.Reprocessor.Exporter.Facade.App.Clients.Registrations;
 
@@ -9,4 +10,6 @@ public interface IRegistrationServiceClient
     Task<bool> UpdateSiteAddressAsync(int registrationId, UpdateRegistrationSiteAddressDto request);
     Task<RegistrationDto?> GetRegistrationByOrganisationAsync(int applicationTypeId, Guid organisationId);
     Task<bool> UpdateAsync(int registrationId, UpdateRegistrationDto request);
+    Task<bool> UpdateRegistrationMaterialPermitsAsync(Guid externalId, UpdateRegistrationMaterialPermitsDto request);
+    Task<List<MaterialsPermitTypeDto>> GetMaterialsPermitTypesAsync();
 }

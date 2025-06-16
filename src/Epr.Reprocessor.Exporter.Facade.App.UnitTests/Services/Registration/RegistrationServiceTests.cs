@@ -103,4 +103,43 @@ public class RegistrationServiceTests
         // Assert
         result.Should().BeTrue();
     }
+
+    [TestMethod]
+    public async Task UpdateRegistrationMaterialPermitsAsync_ShouldReturnExpectedResult()
+    {
+        // Arrange
+        var registrationMaterialId = Guid.NewGuid();
+        var requestDto = _fixture.Create<UpdateRegistrationMaterialPermitsDto>();
+
+        _mockRegistrationServiceClient
+            .Setup(client => client.UpdateRegistrationMaterialPermitsAsync(registrationMaterialId, requestDto))
+            .ReturnsAsync(true);
+
+        // Act
+        var result = await _service.UpdateRegistrationMaterialPermitsAsync(registrationMaterialId, requestDto);
+
+        // Assert
+        result.Should().BeTrue();
+    }
+
+    [TestMethod]
+    public async Task GetMaterialsPermitTypesAsync_ShouldReturnExpectedResult()
+    {
+        // Arrange
+        var permitTypes = new List<MaterialsPermitTypeDto>
+            {
+                new() { Id = 1, Name = "Type A" },
+                new() { Id = 2, Name = "Type B" }
+            };
+
+        _mockRegistrationServiceClient
+            .Setup(client => client.GetMaterialsPermitTypesAsync())
+            .ReturnsAsync(permitTypes);
+
+        // Act
+        var result = await _service.GetMaterialsPermitTypesAsync();
+
+        // Assert
+        result.Should().BeEquivalentTo(permitTypes);
+    }
 }

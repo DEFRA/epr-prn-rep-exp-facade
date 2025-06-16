@@ -1,7 +1,9 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using Epr.Reprocessor.Exporter.Facade.App.Config;
 using Epr.Reprocessor.Exporter.Facade.App.Constants;
+using Epr.Reprocessor.Exporter.Facade.App.Models;
 using Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -75,5 +77,23 @@ ILogger<RegistrationServiceClient> logger)
         var url = string.Format(Endpoints.UpdateRegistration, _config.ApiVersion, registrationId);
 
         return await PostAsync<UpdateRegistrationDto, bool>(url, request);
+    }
+
+    public async Task<bool> UpdateRegistrationMaterialPermitsAsync(Guid externalId, UpdateRegistrationMaterialPermitsDto request)
+    {
+        logger.LogInformation("Attempting to update an existing registration material with External ID {ExternalId}", externalId);
+
+        var url = string.Format(Endpoints.UpdateRegistrationMaterialPermits, _config.ApiVersion, externalId);
+
+        return await PostAsync<UpdateRegistrationMaterialPermitsDto, bool>(url, request);
+    }
+
+    public async Task<List<MaterialsPermitTypeDto>> GetMaterialsPermitTypesAsync()
+    {
+        logger.LogInformation("Attempting to get list of material permit types");
+
+        var url = string.Format(Endpoints.GetMaterialsPermitTypes, _config.ApiVersion);
+
+        return await GetAsync<List<MaterialsPermitTypeDto>>(url);
     }
 }

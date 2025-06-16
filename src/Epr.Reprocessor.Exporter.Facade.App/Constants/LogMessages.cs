@@ -5,4 +5,7 @@ public static class LogMessages
     public const string UpdateRegistrationTaskStatus = "Attempting to update registration site address and contact details";
     public const string UpdateRegistrationSiteAddress = "Attempting to update registration site address and contact details";
     public const string GetRegistrationByOrganisation = "Attempting to get registration of type {0} for organisation with ID {1}";
+    public const string UpdateRegistrationMaterialPermits = "Attempting to update registration material permits with External ID {ExternalId}";
+    public const string GetMaterialsPermitTypes = "Attempting to get material permit types";
+
 }
