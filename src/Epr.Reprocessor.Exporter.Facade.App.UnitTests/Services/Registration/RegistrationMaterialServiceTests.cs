@@ -106,4 +106,29 @@ public class RegistrationMaterialServiceTests
         result.Should().BeEquivalentTo(expectedList);
         _clientMock.Verify(x => x.GetMaterialsPermitTypesAsync(), Times.Once);
     }
+
+    [TestMethod]
+    public async Task GetAllRegistrationMaterials_ShouldReturnExpectedResult()
+    {
+        // Arrange
+        var registrationId = Guid.NewGuid();
+        var registrationMaterials = new List<ApplicationRegistrationMaterialDto>
+        {
+            new()
+            {
+                Id = Guid.NewGuid(),
+                RegistrationId = registrationId,
+                PPCPermitNumber = "number"
+            }
+        };
+        _clientMock
+            .Setup(client => client.GetAllRegistrationMaterialsAsync(registrationId))
+            .ReturnsAsync(registrationMaterials);
+
+        // Act
+        var result = await _service.GetAllRegistrationsMaterials(registrationId);
+
+        // Assert
+        result.Should().BeEquivalentTo(registrationMaterials);
+    }
 }

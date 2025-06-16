@@ -21,4 +21,7 @@ public class RegistrationMaterialService(IRegistrationMaterialServiceClient regi
     {
         return await registrationMaterialServiceClient.GetMaterialsPermitTypesAsync();
     }
+
+    public async Task<List<ApplicationRegistrationMaterialDto>> GetAllRegistrationsMaterials(Guid registrationId)
+        => await registrationMaterialServiceClient.GetAllRegistrationMaterialsAsync(registrationId);
 }

@@ -123,4 +123,27 @@ public class RegistrationMaterialController : ControllerBase
 
         return Ok(result);
     }
+
+    [HttpGet("{registrationId:guid}/materials")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<RegistrationMaterialDto>))]
+    [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
+    [SwaggerOperation(
+        Summary = "gets existing registration materials associated with a registration.",
+        Description = "attempting to get existing registration materials associated with a registration."
+    )]
+    public async Task<IActionResult> GetAllRegistrationMaterials([FromRoute] Guid registrationId)
+    {
+        _logger.LogInformation(LogMessages.GetAllRegistrationMaterials, registrationId);
+
+        try
+        {
+            var materials = await _registrationMaterialService.GetAllRegistrationsMaterials(registrationId);
+            return Ok(materials);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, ex.Message);
+            return StatusCode(StatusCodes.Status500InternalServerError, LogMessages.UnExpectedError);
+        }
+    }
 }
