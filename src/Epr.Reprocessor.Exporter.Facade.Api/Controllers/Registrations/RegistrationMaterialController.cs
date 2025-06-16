@@ -1,4 +1,5 @@
-﻿using Epr.Reprocessor.Exporter.Facade.App.Constants;
+﻿using System.Net;
+using Epr.Reprocessor.Exporter.Facade.App.Constants;
 using Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
 using Epr.Reprocessor.Exporter.Facade.App.Services.Registration;
 using Microsoft.AspNetCore.Mvc;
@@ -69,6 +70,29 @@ public class RegistrationMaterialController : ControllerBase
         {
             await _registrationMaterialService.CreateExemptionReferences(dto);
             return Ok();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, ex.Message);
+            return StatusCode(StatusCodes.Status500InternalServerError, LogMessages.UnExpectedError);
+        }
+    }
+
+    [HttpGet("{registrationId:guid}/materials")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<RegistrationMaterialDto>))]
+    [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
+    [SwaggerOperation(
+        Summary = "gets existing registration materials associated with a registration.",
+        Description = "attempting to get existing registration materials associated with a registration."
+    )]
+    public async Task<IActionResult> GetAllRegistrationMaterials([FromRoute] Guid registrationId)
+    {
+        _logger.LogInformation(LogMessages.GetAllRegistrationMaterials, registrationId);
+
+        try
+        {
+            var materials = await _registrationMaterialService.GetAllRegistrationsMaterials(registrationId);
+            return Ok(materials);
         }
         catch (Exception ex)
         {

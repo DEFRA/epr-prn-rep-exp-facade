@@ -22,7 +22,7 @@ ILogger<RegistrationServiceClient> logger)
         logger.LogInformation("CreateRegistrationAsync for ApplicationTypeId ID: {ApplicationTypeId}", request.ApplicationTypeId);
 
         // e.g. api/v{0}/registrations
-        var url = string.Format(Endpoints.CreateRegistration, _config.ApiVersion);
+        var url = string.Format(Endpoints.Registration.CreateRegistration, _config.ApiVersion);
 
         return await this.PostAsync<CreateRegistrationDto, CreateRegistrationResponseDto>(url, request);
     }
@@ -30,7 +30,7 @@ ILogger<RegistrationServiceClient> logger)
     public async Task<RegistrationOverviewDto> GetRegistrationOverviewAsync(Guid registrationId)
     {
         logger.LogInformation("GetRegistrationOverviewAsync for Registration ID: {RegistrationId}", registrationId);
-        var url = string.Format(Endpoints.RegistrationGetById, _config.ApiVersion, registrationId);
+        var url = string.Format(Endpoints.Registration.RegistrationGetById, _config.ApiVersion, registrationId);
 
         return await this.GetAsync<RegistrationOverviewDto>(url);
     }
@@ -39,7 +39,7 @@ ILogger<RegistrationServiceClient> logger)
         logger.LogInformation("UpdateRegistrationTaskStatusAsync for Registration ID: {RegistrationId}", registrationId);
 
         // e.g. api/v{0}/registrations/{1}/siteAddress
-        var url = string.Format(Endpoints.RegistrationUpdateTaskStatus, _config.ApiVersion, registrationId);
+        var url = string.Format(Endpoints.Registration.RegistrationUpdateTaskStatus, _config.ApiVersion, registrationId);
 
         return await this.PostAsync<UpdateRegistrationTaskStatusDto, bool>(url, request);
     }
@@ -49,7 +49,7 @@ ILogger<RegistrationServiceClient> logger)
         logger.LogInformation("UpdateSiteAddressAsync for Registration ID: {RegistrationId}", registrationId);
 
         // e.g. api/v{0}/registrations/{1}/siteAddress
-        var url = string.Format(Endpoints.RegistrationUpdateSiteAddress, _config.ApiVersion, registrationId);
+        var url = string.Format(Endpoints.Registration.RegistrationUpdateSiteAddress, _config.ApiVersion, registrationId);
         
         return await this.PostAsync<UpdateRegistrationSiteAddressDto, bool>(url, request);
     }
@@ -58,7 +58,7 @@ ILogger<RegistrationServiceClient> logger)
     {
         logger.LogInformation("Attempting to get existing registration for organisation with ID {OrganisationId}", organisationId);
 
-        var url = string.Format(Endpoints.GetRegistrationByOrganisation, _config.ApiVersion, applicationTypeId, organisationId);
+        var url = string.Format(Endpoints.Registration.GetRegistrationByOrganisation, _config.ApiVersion, applicationTypeId, organisationId);
 
         try
         {
@@ -79,7 +79,7 @@ ILogger<RegistrationServiceClient> logger)
     {
         logger.LogInformation("Attempting to update an existing registration with ID {RegistrationId}", registrationId);
 
-        var url = string.Format(Endpoints.UpdateRegistration, _config.ApiVersion, registrationId);
+        var url = string.Format(Endpoints.Registration.UpdateRegistration, _config.ApiVersion, registrationId);
 
         return await PostAsync<UpdateRegistrationDto, bool>(url, request);
     }

@@ -11,4 +11,6 @@ public class RegistrationMaterialService(IRegistrationMaterialServiceClient regi
     public async Task<CreateRegistrationMaterialResponseDto> CreateRegistrationMaterial(CreateRegistrationMaterialRequestDto requestDto)
         => await registrationMaterialServiceClient.CreateRegistrationMaterialAsync(requestDto);
 
+    public async Task<List<ApplicationRegistrationMaterialDto>> GetAllRegistrationsMaterials(Guid registrationId)
+        => await registrationMaterialServiceClient.GetAllRegistrationMaterialsAsync(registrationId);
 }
