@@ -10,6 +10,9 @@ public static class Endpoints
     public const string RegistrationUpdateSiteAddress = "api/v{0}/registrations/{1}/siteAddress";
     public const string GetRegistrationByOrganisation = "api/v{0}/registrations/{1}/organisations/{2}";
     public const string UpdateRegistration = "api/v{0}/registrations/{1}/update";
+    public const string CreateExemptionReferences = "api/v{0}/registrationMaterials/{1}/createExemptionReferences";
+    public const string CreateRegistrationMaterial = "api/v{0}/registrationMaterials/create";
+
     public const string RegistrationGetById = "api/v{0}/registrations/{1}"; 
 }
 
