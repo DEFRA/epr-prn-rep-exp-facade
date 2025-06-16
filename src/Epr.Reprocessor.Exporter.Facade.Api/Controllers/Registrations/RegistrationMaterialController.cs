@@ -85,7 +85,7 @@ public class RegistrationMaterialController : ControllerBase
     }
 
 
-    [HttpPost("{Id:Guid}/permits")]
+    [HttpPost("{id:Guid}/permits")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OkResult))]
     [ProducesResponseType(typeof(ValidationProblemDetails), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
@@ -97,11 +97,11 @@ public class RegistrationMaterialController : ControllerBase
     [SwaggerResponse(StatusCodes.Status400BadRequest, "If the request is invalid or a validation error occurs.", typeof(ProblemDetails))]
     [SwaggerResponse(StatusCodes.Status404NotFound, "If an existing registration is not found", typeof(ProblemDetails))]
     [SwaggerResponse(StatusCodes.Status500InternalServerError, "If an unexpected error occurs.", typeof(ContentResult))]
-    public async Task<IActionResult> UpdateRegistrationMaterialPermits([FromRoute] Guid Id, [FromBody] UpdateRegistrationMaterialPermitsDto request)
+    public async Task<IActionResult> UpdateRegistrationMaterialPermits([FromRoute] Guid id, [FromBody] UpdateRegistrationMaterialPermitsDto request)
     {
-        _logger.LogInformation(LogMessages.UpdateRegistrationMaterialPermits, Id);
+        _logger.LogInformation(LogMessages.UpdateRegistrationMaterialPermits, id);
 
-        _ = await _registrationMaterialService.UpdateRegistrationMaterialPermitsAsync(Id, request);
+        _ = await _registrationMaterialService.UpdateRegistrationMaterialPermitsAsync(id, request);
 
         return NoContent();
     }

@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Json;
+﻿using System.Collections.Generic;
+using System.Net.Http.Json;
 using System.Text.Json;
 using AutoFixture;
 using Epr.Reprocessor.Exporter.Facade.App.Clients.Registrations;
@@ -53,7 +54,7 @@ public class RegistrationMaterialServiceClientTests
     public async Task CreateExemptionReferencesAsync_SendsCorrectRequest()
     {
         // Arrange
-        var dto = _fixture.Create<CreateExemptionReferencesDto>();       
+        var dto = _fixture.Create<CreateExemptionReferencesDto>();
         HttpRequestMessage? capturedRequest = null;
 
         _mockHttpMessageHandler
@@ -73,7 +74,7 @@ public class RegistrationMaterialServiceClientTests
         await _client.CreateExemptionReferencesAsync(dto);
 
         Assert.IsNotNull(capturedRequest);
-        Assert.AreEqual(HttpMethod.Post, capturedRequest.Method);       
+        Assert.AreEqual(HttpMethod.Post, capturedRequest.Method);
         var content = await capturedRequest.Content.ReadAsStringAsync();
         Assert.IsTrue(content.Contains(dto.MaterialExemptionReferences?.ToString() ?? string.Empty) || content.Length > 0);
     }
@@ -113,5 +114,64 @@ public class RegistrationMaterialServiceClientTests
         Assert.AreEqual(HttpMethod.Post, capturedRequest.Method);
         var content = await capturedRequest.Content!.ReadFromJsonAsync<CreateRegistrationMaterialResponseDto>();
         content.Should().NotBeNull();
+    }
+
+    [TestMethod]
+    public async Task UpdateRegistrationMaterialPermits_SendsCorrectRequest()
+    {
+        // Arrange
+        var id = Guid.NewGuid();
+        var request = _fixture.Create<UpdateRegistrationMaterialPermitsDto>();
+
+        HttpRequestMessage? capturedRequest = null;
+
+        _mockHttpMessageHandler
+            .Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.IsAny<HttpRequestMessage>(),
+                ItExpr.IsAny<CancellationToken>())
+            .Callback<HttpRequestMessage, CancellationToken>((req, _) => capturedRequest = req)
+            .ReturnsAsync(new HttpResponseMessage
+            {
+                StatusCode = System.Net.HttpStatusCode.OK,
+                Content = new StringContent(JsonSerializer.Serialize("true"))
+            });
+
+        // Act
+        var result = await _client.UpdateRegistrationMaterialPermitsAsync(id, request);
+
+        // Assert
+        capturedRequest.Should().NotBeNull();
+        capturedRequest.Method.Should().Be(HttpMethod.Post);
+    }
+
+    [TestMethod]
+    public async Task GetMaterialsPermitTypesAsync_SendsCorrectRequest()
+    {
+        // Arrange
+        var response = _fixture.Create<List<MaterialsPermitTypeDto>>();
+
+        HttpRequestMessage ? capturedRequest = null;
+
+        _mockHttpMessageHandler
+            .Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.IsAny<HttpRequestMessage>(),
+                ItExpr.IsAny<CancellationToken>())
+            .Callback<HttpRequestMessage, CancellationToken>((req, _) => capturedRequest = req)
+            .ReturnsAsync(new HttpResponseMessage
+            {
+                StatusCode = System.Net.HttpStatusCode.OK,
+                Content = new StringContent(JsonSerializer.Serialize(response))
+            });
+
+        // Act
+        var result = await _client.GetMaterialsPermitTypesAsync();
+
+        // Assert
+        capturedRequest.Should().NotBeNull();
+        capturedRequest.Method.Should().Be(HttpMethod.Get);
     }
 }

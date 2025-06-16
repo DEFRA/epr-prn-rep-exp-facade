@@ -16,4 +16,5 @@ public static class LogMessages
     public const string UpdateRegistrationMaterialPermits = "Attempting to update registration material permits with External ID {Id}";
     public const string GetMaterialsPermitTypes = "Attempting to get material permit types";
 
+    public const string GetRegistrationOverview = "Attempting to get the overview for registration id {0}";
 }

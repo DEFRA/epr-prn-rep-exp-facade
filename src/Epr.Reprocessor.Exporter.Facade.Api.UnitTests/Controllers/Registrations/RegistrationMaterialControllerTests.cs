@@ -1,4 +1,5 @@
-﻿using Epr.Reprocessor.Exporter.Facade.Api.Controllers.Registrations;
+﻿using AutoFixture;
+using Epr.Reprocessor.Exporter.Facade.Api.Controllers.Registrations;
 using Epr.Reprocessor.Exporter.Facade.App.Constants;
 using Epr.Reprocessor.Exporter.Facade.App.Models;
 using Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
@@ -17,6 +18,7 @@ public class RegistrationMaterialControllerTests
     private Mock<IRegistrationMaterialService> _registrationMaterialService = null!;
     private Mock<ILogger<RegistrationMaterialController>> _loggerMock = null!;
     private RegistrationMaterialController _controller = null!;
+    private readonly Fixture _fixture = new();
 
     [TestInitialize]
     public void SetUp()
@@ -201,5 +203,41 @@ public class RegistrationMaterialControllerTests
 
         // Assert
         result.Should().BeEquivalentTo(expectedResult);
+    }
+
+    [TestMethod]
+    public async Task UpdateRegistrationMaterialPermits_ShouldReturnNoContent_WhenUpdateSucceeds()
+    {
+        // Arrange
+        var id = Guid.NewGuid();
+        var dto = _fixture.Create<UpdateRegistrationMaterialPermitsDto>();
+        _registrationMaterialService.Setup(s => s.UpdateRegistrationMaterialPermitsAsync(id, dto))
+                    .ReturnsAsync(true);
+
+        // Act
+        var result = await _controller.UpdateRegistrationMaterialPermits(id, dto);
+
+        // Assert
+        result.Should().BeOfType<NoContentResult>();
+        _registrationMaterialService.Verify(s => s.UpdateRegistrationMaterialPermitsAsync(id, dto), Times.Once);
+    }
+
+    [TestMethod]
+    public async Task GetMaterialsPermitTypes_ShouldReturnOkWithData_WhenServiceReturnsList()
+    {
+        // Arrange
+        var expectedList = _fixture.Create<List<MaterialsPermitTypeDto>>();
+
+        _registrationMaterialService.Setup(s => s.GetMaterialsPermitTypesAsync())
+                    .ReturnsAsync(expectedList);
+
+        // Act
+        var result = await _controller.GetMaterialsPermitTypes();
+
+        // Assert
+        result.Should().BeOfType<OkObjectResult>()
+            .Which.Value.Should().BeEquivalentTo(expectedList);
+
+        _registrationMaterialService.Verify(s => s.GetMaterialsPermitTypesAsync(), Times.Once);
     }
 }

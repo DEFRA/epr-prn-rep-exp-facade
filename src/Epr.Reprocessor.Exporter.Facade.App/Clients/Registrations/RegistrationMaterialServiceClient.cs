@@ -36,7 +36,9 @@ public class RegistrationMaterialServiceClient(
 
         var url = string.Format(Endpoints.UpdateRegistrationMaterialPermits, _config.ApiVersion, id);
 
-        return await PostAsync<UpdateRegistrationMaterialPermitsDto, bool>(url, request);
+        await PostAsync<UpdateRegistrationMaterialPermitsDto>(url, request);
+
+        return true;
     }
 
     public async Task<List<MaterialsPermitTypeDto>> GetMaterialsPermitTypesAsync()
