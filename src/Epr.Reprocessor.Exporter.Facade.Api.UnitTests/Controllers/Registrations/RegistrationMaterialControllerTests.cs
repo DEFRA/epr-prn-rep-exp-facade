@@ -202,4 +202,56 @@ public class RegistrationMaterialControllerTests
         // Assert
         result.Should().BeEquivalentTo(expectedResult);
     }
+
+    [TestMethod]
+    public async Task GetAllMaterialsForRegistration_EnsureOkResult()
+    {
+        // Arrange
+        var registrationId = Guid.NewGuid();
+        var registrationMaterials = new List<RegistrationMaterialDto>
+        {
+            new()
+            {
+                Id = Guid.NewGuid(),
+                RegistrationId = registrationId,
+                PPCPermitNumber = "number"
+            }
+        };
+
+        var expectedResult = new OkObjectResult(registrationMaterials);
+
+        // Expectations
+        _registrationMaterialService
+            .Setup(s => s.GetAllRegistrationsMaterials(registrationId))
+            .ReturnsAsync(registrationMaterials);
+
+        // Act
+        var result = await _controller.GetAllRegistrationMaterials(registrationId);
+
+        // Assert
+        result.Should().BeEquivalentTo(expectedResult);
+    }
+
+    [TestMethod]
+    public async Task GetAllMaterialsForRegistration_ServiceException_ReturnInternalServerError()
+    {
+        // Arrange
+        var registrationId = Guid.NewGuid();
+     
+        var expectedResult = new ObjectResult(LogMessages.UnExpectedError)
+        {
+            StatusCode = StatusCodes.Status500InternalServerError,
+        };
+
+        // Expectations
+        _registrationMaterialService
+            .Setup(s => s.GetAllRegistrationsMaterials(registrationId))
+            .ThrowsAsync(new Exception());
+
+        // Act
+        var result = await _controller.GetAllRegistrationMaterials(registrationId);
+
+        // Assert
+        result.Should().BeEquivalentTo(expectedResult);
+    }
 }
