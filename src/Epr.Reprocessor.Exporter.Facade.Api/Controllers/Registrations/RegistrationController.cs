@@ -115,7 +115,7 @@ public class RegistrationController : ControllerBase
         Summary = "get the task statuses of a registration",
         Description = "retrieving a list of task statuses for a registration."
     )]
-    public async Task<IActionResult> RegistrationTaskStatus([FromRoute] int registrationId )
+    public async Task<IActionResult> RegistrationTaskStatus([FromRoute] Guid registrationId )
     {
         _logger.LogInformation(LogMessages.GetRegistrationOverview,registrationId);
 

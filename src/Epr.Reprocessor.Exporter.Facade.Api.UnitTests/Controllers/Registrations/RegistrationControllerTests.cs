@@ -261,7 +261,7 @@ public class RegistrationControllerTests
     public async Task RegistrationOverview_ShouldReturnNoContentResult()
     {
         // Arrange
-        var registrationId = 1;
+        var registrationId = Guid.NewGuid();
         var request = new RegistrationOverviewDto { OrganisationName = "Org Name",Regulator = "UK"};
 
         // Act
@@ -276,7 +276,7 @@ public class RegistrationControllerTests
     public async Task RegistrationOverview_ShouldReturnContentResult()
     {
         // Arrange
-        var registrationId = 1;
+        var registrationId = Guid.NewGuid();
         var request = new RegistrationOverviewDto { OrganisationName = "Org Name", Regulator = "UK" };
         _registrationServiceMock.Setup(r => r.GetRegistrationOverviewAsync(registrationId)).ReturnsAsync(request);
 
