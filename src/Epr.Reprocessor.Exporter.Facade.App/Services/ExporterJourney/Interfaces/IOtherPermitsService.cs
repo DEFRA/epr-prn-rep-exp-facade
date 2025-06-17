@@ -4,10 +4,10 @@ namespace Epr.Reprocessor.Exporter.Facade.App.Services.ExporterJourney.Interface
 {
     public interface IOtherPermitsService
 	{
-		Task<OtherPermitsDto> Get(int registrationId);
+		Task<OtherPermitsDto> Get(Guid registrationId);
 
-		Task<Guid> Create(int registrationId, OtherPermitsDto value);
+		Task<Guid> Create(Guid registrationId, OtherPermitsDto value);
 
-		Task<bool> Update(int registrationId, OtherPermitsDto value);
+		Task<bool> Update(Guid registrationId, OtherPermitsDto value);
 	}
 }
