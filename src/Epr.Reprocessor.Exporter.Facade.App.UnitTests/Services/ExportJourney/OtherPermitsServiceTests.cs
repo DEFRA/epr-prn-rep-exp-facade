@@ -34,7 +34,7 @@ namespace Epr.Reprocessor.Exporter.Facade.App.UnitTests.Services.ExportJourney
 		{
 			// Arrange
 			var baseUri = _options.Value.ExportEndpoints.OtherPermitsGet;
-			var registrationId = 1;
+			var registrationId = default(Guid);
 			var responseDto = new OtherPermitsDto
 			{
 				Id = Guid.NewGuid(),
@@ -62,7 +62,7 @@ namespace Epr.Reprocessor.Exporter.Facade.App.UnitTests.Services.ExportJourney
 		{
 			// Arrange
 			var baseUri = _options.Value.ExportEndpoints.OtherPermitsPost;
-			var registrationId = 1;
+			var registrationId = default(Guid);
 			var requestDto = new OtherPermitsDto
 			{
 				RegistrationId = registrationId,
@@ -88,7 +88,7 @@ namespace Epr.Reprocessor.Exporter.Facade.App.UnitTests.Services.ExportJourney
 		public async Task UpdateOtherPermits_ShouldReturnExpectedResult()
 		{
 			// Arrange
-			var registrationId = 1;
+			var registrationId = default(Guid);
 			var baseUri = _options.Value.ExportEndpoints.OtherPermitsPut;
 
 			var requestDto = new OtherPermitsDto

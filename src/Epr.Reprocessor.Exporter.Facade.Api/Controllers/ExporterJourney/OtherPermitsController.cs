@@ -24,7 +24,7 @@ namespace Epr.Reprocessor.Exporter.Facade.Api.Controllers.ExporterJourney
 		[HttpGet("{registrationId}")]
 		[ProducesResponseType(typeof(string), 200)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		public async virtual Task<IActionResult> Get(int registrationId)
+		public async virtual Task<IActionResult> Get(Guid registrationId)
 		{
 			var dto = await _service.Get(registrationId);
 			return dto == null ? NotFound() : Ok(dto);
@@ -39,7 +39,7 @@ namespace Epr.Reprocessor.Exporter.Facade.Api.Controllers.ExporterJourney
 
 		[HttpPut("{id}")]
 		[ProducesResponseType(StatusCodes.Status202Accepted)]
-		public async virtual Task<IActionResult> Put(int id, [FromBody] OtherPermitsDto value)
+		public async virtual Task<IActionResult> Put(Guid id, [FromBody] OtherPermitsDto value)
 		{
 			await _service.Update(id, value);
 			return Accepted();

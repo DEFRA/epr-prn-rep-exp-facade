@@ -26,21 +26,21 @@ namespace Epr.Reprocessor.Exporter.Facade.App.Services.ExporterJourney.Implement
 			_basePutUrl = _config.ExportEndpoints.OtherPermitsPut;
 		}
 
-		public async Task<OtherPermitsDto> Get(int id)
+		public async Task<OtherPermitsDto> Get(Guid id)
 		{
 			var uri = string.Format(_baseGetUrl, _apiVersion, id);
 			var dto = await _apiClient.SendGetRequest<OtherPermitsDto>(uri);
 			return dto;
 		}
 
-		public async virtual Task<Guid> Create(int registrationId, OtherPermitsDto value)
+		public async virtual Task<Guid> Create(Guid registrationId, OtherPermitsDto value)
 		{
 			var uri = string.Format(_basePostUrl, _apiVersion, registrationId);
 			var result = await _apiClient.SendPostRequest<OtherPermitsDto>(uri, value);
 			return result;
 		}
 
-		public async virtual Task<bool> Update(int registrationId, OtherPermitsDto value)
+		public async virtual Task<bool> Update(Guid registrationId, OtherPermitsDto value)
 		{
 			var uri = string.Format(_basePutUrl, _apiVersion, registrationId, value.Id);
 			var result = await _apiClient.SendPutRequest<OtherPermitsDto>(uri, value);

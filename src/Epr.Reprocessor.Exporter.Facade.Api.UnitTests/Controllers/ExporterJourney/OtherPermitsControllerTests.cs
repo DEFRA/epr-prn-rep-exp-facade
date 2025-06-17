@@ -43,7 +43,7 @@ namespace Epr.Reprocessor.Exporter.Facade.Api.UnitTests.Controllers.ExporterJour
 		public async Task Get_ShouldReturnOk_WhenDataObjectWithRegistrationIdExists()
 		{
 			// Arrange
-			var registrationId = 1;
+			var registrationId = default(Guid);
 			var otherPermitDto = new OtherPermitsDto { RegistrationId = registrationId };
 			_serviceMock.Setup(s => s.Get(registrationId))
 				.ReturnsAsync(otherPermitDto);
@@ -62,7 +62,7 @@ namespace Epr.Reprocessor.Exporter.Facade.Api.UnitTests.Controllers.ExporterJour
 		public async Task Get_ShouldReturnNotFound_WhenDataObjectDoesNotExist()
 		{
 			// Arrange
-			var registrationId = 1;
+			var registrationId = default(Guid);
 			_serviceMock.Setup(s => s.Get(registrationId))
 				.ReturnsAsync((OtherPermitsDto?)null);
 
@@ -79,7 +79,7 @@ namespace Epr.Reprocessor.Exporter.Facade.Api.UnitTests.Controllers.ExporterJour
 		public async Task Post_ShouldReturnOk_WithCreatedOtherPermits()
 		{
 			// Arrange
-			var registrationId = 1;
+			var registrationId = default(Guid);
 			var request = new OtherPermitsDto { RegistrationId = registrationId };
 			var response = new OtherPermitsDto { RegistrationId = request.RegistrationId, Id = Guid.NewGuid() };
 			_serviceMock.Setup(s => s.Create(registrationId, request))
@@ -99,7 +99,7 @@ namespace Epr.Reprocessor.Exporter.Facade.Api.UnitTests.Controllers.ExporterJour
 		public async Task Put_WithUpdatedOtherPermits_ShouldReturnNoContentResult()
 		{
 			// Arrange
-			var registrationId = 1;
+			var registrationId = default(Guid);
 			var request = new OtherPermitsDto();
 
 			// Act
