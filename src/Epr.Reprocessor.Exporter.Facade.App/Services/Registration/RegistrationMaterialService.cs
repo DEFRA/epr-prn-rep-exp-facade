@@ -17,6 +17,11 @@ public class RegistrationMaterialService(IRegistrationMaterialServiceClient regi
         return await registrationMaterialServiceClient.UpdateRegistrationMaterialPermitsAsync(id, request);
     }
 
+    public async Task<bool> UpdateRegistrationMaterialPermitCapacityAsync(Guid id, UpdateRegistrationMaterialPermitCapacityDto request)
+    {
+        return await registrationMaterialServiceClient.UpdateRegistrationMaterialPermitCapacityAsync(id, request);
+    }
+
     public async Task<List<MaterialsPermitTypeDto>> GetMaterialsPermitTypesAsync()
     {
         return await registrationMaterialServiceClient.GetMaterialsPermitTypesAsync();
