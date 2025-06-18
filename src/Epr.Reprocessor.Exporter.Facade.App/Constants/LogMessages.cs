@@ -19,4 +19,5 @@ public static class LogMessages
     public const string GetRegistrationOverview = "Attempting to get the overview for registration id {0}";
     public const string GetAllMaterials = "Attempting to retrieve a list of applicable materials";
     public const string GetAllRegistrationMaterials = "Attempting to retrieve all registration materials for registration {0}";
+    public const string DeleteRegistrationMaterial = "Attempting to delete a registration material with ID {0}";
 }
