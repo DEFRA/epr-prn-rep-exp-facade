@@ -75,4 +75,60 @@ public class AccreditationServiceTests
         result.Should().Be(expected);
         _mockClient.Verify(c => c.UpsertAccreditation(request), Times.Once);
     }
+
+    [TestMethod]
+    public async Task GetFileUploads_ShouldReturnListFromClient()
+    {
+        // Arrange
+        var accreditationId = Guid.NewGuid();
+        var fileUploadTypeId = 1;
+        var fileUploadStatusId = 2;
+        var expected = _fixture.Create<List<AccreditationFileUploadDto>>();
+
+        _mockClient.Setup(c => c.GetFileUploads(accreditationId, fileUploadTypeId, fileUploadStatusId))
+            .ReturnsAsync(expected);
+
+        // Act
+        var result = await _service.GetFileUploads(accreditationId, fileUploadTypeId, fileUploadStatusId);
+
+        // Assert
+        result.Should().BeEquivalentTo(expected);
+        _mockClient.Verify(c => c.GetFileUploads(accreditationId, fileUploadTypeId, fileUploadStatusId), Times.Once);
+    }
+
+    [TestMethod]
+    public async Task UpsertFileUpload_ShouldReturnDtoFromClient()
+    {
+        // Arrange
+        var accreditationId = Guid.NewGuid();
+        var request = _fixture.Create<AccreditationFileUploadDto>();
+        var expected = _fixture.Create<AccreditationFileUploadDto>();
+
+        _mockClient.Setup(c => c.UpsertFileUpload(accreditationId, request))
+            .ReturnsAsync(expected);
+
+        // Act
+        var result = await _service.UpsertFileUpload(accreditationId, request);
+
+        // Assert
+        result.Should().BeEquivalentTo(expected);
+        _mockClient.Verify(c => c.UpsertFileUpload(accreditationId, request), Times.Once);
+    }
+
+    [TestMethod]
+    public async Task DeleteFileUpload_ShouldCallClient()
+    {
+        // Arrange
+        var accreditationId = Guid.NewGuid();
+        var fileId = Guid.NewGuid();
+
+        _mockClient.Setup(c => c.DeleteFileUpload(accreditationId, fileId))
+            .Returns(Task.CompletedTask);
+
+        // Act
+        await _service.DeleteFileUpload(accreditationId, fileId);
+
+        // Assert
+        _mockClient.Verify(c => c.DeleteFileUpload(accreditationId, fileId), Times.Once);
+    }
 }
