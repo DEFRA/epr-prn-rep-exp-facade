@@ -68,4 +68,13 @@ public class RegistrationMaterialServiceClient(
 
         return await GetAsync<List<ApplicationRegistrationMaterialDto>>(url);
     }
+
+    public async Task<bool> DeleteAsync(Guid registrationMaterialId)
+    {
+        var url = string.Format(Endpoints.RegistrationMaterial.Delete, _config.ApiVersion, registrationMaterialId);
+
+        _logger.LogInformation("Calling {Url} to delete registration material.", url);
+
+        return await DeleteAsync(url);
+    }
 }

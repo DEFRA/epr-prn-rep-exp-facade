@@ -15,4 +15,5 @@ public interface IRegistrationMaterialService
     Task<List<MaterialsPermitTypeDto>> GetMaterialsPermitTypesAsync();
 
     Task<List<ApplicationRegistrationMaterialDto>> GetAllRegistrationsMaterials(Guid registrationId);
+    Task<bool> Delete(Guid registrationMaterialId);
 }

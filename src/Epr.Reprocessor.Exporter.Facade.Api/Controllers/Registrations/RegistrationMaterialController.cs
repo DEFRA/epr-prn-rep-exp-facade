@@ -5,6 +5,7 @@ using Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
 using Epr.Reprocessor.Exporter.Facade.App.Services.Registration;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
+using static Epr.Reprocessor.Exporter.Facade.App.Constants.Endpoints;
 
 
 namespace Epr.Reprocessor.Exporter.Facade.Api.Controllers.Registrations;
@@ -108,16 +109,10 @@ public class RegistrationMaterialController : ControllerBase
 
     [HttpPost("{id:Guid}/permitCapacity")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OkResult))]
-    [ProducesResponseType(typeof(ValidationProblemDetails), (int)HttpStatusCode.BadRequest)]
-    [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
     [SwaggerOperation(
         Summary = "updates an existing registration material permit capacity",
         Description = "attempting to update the registration material permit capacity."
     )]
-    [SwaggerResponse(StatusCodes.Status204NoContent, "Returns No Content")]
-    [SwaggerResponse(StatusCodes.Status400BadRequest, "If the request is invalid or a validation error occurs.", typeof(ProblemDetails))]
-    [SwaggerResponse(StatusCodes.Status404NotFound, "If an existing registration is not found", typeof(ProblemDetails))]
-    [SwaggerResponse(StatusCodes.Status500InternalServerError, "If an unexpected error occurs.", typeof(ContentResult))]
     public async Task<IActionResult> UpdateRegistrationMaterialPermitCapacity([FromRoute] Guid id, [FromBody] UpdateRegistrationMaterialPermitCapacityDto request)
     {
         _logger.LogInformation(LogMessages.UpdateRegistrationMaterialPermitCapacity, id);
@@ -160,6 +155,35 @@ public class RegistrationMaterialController : ControllerBase
         {
             var materials = await _registrationMaterialService.GetAllRegistrationsMaterials(registrationId);
             return Ok(materials);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, ex.Message);
+            return StatusCode(StatusCodes.Status500InternalServerError, LogMessages.UnExpectedError);
+        }
+    }
+
+    [HttpDelete("{registrationMaterialId:guid}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OkResult))]
+    [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
+    [SwaggerOperation(
+        Summary = "delete a registration material",
+        Description = "attempting to delete a material registration."
+    )]
+    [SwaggerResponse(StatusCodes.Status200OK)]
+    [SwaggerResponse(StatusCodes.Status500InternalServerError, "If an unexpected error occurs.", typeof(ContentResult))]
+    public async Task<IActionResult> DeleteRegistrationMaterial([FromRoute] Guid registrationMaterialId)
+    {
+        _logger.LogInformation(LogMessages.DeleteRegistrationMaterial, registrationMaterialId);
+
+        try
+        {
+            if (await _registrationMaterialService.Delete(registrationMaterialId))
+            {
+                return Ok();
+            }
+
+            return BadRequest();
         }
         catch (Exception ex)
         {

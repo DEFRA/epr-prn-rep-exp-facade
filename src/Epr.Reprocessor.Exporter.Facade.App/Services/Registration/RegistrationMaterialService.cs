@@ -23,4 +23,7 @@ public class RegistrationMaterialService(IRegistrationMaterialServiceClient regi
 
     public async Task<List<ApplicationRegistrationMaterialDto>> GetAllRegistrationsMaterials(Guid registrationId)
         => await registrationMaterialServiceClient.GetAllRegistrationMaterialsAsync(registrationId);
+
+    public async Task<bool> Delete(Guid registrationMaterialId) 
+        => await registrationMaterialServiceClient.DeleteAsync(registrationMaterialId);
 }
