@@ -109,16 +109,10 @@ public class RegistrationMaterialController : ControllerBase
 
     [HttpPost("{id:Guid}/permitCapacity")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OkResult))]
-    [ProducesResponseType(typeof(ValidationProblemDetails), (int)HttpStatusCode.BadRequest)]
-    [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
     [SwaggerOperation(
         Summary = "updates an existing registration material permit capacity",
         Description = "attempting to update the registration material permit capacity."
     )]
-    [SwaggerResponse(StatusCodes.Status204NoContent, "Returns No Content")]
-    [SwaggerResponse(StatusCodes.Status400BadRequest, "If the request is invalid or a validation error occurs.", typeof(ProblemDetails))]
-    [SwaggerResponse(StatusCodes.Status404NotFound, "If an existing registration is not found", typeof(ProblemDetails))]
-    [SwaggerResponse(StatusCodes.Status500InternalServerError, "If an unexpected error occurs.", typeof(ContentResult))]
     public async Task<IActionResult> UpdateRegistrationMaterialPermitCapacity([FromRoute] Guid id, [FromBody] UpdateRegistrationMaterialPermitCapacityDto request)
     {
         _logger.LogInformation(LogMessages.UpdateRegistrationMaterialPermitCapacity, id);
