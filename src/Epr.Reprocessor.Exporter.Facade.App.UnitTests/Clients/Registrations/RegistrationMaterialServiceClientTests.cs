@@ -215,4 +215,34 @@ public class RegistrationMaterialServiceClientTests
         // Assert
         result.Should().BeEquivalentTo(registrationMaterialsDto);
     }
+
+    [TestMethod]
+    public async Task UpdateRegistrationMaterialPermitCapacity_SendsCorrectRequest()
+    {
+        // Arrange
+        var id = Guid.NewGuid();
+        var request = _fixture.Create<UpdateRegistrationMaterialPermitCapacityDto>();
+
+        HttpRequestMessage? capturedRequest = null;
+
+        _mockHttpMessageHandler
+            .Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.IsAny<HttpRequestMessage>(),
+                ItExpr.IsAny<CancellationToken>())
+            .Callback<HttpRequestMessage, CancellationToken>((req, _) => capturedRequest = req)
+            .ReturnsAsync(new HttpResponseMessage
+            {
+                StatusCode = System.Net.HttpStatusCode.OK,
+                Content = new StringContent(JsonSerializer.Serialize("true"))
+            });
+
+        // Act
+        var result = await _client.UpdateRegistrationMaterialPermitCapacityAsync(id, request);
+
+        // Assert
+        capturedRequest.Should().NotBeNull();
+        capturedRequest.Method.Should().Be(HttpMethod.Post);
+    }
 }

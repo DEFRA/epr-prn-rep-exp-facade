@@ -222,6 +222,23 @@ public class RegistrationMaterialControllerTests
     }
 
     [TestMethod]
+    public async Task UpdateRegistrationMaterialPermitCapacity_ShouldReturnNoContent_WhenUpdateSucceeds()
+    {
+        // Arrange
+        var id = Guid.NewGuid();
+        var dto = _fixture.Create<UpdateRegistrationMaterialPermitCapacityDto>();
+        _registrationMaterialService.Setup(s => s.UpdateRegistrationMaterialPermitCapacityAsync(id, dto))
+                    .ReturnsAsync(true);
+
+        // Act
+        var result = await _controller.UpdateRegistrationMaterialPermitCapacity(id, dto);
+
+        // Assert
+        result.Should().BeOfType<NoContentResult>();
+        _registrationMaterialService.Verify(s => s.UpdateRegistrationMaterialPermitCapacityAsync(id, dto), Times.Once);
+    }
+
+    [TestMethod]
     public async Task GetMaterialsPermitTypes_ShouldReturnOkWithData_WhenServiceReturnsList()
     {
         // Arrange
