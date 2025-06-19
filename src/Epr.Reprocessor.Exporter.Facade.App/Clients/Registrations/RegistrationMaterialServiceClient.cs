@@ -32,7 +32,7 @@ public class RegistrationMaterialServiceClient(
 
     public async Task<bool> UpdateRegistrationMaterialPermitsAsync(Guid id, UpdateRegistrationMaterialPermitsDto request)
     {
-        logger.LogInformation("Attempting to update an existing registration material permits with External ID {Id}", id);
+        _logger.LogInformation("Attempting to update an existing registration material permits with External ID {Id}", id);
 
         var url = string.Format(Endpoints.RegistrationMaterial.UpdateRegistrationMaterialPermits, _config.ApiVersion, id);
 
@@ -43,7 +43,7 @@ public class RegistrationMaterialServiceClient(
 
     public async Task<bool> UpdateRegistrationMaterialPermitCapacityAsync(Guid id, UpdateRegistrationMaterialPermitCapacityDto request)
     {
-        logger.LogInformation("Attempting to update an existing registration material permit capacity with External ID {Id}", id);
+        _logger.LogInformation("Attempting to update an existing registration material permit capacity with External ID {Id}", id);
 
         var url = string.Format(Endpoints.RegistrationMaterial.UpdateRegistrationMaterialPermitCapacity, _config.ApiVersion, id);
 
@@ -54,7 +54,7 @@ public class RegistrationMaterialServiceClient(
 
     public async Task<List<MaterialsPermitTypeDto>> GetMaterialsPermitTypesAsync()
     {
-        logger.LogInformation("Attempting to get list of material permit types");
+        _logger.LogInformation("Attempting to get list of material permit types");
 
         var url = string.Format(Endpoints.RegistrationMaterial.GetMaterialsPermitTypes, _config.ApiVersion);
 
