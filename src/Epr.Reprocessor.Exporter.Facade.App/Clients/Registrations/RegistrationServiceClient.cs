@@ -76,4 +76,25 @@ ILogger<RegistrationServiceClient> logger)
 
         return await PostAsync<UpdateRegistrationDto, bool>(url, request);
     }
+
+    public async Task<IEnumerable<RegistrationsOverviewDto>> GetRegistrationsOverviewByOrgIdAsync(Guid organisationId)
+    {
+        logger.LogInformation("Attempting to get existing registrations overview for organisation with ID {OrganisationId}", organisationId);
+
+        var url = string.Format(Endpoints.GetRegistrationsOverviewByOrgId, _config.ApiVersion, organisationId);
+
+        try
+        {
+            return await GetAsync<IEnumerable<RegistrationsOverviewDto>>(url);
+        }
+        catch (HttpRequestException ex) when (ex.StatusCode is HttpStatusCode.NotFound)
+        {
+            return null;
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "An error occurred while trying to get registrations overview for organisation with ID {OrganisationId}", organisationId);
+            throw;
+        }
+    }
 }

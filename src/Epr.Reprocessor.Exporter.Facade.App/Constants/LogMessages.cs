@@ -5,4 +5,5 @@ public static class LogMessages
     public const string UpdateRegistrationTaskStatus = "Attempting to update registration site address and contact details";
     public const string UpdateRegistrationSiteAddress = "Attempting to update registration site address and contact details";
     public const string GetRegistrationByOrganisation = "Attempting to get registration of type {0} for organisation with ID {1}";
+    public const string GetRegistrationsOverviewByOrganisationId = "Attempting to get registrations overview for organisation with ID {0}";
 }
