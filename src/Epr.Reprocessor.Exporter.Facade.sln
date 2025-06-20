@@ -17,6 +17,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Epr.Reprocessor.Exporter.Facade.Api.UnitTests", "Epr.Reprocessor.Exporter.Facade.Api.UnitTests\Epr.Reprocessor.Exporter.Facade.Api.UnitTests.csproj", "{2530B06C-AAAB-4E5F-A461-0938B98C583B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{9BB7CDC7-5DD7-4EDA-B174-7F2C113F678E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,6 +44,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{63C77BE4-A0AA-4B03-8A9A-DD1E3574627D} = {9BB7CDC7-5DD7-4EDA-B174-7F2C113F678E}
+		{2530B06C-AAAB-4E5F-A461-0938B98C583B} = {9BB7CDC7-5DD7-4EDA-B174-7F2C113F678E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9467AD0A-986B-4EB5-B7E2-4C562998411C}

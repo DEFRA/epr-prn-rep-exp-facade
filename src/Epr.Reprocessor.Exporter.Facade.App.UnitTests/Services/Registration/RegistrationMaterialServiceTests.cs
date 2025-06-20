@@ -91,6 +91,24 @@ public class RegistrationMaterialServiceTests
         _clientMock.Verify(x => x.UpdateRegistrationMaterialPermitsAsync(id, request), Times.Once);
     }
 
+
+    [TestMethod]
+    public async Task UpdateRegistrationMaterialPermitCapacityAsync_ShouldReturnFalse_WhenClientReturnsTrue()
+    {
+        // Arrange
+        var id = Guid.NewGuid();
+        var request = _fixture.Create<UpdateRegistrationMaterialPermitCapacityDto>();
+        _clientMock.Setup(x => x.UpdateRegistrationMaterialPermitCapacityAsync(id, request))
+                   .ReturnsAsync(true);
+
+        // Act
+        var result = await _service.UpdateRegistrationMaterialPermitCapacityAsync(id, request);
+
+        // Assert
+        result.Should().BeTrue();
+        _clientMock.Verify(x => x.UpdateRegistrationMaterialPermitCapacityAsync(id, request), Times.Once);
+    }
+
     [TestMethod]
     public async Task GetMaterialsPermitTypesAsync_ShouldReturnExpectedList()
     {

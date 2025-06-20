@@ -222,6 +222,23 @@ public class RegistrationMaterialControllerTests
     }
 
     [TestMethod]
+    public async Task UpdateRegistrationMaterialPermitCapacity_ShouldReturnNoContent_WhenUpdateSucceeds()
+    {
+        // Arrange
+        var id = Guid.NewGuid();
+        var dto = _fixture.Create<UpdateRegistrationMaterialPermitCapacityDto>();
+        _registrationMaterialService.Setup(s => s.UpdateRegistrationMaterialPermitCapacityAsync(id, dto))
+                    .ReturnsAsync(true);
+
+        // Act
+        var result = await _controller.UpdateRegistrationMaterialPermitCapacity(id, dto);
+
+        // Assert
+        result.Should().BeOfType<NoContentResult>();
+        _registrationMaterialService.Verify(s => s.UpdateRegistrationMaterialPermitCapacityAsync(id, dto), Times.Once);
+    }
+
+    [TestMethod]
     public async Task GetMaterialsPermitTypes_ShouldReturnOkWithData_WhenServiceReturnsList()
     {
         // Arrange
@@ -287,6 +304,69 @@ public class RegistrationMaterialControllerTests
 
         // Act
         var result = await _controller.GetAllRegistrationMaterials(registrationId);
+
+        // Assert
+        result.Should().BeEquivalentTo(expectedResult);
+    }
+
+    [TestMethod]
+    public async Task DeleteRegistrationMaterial_ServiceException_ReturnInternalServerError()
+    {
+        // Arrange
+        var registrationId = Guid.NewGuid();
+
+        var expectedResult = new ObjectResult(LogMessages.UnExpectedError)
+        {
+            StatusCode = StatusCodes.Status500InternalServerError,
+        };
+
+        // Expectations
+        _registrationMaterialService
+            .Setup(s => s.Delete(registrationId))
+            .ThrowsAsync(new Exception());
+
+        // Act
+        var result = await _controller.DeleteRegistrationMaterial(registrationId);
+
+        // Assert
+        result.Should().BeEquivalentTo(expectedResult);
+    }
+
+    [TestMethod]
+    public async Task DeleteRegistrationMaterial_TrueResponse_ReturnOkResult()
+    {
+        // Arrange
+        var registrationId = Guid.NewGuid();
+
+        var expectedResult = new OkResult();
+
+        // Expectations
+        _registrationMaterialService
+            .Setup(s => s.Delete(registrationId))
+            .ReturnsAsync(true);
+
+        // Act
+        var result = await _controller.DeleteRegistrationMaterial(registrationId);
+
+        // Assert
+        result.Should().BeEquivalentTo(expectedResult);
+    }
+
+    [TestMethod]
+    public async Task DeleteRegistrationMaterial_FalseResponse_ReturnBadRequestResult()
+    {
+        // Arrange
+        var registrationId = Guid.NewGuid();
+
+        var expectedResult = new BadRequestResult();
+
+        // Expectations
+        _registrationMaterialService
+            .Setup(s => s.Delete(registrationId))
+            .ReturnsAsync(false);
+
+        // Act
+        var result = await _controller.DeleteRegistrationMaterial(registrationId);
 
         // Assert
         result.Should().BeEquivalentTo(expectedResult);
