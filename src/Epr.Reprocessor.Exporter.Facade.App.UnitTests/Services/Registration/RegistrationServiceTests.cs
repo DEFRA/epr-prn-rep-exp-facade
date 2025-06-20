@@ -28,7 +28,7 @@ public class RegistrationServiceTests
     public async Task UpdateSiteAddressAsync_ShouldReturnExpectedResult()
     {
         // Arrange
-        var registrationId = 1;
+        var registrationId = Guid.NewGuid();
         var requestDto = _fixture.Create<UpdateRegistrationSiteAddressDto>();
 
         _mockRegistrationServiceClient
@@ -46,7 +46,7 @@ public class RegistrationServiceTests
     public async Task UpdateRegistrationTaskStatusAsync_ShouldReturnExpectedResult()
     {
         // Arrange
-        var registrationId = 1;
+        var registrationId = Guid.NewGuid();
         var requestDto = _fixture.Create<UpdateRegistrationTaskStatusDto>();
 
         _mockRegistrationServiceClient
@@ -55,6 +55,51 @@ public class RegistrationServiceTests
 
         // Act
         var result = await _service.UpdateRegistrationTaskStatusAsync(registrationId, requestDto);
+
+        // Assert
+        result.Should().BeTrue();
+    }
+
+    [TestMethod]
+    public async Task GetRegistrationByOrganisationAsync_ShouldReturnExpectedResult()
+    {
+        // Arrange
+        var registrationId = Guid.NewGuid();
+        var organisationId = Guid.Empty;
+        var registration = new RegistrationDto
+        {
+            ApplicationTypeId = 1,
+            Id = registrationId
+        };
+
+        _mockRegistrationServiceClient
+            .Setup(client => client.GetRegistrationByOrganisationAsync(1, organisationId))
+            .ReturnsAsync(registration);
+
+        // Act
+        var result = await _service.GetRegistrationByOrganisationAsync(1, organisationId);
+
+        // Assert
+        result.Should().BeEquivalentTo(new RegistrationDto
+        {
+            ApplicationTypeId = 1,
+            Id = registrationId
+        });
+    }
+
+    [TestMethod]
+    public async Task UpdateAsync_ShouldReturnExpectedResult()
+    {
+        // Arrange
+        var registrationId = Guid.NewGuid();
+        var requestDto = _fixture.Create<UpdateRegistrationDto>();
+
+        _mockRegistrationServiceClient
+            .Setup(client => client.UpdateAsync(registrationId, requestDto))
+            .ReturnsAsync(true);
+
+        // Act
+        var result = await _service.UpdateAsync(registrationId, requestDto);
 
         // Assert
         result.Should().BeTrue();

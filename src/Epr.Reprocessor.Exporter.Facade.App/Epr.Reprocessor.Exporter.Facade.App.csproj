@@ -3,7 +3,6 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-
   </PropertyGroup>
 
   <ItemGroup>
@@ -32,9 +31,5 @@
 			<Value>**/Extensions/*.cs</Value>
 			<Value>**/DependencyInjection/*.cs</Value>
 		</SonarQubeSetting>
-	</ItemGroup>
-	<ItemGroup>
-	  <Folder Include="Models\Accreditations\" />
-	  <Folder Include="Services\Registration\" />
 	</ItemGroup>
 </Project>
