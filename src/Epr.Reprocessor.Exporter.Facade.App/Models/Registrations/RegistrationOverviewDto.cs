@@ -6,11 +6,13 @@ namespace Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
 [ExcludeFromCodeCoverage]
 public class RegistrationOverviewDto
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; }
+    public Guid OrganisationId { get; set; }
 
-    public required string OrganisationName { get; set; } = string.Empty;
+    public string OrganisationName { get; set; } = string.Empty;
 
     public string? SiteAddress { get; init; }
+    public string? SiteGridReference { get; init; }
 
     public ApplicationOrganisationType OrganisationType { get; set; }
 

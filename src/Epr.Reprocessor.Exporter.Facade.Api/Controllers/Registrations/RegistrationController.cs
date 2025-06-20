@@ -109,7 +109,7 @@ public class RegistrationController : ControllerBase
         return NoContent();
     }
 
-    [HttpGet("{registrationId:int}/RegistrationTaskStatus")]
+    [HttpGet("{registrationId:Guid}/RegistrationTaskStatus")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<RegistrationTaskDto>))]
     [SwaggerOperation(
         Summary = "get the task statuses of a registration",
