@@ -95,4 +95,68 @@ public class AccreditationControllerTests
         okResult!.Value.Should().Be(accreditation);
         _serviceMock.Verify(s => s.UpsertAccreditation(request), Times.Once);
     }
+
+    [TestMethod]
+    public async Task GetFileUploads_ShouldReturnOk_WithFileUploads()
+    {
+        // Arrange
+        var accreditationId = Guid.NewGuid();
+        var fileUploadTypeId = 1;
+        var fileUploadStatusId = 2;
+        var expected = new List<AccreditationFileUploadDto>
+        {
+            new AccreditationFileUploadDto { FileId = Guid.NewGuid(), Filename = "file1.txt" }
+        };
+
+        _serviceMock.Setup(s => s.GetFileUploads(accreditationId, fileUploadTypeId, fileUploadStatusId))
+            .ReturnsAsync(expected);
+
+        // Act
+        var result = await _controller.GetFileUploads(accreditationId, fileUploadTypeId, fileUploadStatusId);
+
+        // Assert
+        result.Should().BeOfType<OkObjectResult>();
+        var okResult = result as OkObjectResult;
+        okResult!.Value.Should().BeEquivalentTo(expected);
+        _serviceMock.Verify(s => s.GetFileUploads(accreditationId, fileUploadTypeId, fileUploadStatusId), Times.Once);
+    }
+
+    [TestMethod]
+    public async Task UpsertFileUpload_ShouldReturnOk_WithFileUpload()
+    {
+        // Arrange
+        var accreditationId = Guid.NewGuid();
+        var request = new AccreditationFileUploadDto { FileId = Guid.NewGuid(), Filename = "file2.txt" };
+        var expected = new AccreditationFileUploadDto { FileId = request.FileId, Filename = request.Filename };
+
+        _serviceMock.Setup(s => s.UpsertFileUpload(accreditationId, request))
+            .ReturnsAsync(expected);
+
+        // Act
+        var result = await _controller.UpsertFileUpload(accreditationId, request);
+
+        // Assert
+        result.Should().BeOfType<OkObjectResult>();
+        var okResult = result as OkObjectResult;
+        okResult!.Value.Should().BeEquivalentTo(expected);
+        _serviceMock.Verify(s => s.UpsertFileUpload(accreditationId, request), Times.Once);
+    }
+
+    [TestMethod]
+    public async Task DeleteFileUpload_ShouldReturnOk()
+    {
+        // Arrange
+        var accreditationId = Guid.NewGuid();
+        var fileId = Guid.NewGuid();
+
+        _serviceMock.Setup(s => s.DeleteFileUpload(accreditationId, fileId))
+            .Returns(Task.CompletedTask);
+
+        // Act
+        var result = await _controller.DeleteFileUpload(accreditationId, fileId);
+
+        // Assert
+        result.Should().BeOfType<OkResult>();
+        _serviceMock.Verify(s => s.DeleteFileUpload(accreditationId, fileId), Times.Once);
+    }
 }
