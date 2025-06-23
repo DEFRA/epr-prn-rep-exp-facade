@@ -7,7 +7,7 @@ namespace Epr.Reprocessor.Exporter.Facade.App.Models.ExporterJourney
     {
         public Guid Id { get; set; }
 
-        public int RegistrationId { get; set; }
+        public Guid RegistrationId { get; set; }
 
         public string WasteCarrierBrokerDealerRef { get; set; }
     }

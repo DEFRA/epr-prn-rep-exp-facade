@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Epr.Reprocessor.Exporter.Facade.Api.Controllers.ExporterJourney
 {
-	[Route("api/v{version:apiVersion}/ExporterRegistrations/other-permits")]
-	[ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/ExporterRegistrations")]
+    [ApiVersion("1.0")]
 	[ApiController]
 	public class OtherPermitsController : Controller
 	{
@@ -21,8 +21,8 @@ namespace Epr.Reprocessor.Exporter.Facade.Api.Controllers.ExporterJourney
 			_logger = logger;
 		}
 
-		[HttpGet("{registrationId}")]
-		[ProducesResponseType(typeof(string), 200)]
+        [HttpGet("{registrationId:Guid}/carrier-broker-dealer-permits")]
+        [ProducesResponseType(typeof(string), 200)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public async virtual Task<IActionResult> Get(Guid registrationId)
 		{
@@ -37,8 +37,8 @@ namespace Epr.Reprocessor.Exporter.Facade.Api.Controllers.ExporterJourney
         /// <param name="registrationId"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        [HttpPut("{registrationId}")]
-		[ProducesResponseType(StatusCodes.Status202Accepted)]
+        [HttpPut("{registrationId:Guid}/carrier-broker-dealer-permits")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
 		public async virtual Task<IActionResult> Put(Guid registrationId, [FromBody] CarrierBrokerDealerPermitsDto value)
 		{
 			await _service.Update(registrationId, value);
