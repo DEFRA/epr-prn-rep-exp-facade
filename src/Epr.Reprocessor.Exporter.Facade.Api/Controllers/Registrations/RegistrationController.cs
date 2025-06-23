@@ -32,7 +32,7 @@ public class RegistrationController : ControllerBase
     )]
     public async Task<IActionResult> GetRegistrationByOrganisation([FromRoute] int applicationTypeId, [FromRoute] Guid organisationId)
     {
-        _logger.LogInformation(string.Format(LogMessages.GetRegistrationByOrganisation, applicationTypeId, organisationId));
+        _logger.LogInformation(LogMessages.GetRegistrationByOrganisation, applicationTypeId, organisationId);
 
         var registration = await _registrationService.GetRegistrationByOrganisationAsync(applicationTypeId, organisationId);
 
@@ -115,9 +115,9 @@ public class RegistrationController : ControllerBase
         Summary = "get the task statuses of a registration",
         Description = "retrieving a list of task statuses for a registration."
     )]
-    public async Task<IActionResult> RegistrationTaskStatus([FromRoute] Guid registrationId )
+    public async Task<IActionResult> RegistrationTaskStatus([FromRoute] Guid registrationId)
     {
-        _logger.LogInformation(LogMessages.GetRegistrationOverview,registrationId);
+        _logger.LogInformation(LogMessages.GetRegistrationOverview, registrationId);
 
         var overview = await _registrationService.GetRegistrationOverviewAsync(registrationId);
 
