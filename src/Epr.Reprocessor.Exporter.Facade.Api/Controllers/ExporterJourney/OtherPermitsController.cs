@@ -30,18 +30,18 @@ namespace Epr.Reprocessor.Exporter.Facade.Api.Controllers.ExporterJourney
 			return dto == null ? NotFound() : Ok(dto);
 		}
 
-		[HttpPost]
-		public async virtual Task<IActionResult> Post([FromBody] OtherPermitsDto value)
-		{
-			var result = await _service.Create(value.RegistrationId, value);
-			return Ok(result);
-		}
-
-		[HttpPut("{id}")]
+        /// <summary>
+        /// A [CarrierBrokerDealerPermits] record can only be created by using the [WasteCarrierBrokerDealerRef] controller.
+		/// This method should be used to update individual data points within the record.
+        /// </summary>
+        /// <param name="registrationId"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        [HttpPut("{registrationId}")]
 		[ProducesResponseType(StatusCodes.Status202Accepted)]
-		public async virtual Task<IActionResult> Put(Guid id, [FromBody] OtherPermitsDto value)
+		public async virtual Task<IActionResult> Put(Guid registrationId, [FromBody] CarrierBrokerDealerPermitsDto value)
 		{
-			await _service.Update(id, value);
+			await _service.Update(registrationId, value);
 			return Accepted();
 		}
 	}

@@ -6,5 +6,5 @@ public interface IExporterServiceClient
 
 	Task<Guid> SendPostRequest<TBody>(string uri, TBody body);
 
-	Task<TBody> SendPutRequest<TBody>(string uri, TBody body);
+	Task SendPutRequest<TBody>(string uri, TBody body);
 }

@@ -30,8 +30,8 @@ public class ExporterServiceClient : BaseHttpClient, IExporterServiceClient
 		return await this.PostAsync<TBody, Guid>(uri, body);
 	}
 
-	public async Task<TBody> SendPutRequest<TBody>(string uri, TBody body)
+	public async Task SendPutRequest<TBody>(string uri, TBody body)
 	{
-		return await this.PutAsync<TBody, TBody>(uri, body);
+		await this.PutAsync<TBody>(uri, body);
 	}
 }

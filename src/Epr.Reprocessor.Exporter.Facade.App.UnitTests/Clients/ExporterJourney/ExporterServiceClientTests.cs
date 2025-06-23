@@ -1,26 +1,18 @@
 ﻿using AutoFixture;
-using Epr.Reprocessor.Exporter.Facade.App.Clients.Registrations;
 using Epr.Reprocessor.Exporter.Facade.App.Config;
-using Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq.Protected;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using Epr.Reprocessor.Exporter.Facade.App.Clients.ExporterJourney;
 using Epr.Reprocessor.Exporter.Facade.App.Models.ExporterJourney;
 using System.Text.Json;
-using Epr.Reprocessor.Exporter.Facade.App.Models.Accreditations;
 using FluentAssertions;
 
 namespace Epr.Reprocessor.Exporter.Facade.App.UnitTests.Clients.ExporterJourney
 {
-	[TestClass]
+    [TestClass]
 	public class ExporterServiceClientTests
 	{
 		private Fixture _fixture = null!;
@@ -61,7 +53,7 @@ namespace Epr.Reprocessor.Exporter.Facade.App.UnitTests.Clients.ExporterJourney
 		public async Task SendGetRequest_ShouldReturnExpectedResult()
 		{
 			// Arrange
-			var expected = _fixture.Create<OtherPermitsDto>();
+			var expected = _fixture.Create<CarrierBrokerDealerPermitsDto>();
 			var json = SerializeCamelCase(expected);
 			var url = $"api/v1/registration/1/other-permits";
 
@@ -81,7 +73,7 @@ namespace Epr.Reprocessor.Exporter.Facade.App.UnitTests.Clients.ExporterJourney
 				});
 
 			// Act
-			var result = await _client.SendGetRequest<OtherPermitsDto>(url);
+			var result = await _client.SendGetRequest<CarrierBrokerDealerPermitsDto>(url);
 
 			// Assert
 			result.Should().BeEquivalentTo(expected);
@@ -91,7 +83,7 @@ namespace Epr.Reprocessor.Exporter.Facade.App.UnitTests.Clients.ExporterJourney
 		public async Task SendPostRequest_ShouldReturnExpectedId()
 		{
 			// Arrange
-			var request = _fixture.Create<OtherPermitsDto>();
+			var request = _fixture.Create<CarrierBrokerDealerPermitsDto>();
 			var expected = Guid.NewGuid();
 			var json = SerializeCamelCase(expected);
 			var url = $"api/v1/registration/1/other-permits";
@@ -111,7 +103,7 @@ namespace Epr.Reprocessor.Exporter.Facade.App.UnitTests.Clients.ExporterJourney
 				});
 
 			// Act
-			var result = await _client.SendPostRequest<OtherPermitsDto>(url, request);
+			var result = await _client.SendPostRequest<CarrierBrokerDealerPermitsDto>(url, request);
 
 			// Assert
 			result.Should().Be(expected);
@@ -121,7 +113,7 @@ namespace Epr.Reprocessor.Exporter.Facade.App.UnitTests.Clients.ExporterJourney
 		public async Task SendPutRequest_ShouldReturnSuccessfully()
 		{
 			// Arrange
-			var request = _fixture.Create<OtherPermitsDto>();
+			var request = _fixture.Create<CarrierBrokerDealerPermitsDto>();
 			var expected = true;
 			var json = SerializeCamelCase(request);
 			var url = $"api/v1/registration/1/other-permits";
@@ -141,10 +133,7 @@ namespace Epr.Reprocessor.Exporter.Facade.App.UnitTests.Clients.ExporterJourney
 				});
 
 			// Act
-			var result = await _client.SendPutRequest<OtherPermitsDto>(url, request);
-
-			// Assert
-			result.Should().BeOfType(typeof(OtherPermitsDto));
+			await _client.SendPutRequest<CarrierBrokerDealerPermitsDto>(url, request);
 		}
 
 		private static string SerializeCamelCase<T>(T obj)

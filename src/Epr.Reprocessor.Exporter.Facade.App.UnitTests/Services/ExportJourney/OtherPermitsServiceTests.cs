@@ -35,9 +35,9 @@ namespace Epr.Reprocessor.Exporter.Facade.App.UnitTests.Services.ExportJourney
 			// Arrange
 			var baseUri = _options.Value.ExportEndpoints.OtherPermitsGet;
 			var registrationId = default(Guid);
-			var responseDto = new OtherPermitsDto
+			var responseDto = new CarrierBrokerDealerPermitsDto
 			{
-				Id = Guid.NewGuid(),
+                CarrierBrokerDealerPermitId = Guid.NewGuid(),
 				RegistrationId = registrationId,
 				PpcNumber = "ppcNumber",
 				WasteExemptionReference = new List<string>() { "ref1" },
@@ -45,7 +45,7 @@ namespace Epr.Reprocessor.Exporter.Facade.App.UnitTests.Services.ExportJourney
 			};
 
 			_mockServiceClient
-				.Setup(client => client.SendGetRequest<OtherPermitsDto>(baseUri))
+				.Setup(client => client.SendGetRequest<CarrierBrokerDealerPermitsDto>(baseUri))
 				.ReturnsAsync(responseDto);
 
 			_service = new OtherPermitsService(_mockServiceClient.Object, _options);
@@ -63,7 +63,7 @@ namespace Epr.Reprocessor.Exporter.Facade.App.UnitTests.Services.ExportJourney
 			// Arrange
 			var baseUri = _options.Value.ExportEndpoints.OtherPermitsPost;
 			var registrationId = default(Guid);
-			var requestDto = new OtherPermitsDto
+			var requestDto = new CarrierBrokerDealerPermitsDto
 			{
 				RegistrationId = registrationId,
 				PpcNumber = "ppcNumber",
@@ -91,9 +91,9 @@ namespace Epr.Reprocessor.Exporter.Facade.App.UnitTests.Services.ExportJourney
 			var registrationId = default(Guid);
 			var baseUri = _options.Value.ExportEndpoints.OtherPermitsPut;
 
-			var requestDto = new OtherPermitsDto
+			var requestDto = new CarrierBrokerDealerPermitsDto
 			{
-				Id = Guid.NewGuid(),
+                CarrierBrokerDealerPermitId = Guid.NewGuid(),
 				RegistrationId = registrationId,
 				PpcNumber = "ppcNumber",
 				WasteExemptionReference = new List<string> { "ref1" },
@@ -101,8 +101,8 @@ namespace Epr.Reprocessor.Exporter.Facade.App.UnitTests.Services.ExportJourney
 			};
 
 			_mockServiceClient
-				.Setup(client => client.SendPutRequest(It.IsAny<string>(), requestDto))
-				.ReturnsAsync(requestDto);
+				.Setup(client => client.SendPutRequest<CarrierBrokerDealerPermitsDto>(It.IsAny<string>(), requestDto))
+				.Returns(Task.CompletedTask);
 
 			// Act
 			var result = await _service.Update(registrationId, requestDto);

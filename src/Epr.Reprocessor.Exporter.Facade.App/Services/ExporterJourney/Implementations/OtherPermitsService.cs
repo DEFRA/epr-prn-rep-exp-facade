@@ -26,24 +26,24 @@ namespace Epr.Reprocessor.Exporter.Facade.App.Services.ExporterJourney.Implement
 			_basePutUrl = _config.ExportEndpoints.OtherPermitsPut;
 		}
 
-		public async Task<OtherPermitsDto> Get(Guid id)
+		public async Task<CarrierBrokerDealerPermitsDto> Get(Guid id)
 		{
 			var uri = string.Format(_baseGetUrl, _apiVersion, id);
-			var dto = await _apiClient.SendGetRequest<OtherPermitsDto>(uri);
+			var dto = await _apiClient.SendGetRequest<CarrierBrokerDealerPermitsDto>(uri);
 			return dto;
 		}
 
-		public async virtual Task<Guid> Create(Guid registrationId, OtherPermitsDto value)
+		public async virtual Task<Guid> Create(Guid registrationId, CarrierBrokerDealerPermitsDto value)
 		{
 			var uri = string.Format(_basePostUrl, _apiVersion, registrationId);
-			var result = await _apiClient.SendPostRequest<OtherPermitsDto>(uri, value);
+			var result = await _apiClient.SendPostRequest<CarrierBrokerDealerPermitsDto>(uri, value);
 			return result;
 		}
 
-		public async virtual Task<bool> Update(Guid registrationId, OtherPermitsDto value)
+		public async virtual Task<bool> Update(Guid registrationId, CarrierBrokerDealerPermitsDto value)
 		{
-			var uri = string.Format(_basePutUrl, _apiVersion, registrationId, value.Id);
-			var result = await _apiClient.SendPutRequest<OtherPermitsDto>(uri, value);
+			var uri = string.Format(_basePutUrl, _apiVersion, registrationId, value.CarrierBrokerDealerPermitId);
+			await _apiClient.SendPutRequest<CarrierBrokerDealerPermitsDto>(uri, value);
 			return true;
 		}
 	}

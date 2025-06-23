@@ -47,8 +47,8 @@ namespace Epr.Reprocessor.Exporter.Facade.App.Services.ExporterJourney.Implement
 
 		public async Task<bool> Update(int registrationId, WasteCarrierBrokerDealerRefDto value)
 		{
-			var uri = string.Format(_basePutUrl, _apiVersion, registrationId, value.Id);
-			var result = await _apiClient.SendPutRequest<WasteCarrierBrokerDealerRefDto>(uri, value);
+			var uri = string.Format(_basePutUrl, _apiVersion, registrationId);
+			await _apiClient.SendPutRequest<WasteCarrierBrokerDealerRefDto>(uri, value);
 			return true;
 		}
 	}
