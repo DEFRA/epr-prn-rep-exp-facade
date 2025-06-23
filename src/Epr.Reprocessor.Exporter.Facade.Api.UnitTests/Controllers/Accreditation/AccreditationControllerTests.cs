@@ -122,6 +122,25 @@ public class AccreditationControllerTests
     }
 
     [TestMethod]
+    public async Task GetFileUploads_FileUploadsNull_ReturnNotFound()
+    {
+        // Arrange
+        var accreditationId = Guid.NewGuid();
+        var fileUploadTypeId = 1;
+        var fileUploadStatusId = 2;
+
+        _serviceMock.Setup(s => s.GetFileUploads(accreditationId, fileUploadTypeId, fileUploadStatusId))
+            .ReturnsAsync((List<AccreditationFileUploadDto>?)null);
+
+        // Act
+        var result = await _controller.GetFileUploads(accreditationId, fileUploadTypeId, fileUploadStatusId);
+
+        // Assert
+        result.Should().BeOfType<NotFoundResult>();
+        _serviceMock.Verify(s => s.GetFileUploads(accreditationId, fileUploadTypeId, fileUploadStatusId), Times.Once);
+    }
+
+    [TestMethod]
     public async Task UpsertFileUpload_ShouldReturnOk_WithFileUpload()
     {
         // Arrange
