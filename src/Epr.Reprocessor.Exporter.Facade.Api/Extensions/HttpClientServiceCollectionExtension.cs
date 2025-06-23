@@ -28,6 +28,14 @@ public static class HttpClientServiceCollectionExtension
         .AddHttpMessageHandler<PrnBackendServiceAuthorisationHandler>()
         .AddPolicyHandler(GetRetryPolicy(prnServiceApiSettings.ServiceRetryCount));
 
+        services.AddHttpClient<IMaterialServiceClient, MaterialServiceClient>((sp, client) =>
+        {
+            client.BaseAddress = new Uri(prnServiceApiSettings.BaseUrl);
+            client.Timeout = TimeSpan.FromSeconds(prnServiceApiSettings.Timeout);
+        })
+        .AddHttpMessageHandler<PrnBackendServiceAuthorisationHandler>()
+        .AddPolicyHandler(GetRetryPolicy(prnServiceApiSettings.ServiceRetryCount));
+
         services.AddHttpClient<IAccreditationServiceClient, AccreditationServiceClient>((sp, client) =>
         {
             client.BaseAddress = new Uri(prnServiceApiSettings.BaseUrl);
@@ -43,6 +51,12 @@ public static class HttpClientServiceCollectionExtension
         })
         .AddHttpMessageHandler<PrnBackendServiceAuthorisationHandler>()
         .AddPolicyHandler(GetRetryPolicy(prnServiceApiSettings.ServiceRetryCount));
+       
+        services.AddHttpClient<IRegistrationMaterialServiceClient, RegistrationMaterialServiceClient>((sp, client) =>
+        {
+            client.BaseAddress = new Uri(prnServiceApiSettings.BaseUrl);
+            client.Timeout = TimeSpan.FromSeconds(prnServiceApiSettings.Timeout);
+        });
 
         return services;
     }
