@@ -12,14 +12,14 @@ namespace Epr.Reprocessor.Exporter.Facade.Api.UnitTests.Controllers.Registration
 public class RegistrationControllerTests
 {
     private Mock<IRegistrationService> _registrationServiceMock;
-    private Mock<ILogger<RegistrationController>> _loggerMock;
-    private RegistrationController _controller;
+    private Mock<ILogger<CountryController>> _loggerMock;
+    private CountryController _controller;
 
     [TestInitialize]
     public void SetUp()
     {
         _registrationServiceMock = new Mock<IRegistrationService>();
-        _loggerMock = new Mock<ILogger<RegistrationController>>();
+        _loggerMock = new Mock<ILogger<CountryController>>();
         _controller = new RegistrationController(_registrationServiceMock.Object, _loggerMock.Object);
     }
 
@@ -39,7 +39,7 @@ public class RegistrationControllerTests
     public void Constructor_ShouldThrowArgumentNullException_WhenLoggerIsNull()
     {
         // Arrange
-        Mock<ILogger<RegistrationController>> loggerMock =  null;
+        Mock<ILogger<CountryController>> loggerMock =  null;
 
         // Act
         _ = new RegistrationController(_registrationServiceMock.Object, loggerMock?.Object);
