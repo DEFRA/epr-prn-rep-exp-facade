@@ -52,7 +52,7 @@ public class RegistrationMaterialController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, ex.Message);
+            _logger.LogError(ex, LogMessages.UnExpectedError);
             return StatusCode(StatusCodes.Status500InternalServerError, LogMessages.UnExpectedError);
         }
     }
@@ -80,7 +80,7 @@ public class RegistrationMaterialController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, ex.Message);
+            _logger.LogError(ex, LogMessages.UnExpectedError);
             return StatusCode(StatusCodes.Status500InternalServerError, LogMessages.UnExpectedError);
         }
     }
@@ -158,7 +158,7 @@ public class RegistrationMaterialController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, ex.Message);
+            _logger.LogError(ex, LogMessages.UnExpectedError);
             return StatusCode(StatusCodes.Status500InternalServerError, LogMessages.UnExpectedError);
         }
     }
@@ -187,7 +187,7 @@ public class RegistrationMaterialController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, ex.Message);
+            _logger.LogError(ex, LogMessages.UnExpectedError);
             return StatusCode(StatusCodes.Status500InternalServerError, LogMessages.UnExpectedError);
         }
     }

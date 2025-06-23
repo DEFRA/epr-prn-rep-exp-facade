@@ -128,7 +128,7 @@ public class RegistrationMaterialControllerTests
             x => x.Log(
                 LogLevel.Error,
                 It.IsAny<EventId>(),
-                It.Is<It.IsAnyType>((v, t) => v.ToString().Contains(exception.Message)),
+                It.Is<It.IsAnyType>((v, t) => v.ToString().Contains(LogMessages.UnExpectedError)),
                 exception,
                 It.IsAny<Func<It.IsAnyType, Exception, string>>()
             ),

@@ -20,7 +20,10 @@ public class RegistrationServiceClientTests
     private Mock<IOptions<PrnBackendServiceApiConfig>> _mockOptions = null!;
     private Mock<ILogger<RegistrationServiceClient>> _mockLogger = null!;
     private Mock<HttpMessageHandler> _mockHttpMessageHandler = null!;
-
+    private static readonly JsonSerializerOptions JsonSerializerOptions = new()
+    {
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+    };
     private RegistrationServiceClient _client = null!;
 
     [TestInitialize]
@@ -129,10 +132,7 @@ public class RegistrationServiceClientTests
             .ReturnsAsync(new HttpResponseMessage
             {
                 StatusCode = HttpStatusCode.OK,
-                Content = new StringContent(JsonSerializer.Serialize(registrationDto, new JsonSerializerOptions
-                {
-                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-                }))
+                Content = new StringContent(JsonSerializer.Serialize(registrationDto, JsonSerializerOptions))
             });
 
         // Act

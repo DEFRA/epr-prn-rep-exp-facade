@@ -149,4 +149,21 @@ public class RegistrationMaterialServiceTests
         // Assert
         result.Should().BeEquivalentTo(registrationMaterials);
     }
+
+    [TestMethod]
+    public async Task Delete_ShouldReturnExpectedResult()
+    {
+        // Arrange
+        var registrationId = Guid.NewGuid();
+        
+        _clientMock
+            .Setup(client => client.DeleteAsync(registrationId))
+            .ReturnsAsync(true);
+
+        // Act
+        var result = await _service.Delete(registrationId);
+
+        // Assert
+        result.Should().BeTrue();
+    }
 }
