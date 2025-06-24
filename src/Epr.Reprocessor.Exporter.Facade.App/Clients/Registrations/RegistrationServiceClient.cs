@@ -88,7 +88,7 @@ ILogger<RegistrationServiceClient> logger)
     {
         logger.LogInformation("Attempting to get existing registrations overview for organisation with ID {OrganisationId}", organisationId);
 
-        var url = string.Format(Endpoints.GetRegistrationsOverviewByOrgId, _config.ApiVersion, organisationId);
+        var url = string.Format(Endpoints.Registration.GetRegistrationsOverviewByOrgId, _config.ApiVersion, organisationId);
 
         try
         {

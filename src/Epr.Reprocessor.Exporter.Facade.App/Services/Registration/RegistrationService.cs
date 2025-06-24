@@ -34,7 +34,6 @@ public class RegistrationService(IRegistrationServiceClient registrationServiceC
     {
         return await registrationServiceClient.GetRegistrationOverviewAsync(registrationId);
     }
-}
 
     public Task<IEnumerable<RegistrationsOverviewDto>> GetRegistrationsOverviewByOrgIdAsync(Guid organisationId)
     {

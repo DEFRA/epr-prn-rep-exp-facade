@@ -128,9 +128,6 @@ public class RegistrationController : ControllerBase
 
         return Ok(overview.Tasks);
     }
-}
-        return NoContent();
-    }
 
     [HttpGet("{organisationId:guid}/overview")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<RegistrationsOverviewDto>))]
