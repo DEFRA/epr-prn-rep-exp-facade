@@ -20,7 +20,10 @@ public class RegistrationServiceClientTests
     private Mock<IOptions<PrnBackendServiceApiConfig>> _mockOptions = null!;
     private Mock<ILogger<RegistrationServiceClient>> _mockLogger = null!;
     private Mock<HttpMessageHandler> _mockHttpMessageHandler = null!;
-
+    private static readonly JsonSerializerOptions JsonSerializerOptions = new()
+    {
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+    };
     private RegistrationServiceClient _client = null!;
 
     [TestInitialize]
@@ -54,7 +57,7 @@ public class RegistrationServiceClientTests
     public async Task UpdateSiteAddressAsync_ShouldReturnExpectedResult()
     {
         // Arrange
-        var registrationId = 1;
+        var registrationId = Guid.NewGuid();
         var requestDto = _fixture.Create<UpdateRegistrationSiteAddressDto>();
         _mockHttpMessageHandler.Protected()
             .Setup<Task<HttpResponseMessage>>(
@@ -81,7 +84,7 @@ public class RegistrationServiceClientTests
     public async Task UpdateTaskStatusAsync_ShouldReturnExpectedResult()
     {
         // Arrange
-        var registrationId = 1;
+        var registrationId = Guid.NewGuid();
         var requestDto = _fixture.Create<UpdateRegistrationTaskStatusDto>();
         _mockHttpMessageHandler.Protected()
             .Setup<Task<HttpResponseMessage>>(
@@ -108,10 +111,11 @@ public class RegistrationServiceClientTests
     public async Task GetRegistrationByOrganisationAsync_Exists_ReturnDto()
     {
         // Arrange
+        var registrationId = Guid.NewGuid();
         var organisationId = Guid.NewGuid();
         var registrationDto = new RegistrationDto
         {
-            Id = 1,
+            Id = registrationId,
             ApplicationTypeId = 2,
             OrganisationId = organisationId
         };
@@ -128,10 +132,7 @@ public class RegistrationServiceClientTests
             .ReturnsAsync(new HttpResponseMessage
             {
                 StatusCode = HttpStatusCode.OK,
-                Content = new StringContent(JsonSerializer.Serialize(registrationDto, new JsonSerializerOptions
-                {
-                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-                }))
+                Content = new StringContent(JsonSerializer.Serialize(registrationDto, JsonSerializerOptions))
             });
 
         // Act
@@ -199,9 +200,9 @@ public class RegistrationServiceClientTests
     public async Task UpdateAsync_ShouldReturnExpectedResult()
     {
         // Arrange
-        var registrationId = 1;
+        var registrationId = Guid.NewGuid();
         var requestDto = _fixture.Create<UpdateRegistrationDto>();
-        var url = "api/v1/registrations/1/update";
+        var url = $"api/v1/registrations/{registrationId}/update";
         _mockHttpMessageHandler.Protected()
             .Setup<Task<HttpResponseMessage>>(
                 "SendAsync",

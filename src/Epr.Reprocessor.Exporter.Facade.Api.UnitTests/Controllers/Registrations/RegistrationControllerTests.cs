@@ -1,4 +1,5 @@
 ﻿using Epr.Reprocessor.Exporter.Facade.Api.Controllers.Registrations;
+using Epr.Reprocessor.Exporter.Facade.App.Clients.Registrations;
 using Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
 using Epr.Reprocessor.Exporter.Facade.App.Services.Registration;
 using FluentAssertions;
@@ -49,7 +50,7 @@ public class RegistrationControllerTests
     public async Task UpdateSiteAddress_ShouldReturnNoContentResult()
     {
         // Arrange
-        var registrationId = 1;
+        var registrationId = Guid.NewGuid();
         var request = new UpdateRegistrationSiteAddressDto();
 
         // Act
@@ -64,7 +65,7 @@ public class RegistrationControllerTests
     public async Task UpdateRegistrationTaskStatus_ShouldReturnNoContentResult()
     {
         // Arrange
-        var registrationId = 1;
+        var registrationId = Guid.NewGuid();
         var request = new UpdateRegistrationTaskStatusDto();
 
         // Act
@@ -92,6 +93,7 @@ public class RegistrationControllerTests
     public async Task CreateRegistration_PopulatedValuesShouldCallService()
     {
         // Arrange
+        var id = Guid.NewGuid();
         var request = new CreateRegistrationDto
         {
             ApplicationTypeId = 1,
@@ -108,12 +110,18 @@ public class RegistrationControllerTests
             }
         };
 
-        var expectedResult = new CreatedResult(string.Empty, 1);
+        var expectedResult = new CreatedResult(string.Empty, new CreateRegistrationResponseDto
+        {
+            Id = id
+        });
 
         // Expectations
         _registrationServiceMock
             .Setup(s => s.CreateRegistrationAsync(request))
-            .ReturnsAsync(1);
+            .ReturnsAsync(new CreateRegistrationResponseDto
+            {
+                Id = id
+            });
 
         // Act
         var result = await _controller.CreateRegistration(request);
@@ -126,6 +134,7 @@ public class RegistrationControllerTests
     public async Task UpdateRegistration_PopulatedValuesShouldCallService()
     {
         // Arrange
+        var registrationId = Guid.NewGuid();
         var request = new UpdateRegistrationDto
         {
             ReprocessingSiteAddress = new()
@@ -162,11 +171,11 @@ public class RegistrationControllerTests
 
         // Expectations
         _registrationServiceMock
-            .Setup(s => s.UpdateAsync(1, request))
+            .Setup(s => s.UpdateAsync(registrationId, request))
             .ReturnsAsync(true);
 
         // Act
-        var result = await _controller.UpdateAsync(1, request);
+        var result = await _controller.UpdateAsync(registrationId, request);
 
         // Assert
         result.Should().BeOfType<NoContentResult>();
@@ -180,8 +189,7 @@ public class RegistrationControllerTests
         var registration = new RegistrationDto
         {
             ApplicationTypeId = 1,
-            ExternalId = Guid.NewGuid(),
-            Id = 1,
+            Id = Guid.NewGuid(),
             OrganisationId = Guid.NewGuid(),
             ReprocessingSiteAddress = new()
             {
@@ -247,5 +255,36 @@ public class RegistrationControllerTests
 
         // Assert
         result.Should().BeEquivalentTo(expectedResult);
+    } 
+
+    [TestMethod]
+    public async Task RegistrationOverview_ShouldReturnNoContentResult()
+    {
+        // Arrange
+        var registrationId = Guid.NewGuid();
+        var request = new RegistrationOverviewDto { OrganisationName = "Org Name",Regulator = "UK"};
+
+        // Act
+        var result = await _controller.RegistrationTaskStatus(registrationId);
+
+        // Assert
+        result.Should().BeOfType<NoContentResult>();
+        _registrationServiceMock.Verify(s => s.GetRegistrationOverviewAsync(registrationId), Times.Once);
+    }
+
+    [TestMethod]
+    public async Task RegistrationOverview_ShouldReturnContentResult()
+    {
+        // Arrange
+        var registrationId = Guid.NewGuid();
+        var request = new RegistrationOverviewDto { OrganisationName = "Org Name", Regulator = "UK" };
+        _registrationServiceMock.Setup(r => r.GetRegistrationOverviewAsync(registrationId)).ReturnsAsync(request);
+
+        // Act
+        var result = await _controller.RegistrationTaskStatus(registrationId);
+
+        // Assert
+        result.Should().BeOfType<OkObjectResult>(); 
+        _registrationServiceMock.Verify(s => s.GetRegistrationOverviewAsync(registrationId), Times.Once);
     }
 }
