@@ -11,4 +11,5 @@ public interface IRegistrationMaterialServiceClient
     Task<List<MaterialsPermitTypeDto>> GetMaterialsPermitTypesAsync();
     Task<List<ApplicationRegistrationMaterialDto>> GetAllRegistrationMaterialsAsync(Guid registrationId);
     Task<bool> DeleteAsync(Guid registrationMaterialId);
+    Task<bool> UpdateMaximumWeightAsync(Guid registrationMaterialId, UpdateMaximumWeightDto request);
 }

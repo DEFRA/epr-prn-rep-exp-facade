@@ -16,6 +16,7 @@ public static class LogMessages
     public const string UpdateRegistrationMaterialPermits = "Attempting to update registration material permits with External ID {Id}";
     public const string UpdateRegistrationMaterialPermitCapacity = "Attempting to update registration material permit capacity with External ID {Id}";
     public const string GetMaterialsPermitTypes = "Attempting to get material permit types";
+    public const string UpdateMaximumWeight = "Attempting to update the maximum weight the site is capable of processing for the material {0}.";
 
     public const string GetRegistrationOverview = "Attempting to get the overview for registration id {RegistrationId}";
     public const string GetAllMaterials = "Attempting to retrieve a list of applicable materials";
