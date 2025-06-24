@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Epr.Reprocessor.Exporter.Facade.Api.Controllers.ExporterJourney
 {
-	[Route("api/v{version:apiVersion}/ExporterRegistrations/carrier-broker-dealer")]
+    [Route("api/v{version:apiVersion}/ExporterRegistrations")]
 	[ApiVersion("1.0")]
 	[ApiController]
 	public class WasteCarrierBrokerDealerRefController : Controller
@@ -22,10 +22,10 @@ namespace Epr.Reprocessor.Exporter.Facade.Api.Controllers.ExporterJourney
 			_logger = logger;
 		}
 
-		[HttpGet("{registrationId}")]
-		[ProducesResponseType(typeof(string), 200)]
+        [HttpGet("{registrationId:Guid}/waste-carrier-broker-dealer-ref")]
+        [ProducesResponseType(typeof(string), 200)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		public async virtual Task<IActionResult> Get(int registrationId)
+		public async virtual Task<IActionResult> Get(Guid registrationId)
 		{
 			var dto = await _service.Get(registrationId);
 			return dto == null ? NotFound() : Ok(dto);
@@ -38,11 +38,11 @@ namespace Epr.Reprocessor.Exporter.Facade.Api.Controllers.ExporterJourney
 			return Ok(result);
 		}
 
-		[HttpPut("{id}")]
-		[ProducesResponseType(StatusCodes.Status202Accepted)]
-		public async virtual Task<IActionResult> Put(int id, [FromBody] WasteCarrierBrokerDealerRefDto value)
+        [HttpPut("{registrationId:Guid}/waste-carrier-broker-dealer-ref")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+		public async virtual Task<IActionResult> Put(Guid registrationId, [FromBody] WasteCarrierBrokerDealerRefDto value)
 		{
-			await _service.Update(id, value);
+			await _service.Update(registrationId, value);
 			return Accepted();
 		}
 	}

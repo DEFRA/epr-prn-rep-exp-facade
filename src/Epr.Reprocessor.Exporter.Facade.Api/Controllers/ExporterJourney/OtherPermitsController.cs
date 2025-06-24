@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Epr.Reprocessor.Exporter.Facade.Api.Controllers.ExporterJourney
 {
-	[Route("api/v{version:apiVersion}/ExporterRegistrations/other-permits")]
-	[ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/ExporterRegistrations")]
+    [ApiVersion("1.0")]
 	[ApiController]
 	public class OtherPermitsController : Controller
 	{
@@ -21,8 +21,8 @@ namespace Epr.Reprocessor.Exporter.Facade.Api.Controllers.ExporterJourney
 			_logger = logger;
 		}
 
-		[HttpGet("{registrationId}")]
-		[ProducesResponseType(typeof(string), 200)]
+        [HttpGet("{registrationId:Guid}/carrier-broker-dealer-permits")]
+        [ProducesResponseType(typeof(string), 200)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public async virtual Task<IActionResult> Get(Guid registrationId)
 		{
@@ -30,18 +30,18 @@ namespace Epr.Reprocessor.Exporter.Facade.Api.Controllers.ExporterJourney
 			return dto == null ? NotFound() : Ok(dto);
 		}
 
-		[HttpPost]
-		public async virtual Task<IActionResult> Post([FromBody] OtherPermitsDto value)
+        /// <summary>
+        /// A [CarrierBrokerDealerPermits] record can only be created by using the [WasteCarrierBrokerDealerRef] controller.
+		/// This method should be used to update individual data points within the record.
+        /// </summary>
+        /// <param name="registrationId"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        [HttpPut("{registrationId:Guid}/carrier-broker-dealer-permits")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+		public async virtual Task<IActionResult> Put(Guid registrationId, [FromBody] CarrierBrokerDealerPermitsDto value)
 		{
-			var result = await _service.Create(value.RegistrationId, value);
-			return Ok(result);
-		}
-
-		[HttpPut("{id}")]
-		[ProducesResponseType(StatusCodes.Status202Accepted)]
-		public async virtual Task<IActionResult> Put(Guid id, [FromBody] OtherPermitsDto value)
-		{
-			await _service.Update(id, value);
+			await _service.Update(registrationId, value);
 			return Accepted();
 		}
 	}

@@ -44,7 +44,7 @@ namespace Epr.Reprocessor.Exporter.Facade.Api.UnitTests.Controllers.ExporterJour
 		{
 			// Arrange
 			var registrationId = default(Guid);
-			var otherPermitDto = new OtherPermitsDto { RegistrationId = registrationId };
+			var otherPermitDto = new CarrierBrokerDealerPermitsDto { RegistrationId = registrationId };
 			_serviceMock.Setup(s => s.Get(registrationId))
 				.ReturnsAsync(otherPermitDto);
 
@@ -64,7 +64,7 @@ namespace Epr.Reprocessor.Exporter.Facade.Api.UnitTests.Controllers.ExporterJour
 			// Arrange
 			var registrationId = default(Guid);
 			_serviceMock.Setup(s => s.Get(registrationId))
-				.ReturnsAsync((OtherPermitsDto?)null);
+				.ReturnsAsync((CarrierBrokerDealerPermitsDto?)null);
 
 			// Act
 			var result = await _controller.Get(registrationId);
@@ -74,33 +74,12 @@ namespace Epr.Reprocessor.Exporter.Facade.Api.UnitTests.Controllers.ExporterJour
 			_serviceMock.Verify(s => s.Get(registrationId), Times.Once);
 		}
 
-
-		[TestMethod]
-		public async Task Post_ShouldReturnOk_WithCreatedOtherPermits()
-		{
-			// Arrange
-			var registrationId = default(Guid);
-			var request = new OtherPermitsDto { RegistrationId = registrationId };
-			var response = new OtherPermitsDto { RegistrationId = request.RegistrationId, Id = Guid.NewGuid() };
-			_serviceMock.Setup(s => s.Create(registrationId, request))
-				.ReturnsAsync(response.Id);
-
-			// Act
-			var result = await _controller.Post(request);
-
-			// Assert
-			result.Should().BeOfType<OkObjectResult>();
-			var okResult = result as OkObjectResult;
-			result.Equals(response.Id);
-			_serviceMock.Verify(s => s.Create(registrationId, request), Times.Once);
-		}
-
 		[TestMethod]
 		public async Task Put_WithUpdatedOtherPermits_ShouldReturnNoContentResult()
 		{
 			// Arrange
 			var registrationId = default(Guid);
-			var request = new OtherPermitsDto();
+			var request = new CarrierBrokerDealerPermitsDto();
 
 			// Act
 			var result = await _controller.Put(registrationId, request);

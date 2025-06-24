@@ -96,7 +96,7 @@ namespace Epr.Reprocessor.Exporter.Facade.App.UnitTests.Services.ExportJourney
 
 			_mockServiceClient
 				.Setup(client => client.SendPutRequest(It.IsAny<string>(), requestDto))
-				.ReturnsAsync(requestDto);
+				.Returns(Task.CompletedTask);
 
 			// Act
 			var result = await _service.Update(registrationId, requestDto);
@@ -111,7 +111,7 @@ namespace Epr.Reprocessor.Exporter.Facade.App.UnitTests.Services.ExportJourney
 			{
 				WasteCarrierBrokerDealerRefGet = "api/v{0}/registrations/{1}/waste-carrier-broker-dealer-ref",
 				WasteCarrierBrokerDealerRefPost = "api/v{0}/registrations/{1}/waste-carrier-broker-dealer-ref",
-				WasteCarrierBrokerDealerRefPut = "api/v{0}/registrations/{1}/waste-carrier-broker-dealer-ref/{2}"
+				WasteCarrierBrokerDealerRefPut = "api/v{0}/registrations/{1}/waste-carrier-broker-dealer-ref"
 			};
 
 			var options = Options.Create<PrnBackendServiceApiConfig>(new PrnBackendServiceApiConfig

@@ -3,15 +3,10 @@ using Epr.Reprocessor.Exporter.Facade.App.Config;
 using Epr.Reprocessor.Exporter.Facade.App.Models.ExporterJourney;
 using Epr.Reprocessor.Exporter.Facade.App.Services.ExporterJourney.Interfaces;
 using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Epr.Reprocessor.Exporter.Facade.App.Services.ExporterJourney.Implementations
 {
-	public class WasteCarrierBrokerDealerRefService : IWasteCarrierBrokerDealerRefService
+    public class WasteCarrierBrokerDealerRefService : IWasteCarrierBrokerDealerRefService
 	{
 		private readonly PrnBackendServiceApiConfig _config;
 		private readonly IExporterServiceClient _apiClient;
@@ -31,24 +26,24 @@ namespace Epr.Reprocessor.Exporter.Facade.App.Services.ExporterJourney.Implement
 			_basePutUrl = _config.ExportEndpoints.WasteCarrierBrokerDealerRefPut;
 		}
 
-		public async Task<Guid> Create(int registrationId, WasteCarrierBrokerDealerRefDto value)
+		public async Task<Guid> Create(Guid registrationId, WasteCarrierBrokerDealerRefDto value)
 		{
 			var uri = string.Format(_basePostUrl, _apiVersion, registrationId);
 			var result = await _apiClient.SendPostRequest<WasteCarrierBrokerDealerRefDto>(uri, value);
 			return result;
 		}
 
-		public async Task<WasteCarrierBrokerDealerRefDto> Get(int registrationId)
+		public async Task<WasteCarrierBrokerDealerRefDto> Get(Guid registrationId)
 		{
 			var uri = string.Format(_baseGetUrl, _apiVersion, registrationId);
 			var dto = await _apiClient.SendGetRequest<WasteCarrierBrokerDealerRefDto>(uri);
 			return dto;
 		}
 
-		public async Task<bool> Update(int registrationId, WasteCarrierBrokerDealerRefDto value)
+		public async Task<bool> Update(Guid registrationId, WasteCarrierBrokerDealerRefDto value)
 		{
-			var uri = string.Format(_basePutUrl, _apiVersion, registrationId, value.Id);
-			var result = await _apiClient.SendPutRequest<WasteCarrierBrokerDealerRefDto>(uri, value);
+			var uri = string.Format(_basePutUrl, _apiVersion, registrationId);
+			await _apiClient.SendPutRequest<WasteCarrierBrokerDealerRefDto>(uri, value);
 			return true;
 		}
 	}

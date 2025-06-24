@@ -4,10 +4,10 @@ namespace Epr.Reprocessor.Exporter.Facade.App.Services.ExporterJourney.Interface
 {
     public interface IWasteCarrierBrokerDealerRefService
     {
-        Task<WasteCarrierBrokerDealerRefDto> Get(int registrationId);
+        Task<WasteCarrierBrokerDealerRefDto> Get(Guid registrationId);
 
-        Task<Guid> Create(int registrationId, WasteCarrierBrokerDealerRefDto value);
+        Task<Guid> Create(Guid registrationId, WasteCarrierBrokerDealerRefDto value);
 
-        Task<bool> Update(int registrationId, WasteCarrierBrokerDealerRefDto value);
+        Task<bool> Update(Guid registrationId, WasteCarrierBrokerDealerRefDto value);
     }
 }
