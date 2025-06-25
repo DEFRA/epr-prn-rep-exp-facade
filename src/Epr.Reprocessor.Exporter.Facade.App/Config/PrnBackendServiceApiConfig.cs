@@ -30,6 +30,9 @@ public class PrnServiceApiConfigEndpoints
     public string AccreditationPost { get; set; }
     public string AccreditationPrnIssueAuthGet { get; set; }
     public string AccreditationPrnIssueAuthPost { get; set; }
+    public string AccreditationFileUploadGet { get; set; }
+    public string AccreditationFileUploadPost { get; set; }
+    public string AccreditationFileUploadDelete { get; set; }
 }
 
 [ExcludeFromCodeCoverage]
