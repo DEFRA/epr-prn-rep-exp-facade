@@ -34,12 +34,12 @@ namespace Epr.Reprocessor.Exporter.Facade.App.UnitTests.Services.ExportJourney
 		{
 			// Arrange
 			var baseUri = _options.Value.ExportEndpoints.WasteCarrierBrokerDealerRefGet;
-			var registrationId = 1;
+			var registrationId = Guid.NewGuid();
 			var responseDto = new WasteCarrierBrokerDealerRefDto
 			{
 				Id = Guid.NewGuid(),
 				RegistrationId = registrationId, 
-				WasteCarrierBrokerDealerRef = "abc"
+				WasteCarrierBrokerDealerRegistration = "abc"
 			};
 
 			_mockServiceClient
@@ -60,14 +60,15 @@ namespace Epr.Reprocessor.Exporter.Facade.App.UnitTests.Services.ExportJourney
 		{
 			// Arrange
 			var baseUri = _options.Value.ExportEndpoints.WasteCarrierBrokerDealerRefPost;
-			var registrationId = 1;
-			var requestDto = new WasteCarrierBrokerDealerRefDto
-			{
-				RegistrationId = registrationId,
-				WasteCarrierBrokerDealerRef = "abc"
-			};
+            var registrationId = Guid.NewGuid();
+            var requestDto = new WasteCarrierBrokerDealerRefDto
+            {
+                Id = Guid.NewGuid(),
+                RegistrationId = registrationId,
+                WasteCarrierBrokerDealerRegistration = "abc"
+            };
 
-			var newId = Guid.NewGuid();
+            var newId = Guid.NewGuid();
 
 			_mockServiceClient
 				.Setup(client => client.SendPostRequest(It.IsAny<string>(), requestDto))
@@ -83,15 +84,15 @@ namespace Epr.Reprocessor.Exporter.Facade.App.UnitTests.Services.ExportJourney
 		[TestMethod]
 		public async Task UpdateWasteCarrierBrokerDealerRef_ShouldReturnExpectedResult()
 		{
-			// Arrange
-			var registrationId = 1;
-			var baseUri = _options.Value.ExportEndpoints.WasteCarrierBrokerDealerRefPut;
+            // Arrange
+            var registrationId = Guid.NewGuid();
+            var baseUri = _options.Value.ExportEndpoints.WasteCarrierBrokerDealerRefPut;
 
 			var requestDto = new WasteCarrierBrokerDealerRefDto
 			{
 				Id = Guid.NewGuid(),
 				RegistrationId = registrationId,
-				WasteCarrierBrokerDealerRef = "abc"
+				WasteCarrierBrokerDealerRegistration = "abc"
 			};
 
 			_mockServiceClient

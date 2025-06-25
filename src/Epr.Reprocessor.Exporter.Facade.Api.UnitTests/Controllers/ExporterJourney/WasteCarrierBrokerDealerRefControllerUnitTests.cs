@@ -40,7 +40,7 @@ namespace Epr.Reprocessor.Exporter.Facade.Api.UnitTests.Controllers.ExporterJour
         [TestMethod]
         public async Task Get_ShouldReturnOk_WhenDataObjectWithRegistrationIdExists()
         {
-            var registrationId = 1;
+            var registrationId = Guid.NewGuid();
             var dto = new WasteCarrierBrokerDealerRefDto { RegistrationId = registrationId };
             _serviceMock.Setup(s => s.Get(registrationId)).ReturnsAsync(dto);
 
@@ -55,7 +55,7 @@ namespace Epr.Reprocessor.Exporter.Facade.Api.UnitTests.Controllers.ExporterJour
         [TestMethod]
         public async Task Get_ShouldReturnNotFound_WhenDataObjectDoesNotExist()
         {
-            var registrationId = 1;
+            var registrationId = Guid.NewGuid();
             _serviceMock.Setup(s => s.Get(registrationId)).ReturnsAsync((WasteCarrierBrokerDealerRefDto?)null);
 
             var result = await _controller.Get(registrationId);
@@ -67,7 +67,7 @@ namespace Epr.Reprocessor.Exporter.Facade.Api.UnitTests.Controllers.ExporterJour
         [TestMethod]
         public async Task Post_ShouldReturnOk_WithCreatedId()
         {
-            var registrationId = 1;
+            var registrationId = Guid.NewGuid();
             var request = new WasteCarrierBrokerDealerRefDto { RegistrationId = registrationId };
             var createdId = Guid.NewGuid();
             _serviceMock.Setup(s => s.Create(registrationId, request)).ReturnsAsync(createdId);
@@ -83,7 +83,7 @@ namespace Epr.Reprocessor.Exporter.Facade.Api.UnitTests.Controllers.ExporterJour
         [TestMethod]
         public async Task Put_ShouldReturnAccepted_WhenUpdateSucceeds()
         {
-            var registrationId = 1;
+            var registrationId = Guid.NewGuid();
             var request = new WasteCarrierBrokerDealerRefDto();
             _serviceMock.Setup(s => s.Update(registrationId, request)).ReturnsAsync(true);
 

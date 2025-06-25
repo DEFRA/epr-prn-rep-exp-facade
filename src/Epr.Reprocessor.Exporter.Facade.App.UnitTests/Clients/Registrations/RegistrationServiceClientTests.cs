@@ -3,6 +3,7 @@ using System.Text.Json;
 using AutoFixture;
 using Epr.Reprocessor.Exporter.Facade.App.Clients.Registrations;
 using Epr.Reprocessor.Exporter.Facade.App.Config;
+using Epr.Reprocessor.Exporter.Facade.App.Enums;
 using Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
@@ -47,10 +48,103 @@ public class RegistrationServiceClientTests
             ServiceRetryCount = 3,
             Endpoints = new PrnServiceApiConfigEndpoints
             {
+                
             }
         });
 
         _client = new RegistrationServiceClient(httpClient, _mockOptions.Object, _mockLogger.Object);
+    }
+
+    [TestMethod]
+    public async Task GetRegistrationOverviewAsync_ShouldReturnOverview_WhenExists()
+    {
+        // Arrange
+        var registrationId = Guid.NewGuid();
+        var overviewDto = new RegistrationOverviewDto
+        {
+            Id = 1,
+            OrganisationName = "Test Org",
+            Regulator = "Test Regulator",
+            OrganisationType = ApplicationOrganisationType.Reprocessor,
+            Tasks = new List<RegistrationTaskDto>(),
+            Materials = new List<RegistrationMaterialDto>()
+        };
+
+        // The URL must match the format used in RegistrationServiceClient
+        // e.g. "api/v1/registrations/{registrationId}/overview"
+        var url = $"api/v1/registrations/{registrationId}/overview";
+
+        _mockHttpMessageHandler.Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.Is<HttpRequestMessage>(msg =>
+                    msg.Method == HttpMethod.Get &&
+                    msg.RequestUri!.ToString().EndsWith(url)),
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .ReturnsAsync(new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = new StringContent(JsonSerializer.Serialize(overviewDto, JsonSerializerOptions))
+            });
+
+        // Act
+        var result = await _client.GetRegistrationOverviewAsync(registrationId);
+
+        // Assert
+        result.Should().BeEquivalentTo(overviewDto);
+    }
+
+    [TestMethod]
+    public async Task GetRegistrationOverviewAsync_ShouldThrowException_WhenNotFound()
+    {
+        // Arrange
+        var registrationId = Guid.NewGuid();
+        var url = $"api/v1/registrations/{registrationId}/overview";
+        _mockHttpMessageHandler.Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.Is<HttpRequestMessage>(msg =>
+                    msg.Method == HttpMethod.Get &&
+                    msg.RequestUri!.ToString().EndsWith(url)),
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .ReturnsAsync(new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.NotFound
+            });
+
+        // Act
+        var act = async () => await _client.GetRegistrationOverviewAsync(registrationId);
+
+        // Assert
+        await act.Should().ThrowAsync<Exception>();
+    }
+
+    [TestMethod]
+    public async Task GetRegistrationOverviewAsync_ShouldThrowException_OnServerError()
+    {
+        // Arrange
+        var registrationId = Guid.NewGuid();
+        var url = $"api/v1/registrations/{registrationId}/overview";
+        _mockHttpMessageHandler.Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.Is<HttpRequestMessage>(msg =>
+                    msg.Method == HttpMethod.Get &&
+                    msg.RequestUri!.ToString().EndsWith(url)),
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .ReturnsAsync(new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.InternalServerError
+            });
+
+        // Act
+        var act = async () => await _client.GetRegistrationOverviewAsync(registrationId);
+
+        // Assert
+        await act.Should().ThrowAsync<Exception>();
     }
 
     [TestMethod]
