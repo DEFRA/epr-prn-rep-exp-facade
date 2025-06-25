@@ -70,9 +70,8 @@ public class RegistrationServiceClientTests
             Materials = new List<RegistrationMaterialDto>()
         };
 
-        // The URL must match the format used in RegistrationServiceClient
-        // e.g. "api/v1/registrations/{registrationId}/overview"
-        var url = $"api/v1/registrations/{registrationId}/overview";
+        // Use the same URL format as the implementation
+        var url = string.Format("api/v{0}/registrations/{1}", 1, registrationId);
 
         _mockHttpMessageHandler.Protected()
             .Setup<Task<HttpResponseMessage>>(

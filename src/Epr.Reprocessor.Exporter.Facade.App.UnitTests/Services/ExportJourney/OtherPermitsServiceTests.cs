@@ -28,34 +28,48 @@ namespace Epr.Reprocessor.Exporter.Facade.App.UnitTests.Services.ExportJourney
 			_service = new OtherPermitsService(_mockServiceClient.Object, _options);
 		}
 
-		[TestMethod]
-		[Ignore]
-		public async Task GetOtherPermits_ValidRegistrationId_ShouldReturnOtherPermits()
-		{
-			// Arrange
-			var baseUri = _options.Value.ExportEndpoints.OtherPermitsGet;
-			var registrationId = default(Guid);
-			var responseDto = new CarrierBrokerDealerPermitsDto
-			{
+        [TestMethod]
+        public async Task Get_ShouldReturnDto_WhenApiReturnsDto()
+        {
+            // Arrange
+            var registrationId = Guid.NewGuid();
+            var apiVersion = 1;
+            var expectedDto = new CarrierBrokerDealerPermitsDto
+            {
                 CarrierBrokerDealerPermitId = Guid.NewGuid(),
-				RegistrationId = registrationId,
-				PpcNumber = "ppcNumber",
-				WasteExemptionReference = new List<string>() { "ref1" },
-				WasteLicenseOrPermitNumber = "permitNumber"
-			};
+                RegistrationId = registrationId,
+                WasteLicenseOrPermitNumber = "WASTE123",
+                PpcNumber = "PPC456",
+                WasteExemptionReference = new List<string> { "EX1", "EX2" }
+            };
 
-			_mockServiceClient
-				.Setup(client => client.SendGetRequest<CarrierBrokerDealerPermitsDto>(baseUri))
-				.ReturnsAsync(responseDto);
+            var config = new PrnBackendServiceApiConfig
+            {
+                ApiVersion = apiVersion,
+                ExportEndpoints = new PrnServiceApiConfigExportEndpoints
+                {
+                    OtherPermitsGet = "api/v{0}/registrations/{1}/other-permits"
+                }
+            };
 
-			_service = new OtherPermitsService(_mockServiceClient.Object, _options);
+            var mockApiClient = new Mock<IExporterServiceClient>();
+            var options = Options.Create(config);
 
-			// Act
-			var result = await _service.Get(registrationId);
+            var expectedUrl = string.Format(config.ExportEndpoints.OtherPermitsGet, apiVersion, registrationId);
 
-			// Assert
-			result.Should().BeNull();
-		}
+            mockApiClient
+                .Setup(x => x.SendGetRequest<CarrierBrokerDealerPermitsDto>(expectedUrl))
+                .ReturnsAsync(expectedDto);
+
+            var service = new OtherPermitsService(mockApiClient.Object, options);
+
+            // Act
+            var result = await service.Get(registrationId);
+
+            // Assert
+            result.Should().BeEquivalentTo(expectedDto);
+            mockApiClient.Verify(x => x.SendGetRequest<CarrierBrokerDealerPermitsDto>(expectedUrl), Times.Once);
+        }
 
 		[TestMethod]
 		public async Task CreateOtherPermits_ShouldReturnNewId()

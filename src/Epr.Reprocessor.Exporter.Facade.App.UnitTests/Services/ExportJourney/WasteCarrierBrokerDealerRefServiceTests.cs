@@ -29,7 +29,6 @@ namespace Epr.Reprocessor.Exporter.Facade.App.UnitTests.Services.ExportJourney
 		}
 
 		[TestMethod]
-		[Ignore]
 		public async Task GetWasteCarrierBrokerDealerRef_ValidRegistrationId_ShouldReturnWasteCarrierBrokerDealerRef()
 		{
 			// Arrange
