@@ -1,4 +1,6 @@
-﻿namespace Epr.Reprocessor.Exporter.Facade.App.Constants;
+﻿using static Epr.Reprocessor.Exporter.Facade.App.Constants.Endpoints;
+
+namespace Epr.Reprocessor.Exporter.Facade.App.Constants;
 public static class LogMessages
 {
     public const string CreateRegistration = "Attempting to create registration application";
@@ -15,9 +17,10 @@ public static class LogMessages
     public const string GetRegistrationByOrganisation = "Attempting to get registration of type {ApplicationTypeId} for organisation with ID {OrganisationId}";
     public const string UpdateRegistrationMaterialPermits = "Attempting to update registration material permits with External ID {Id}";
     public const string UpdateRegistrationMaterialPermitCapacity = "Attempting to update registration material permit capacity with External ID {Id}";
-    public const string GetMaterialsPermitTypes = "Attempting to get material permit types";
+    public const string GetMaterialsPermitTypes = "Attempting to get material permit types"; 
+	public const string UpdateIsMaterialRegistered = "Attempting to update the registration material IsMaterialRegistered flag.";
 
-    public const string GetRegistrationOverview = "Attempting to get the overview for registration id {RegistrationId}";
+	public const string GetRegistrationOverview = "Attempting to get the overview for registration id {RegistrationId}";
     public const string GetAllMaterials = "Attempting to retrieve a list of applicable materials";
     public const string GetAllRegistrationMaterials = "Attempting to retrieve all registration materials for registration {RegistrationId}";
     public const string DeleteRegistrationMaterial = "Attempting to delete a registration material with ID {RegistrationMaterialId}";
