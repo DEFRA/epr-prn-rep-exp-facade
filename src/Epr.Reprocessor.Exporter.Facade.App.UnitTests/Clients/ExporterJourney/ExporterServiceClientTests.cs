@@ -134,7 +134,17 @@ namespace Epr.Reprocessor.Exporter.Facade.App.UnitTests.Clients.ExporterJourney
 
 			// Act
 			await _client.SendPutRequest<CarrierBrokerDealerPermitsDto>(url, request);
-		}
+
+            // Assert that the handler was called as expected
+            _mockHttpMessageHandler.Protected().Verify(
+                "SendAsync",
+                Times.Once(),
+                ItExpr.Is<HttpRequestMessage>(msg =>
+                    msg.Method == HttpMethod.Put &&
+                    msg.RequestUri!.PathAndQuery.EndsWith(url)),
+                ItExpr.IsAny<CancellationToken>()
+            );
+        }
 
 		private static string SerializeCamelCase<T>(T obj)
 		{
