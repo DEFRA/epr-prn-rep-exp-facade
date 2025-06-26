@@ -17,17 +17,17 @@ namespace Epr.Reprocessor.Exporter.Facade.App.UnitTests.Clients.ExporterJourney
 	{
 		private Fixture _fixture = null!;
 		private Mock<IOptions<PrnBackendServiceApiConfig>> _mockOptions = null!;
-		private Mock<ILogger<ExporterServiceClient>> _mockLogger = null!;
 		private Mock<HttpMessageHandler> _mockHttpMessageHandler = null!;
 
 		private ExporterServiceClient _client = null!;
 
-		[TestInitialize]
+        private static readonly JsonSerializerOptions CamelCaseOptions = new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
+
+        [TestInitialize]
 		public void TestInitialize()
 		{
 			_fixture = new Fixture();
 			_mockOptions = new Mock<IOptions<PrnBackendServiceApiConfig>>();
-			_mockLogger = new Mock<ILogger<ExporterServiceClient>>();
 			_mockHttpMessageHandler = new Mock<HttpMessageHandler>();
 			var httpClient = new HttpClient(_mockHttpMessageHandler.Object)
 			{
@@ -46,7 +46,7 @@ namespace Epr.Reprocessor.Exporter.Facade.App.UnitTests.Clients.ExporterJourney
 				}
 			});
 
-			_client = new ExporterServiceClient(httpClient, _mockOptions.Object, _mockLogger.Object);
+			_client = new ExporterServiceClient(httpClient, _mockOptions.Object);
 		}
 
 		[TestMethod]
@@ -148,10 +148,7 @@ namespace Epr.Reprocessor.Exporter.Facade.App.UnitTests.Clients.ExporterJourney
 
 		private static string SerializeCamelCase<T>(T obj)
 		{
-			return JsonSerializer.Serialize(obj, new JsonSerializerOptions
-			{
-				PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-			});
-		}
+			return JsonSerializer.Serialize(obj, CamelCaseOptions);
+        }
 	}
 }

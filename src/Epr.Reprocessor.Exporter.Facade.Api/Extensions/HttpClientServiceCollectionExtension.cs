@@ -59,8 +59,7 @@ public static class HttpClientServiceCollectionExtension
             client.Timeout = TimeSpan.FromSeconds(prnServiceApiSettings.Timeout);
         });
 
-        // TODO: Confirm these settings are correct
-		services.AddHttpClient<IExporterServiceClient, ExporterServiceClient>((sp, client) =>
+        services.AddHttpClient<IExporterServiceClient, ExporterServiceClient>((sp, client) =>
 		{
 			client.BaseAddress = new Uri(prnServiceApiSettings.BaseUrl);
 			client.Timeout = TimeSpan.FromSeconds(prnServiceApiSettings.Timeout);

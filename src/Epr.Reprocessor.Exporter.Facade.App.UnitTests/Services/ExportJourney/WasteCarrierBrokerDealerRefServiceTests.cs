@@ -13,7 +13,7 @@ namespace Epr.Reprocessor.Exporter.Facade.App.UnitTests.Services.ExportJourney
 	public class WasteCarrierBrokerDealerRefServiceTests
 	{
 		private Mock<IExporterServiceClient> _mockServiceClient = null!;
-		private IWasteCarrierBrokerDealerRefService _service = null!;
+		private WasteCarrierBrokerDealerRefService _service = null!;
 		private IOptions<PrnBackendServiceApiConfig> _options;
 
 		public WasteCarrierBrokerDealerRefServiceTests()
@@ -105,7 +105,7 @@ namespace Epr.Reprocessor.Exporter.Facade.App.UnitTests.Services.ExportJourney
 			result.Should().BeTrue();
 		}
 
-		private IOptions<PrnBackendServiceApiConfig> CreateOptions()
+		private static IOptions<PrnBackendServiceApiConfig> CreateOptions()
 		{
 			var exportEndpoints = new PrnServiceApiConfigExportEndpoints
 			{

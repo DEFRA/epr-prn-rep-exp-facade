@@ -8,27 +8,26 @@ namespace Epr.Reprocessor.Exporter.Facade.App.Services.ExporterJourney.Implement
 {
     public class OtherPermitsService : IOtherPermitsService
 	{
-		private readonly PrnBackendServiceApiConfig _config;
 		private readonly IExporterServiceClient _apiClient;
-		private int _apiVersion;
-		private string _baseGetUrl;
-		private string _basePostUrl;
-		private string _basePutUrl;
+		private readonly int _apiVersion;
+		private readonly string _baseGetUrl;
+		private readonly string _basePostUrl;
+		private readonly string _basePutUrl;
 
 		public OtherPermitsService(IExporterServiceClient apiClient, IOptions<PrnBackendServiceApiConfig> options)
 		{
-			_config = options.Value;
+			var config = options.Value;
 			_apiClient = apiClient;
-			_apiVersion = _config.ApiVersion;
+			_apiVersion = config.ApiVersion;
 
-			_baseGetUrl = _config.ExportEndpoints.OtherPermitsGet;
-			_basePostUrl = _config.ExportEndpoints.OtherPermitsPost;
-			_basePutUrl = _config.ExportEndpoints.OtherPermitsPut;
+			_baseGetUrl = config.ExportEndpoints.OtherPermitsGet;
+			_basePostUrl = config.ExportEndpoints.OtherPermitsPost;
+			_basePutUrl = config.ExportEndpoints.OtherPermitsPut;
 		}
 
-		public async Task<CarrierBrokerDealerPermitsDto> Get(Guid id)
+		public async Task<CarrierBrokerDealerPermitsDto> Get(Guid registrationId)
 		{
-			var uri = string.Format(_baseGetUrl, _apiVersion, id);
+			var uri = string.Format(_baseGetUrl, _apiVersion, registrationId);
 			var dto = await _apiClient.SendGetRequest<CarrierBrokerDealerPermitsDto>(uri);
 			return dto;
 		}
