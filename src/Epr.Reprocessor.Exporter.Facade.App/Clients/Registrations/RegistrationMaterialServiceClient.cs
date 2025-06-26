@@ -77,4 +77,13 @@ public class RegistrationMaterialServiceClient(
 
         return await DeleteAsync(url);
     }
+
+    public async Task<bool> UpdateMaximumWeightAsync(Guid registrationMaterialId, UpdateMaximumWeightDto request)
+    {
+        var url = string.Format(Endpoints.RegistrationMaterial.UpdateMaximumWeight, _config.ApiVersion, registrationMaterialId);
+
+        _logger.LogInformation("Calling {Url} to update the maximum weight for the registration material.", url);
+
+        return await PutAsync(url, request);
+    }
 }
