@@ -155,7 +155,7 @@ public class RegistrationMaterialServiceTests
     {
         // Arrange
         var registrationId = Guid.NewGuid();
-        
+
         _clientMock
             .Setup(client => client.DeleteAsync(registrationId))
             .ReturnsAsync(true);
