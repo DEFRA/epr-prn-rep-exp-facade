@@ -77,6 +77,24 @@ public class AccreditationServiceTests
     }
 
     [TestMethod]
+    public async Task GetFileUpload_ShouldReturnDataFromClient()
+    {
+        // Arrange
+        var externalId = Guid.NewGuid();
+        var expected = _fixture.Create<AccreditationFileUploadDto>();
+
+        _mockClient.Setup(c => c.GetFileUpload(externalId))
+            .ReturnsAsync(expected);
+
+        // Act
+        var result = await _service.GetFileUpload(externalId);
+
+        // Assert
+        result.Should().BeEquivalentTo(expected);
+        _mockClient.Verify(c => c.GetFileUpload(externalId), Times.Once);
+    }
+
+    [TestMethod]
     public async Task GetFileUploads_ShouldReturnListFromClient()
     {
         // Arrange
