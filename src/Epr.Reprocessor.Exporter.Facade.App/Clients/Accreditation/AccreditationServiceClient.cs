@@ -51,9 +51,15 @@ public class AccreditationServiceClient : BaseHttpClient, IAccreditationServiceC
         await PostAsync<Object>(url, null);
     }
 
+    public async Task<AccreditationFileUploadDto> GetFileUpload(Guid externalId)
+    {
+        var url = string.Format(config.Endpoints.AccreditationFileUploadGet, config.ApiVersion, externalId);
+        return await GetAsync<AccreditationFileUploadDto>(url);
+    }
+
     public async Task<List<AccreditationFileUploadDto>> GetFileUploads(Guid accreditationId, int fileUploadTypeId, int fileUploadStatusId)
     {
-        var url = string.Format(config.Endpoints.AccreditationFileUploadGet, config.ApiVersion, accreditationId, fileUploadTypeId, fileUploadStatusId);
+        var url = string.Format(config.Endpoints.AccreditationFileUploadsGet, config.ApiVersion, accreditationId, fileUploadTypeId, fileUploadStatusId);
 
         return await GetAsync<List<AccreditationFileUploadDto>>(url);
     }

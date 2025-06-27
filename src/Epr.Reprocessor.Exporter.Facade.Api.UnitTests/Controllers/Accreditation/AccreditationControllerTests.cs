@@ -97,6 +97,44 @@ public class AccreditationControllerTests
     }
 
     [TestMethod]
+    public async Task GetFileUpload_ShouldReturnOk_WithFileUpload()
+    {
+        // Arrange
+        var externalId = Guid.NewGuid();
+        var expected = new AccreditationFileUploadDto { FileId = Guid.NewGuid(), Filename = "file1.txt" };
+
+        _serviceMock.Setup(s => s.GetFileUpload(externalId))
+            .ReturnsAsync(expected);
+
+        // Act
+        var result = await _controller.GetFileUpload(externalId);
+
+        // Assert
+        result.Should().BeOfType<OkObjectResult>();
+        var okResult = result as OkObjectResult;
+        okResult!.Value.Should().BeEquivalentTo(expected);
+        _serviceMock.Verify(s => s.GetFileUpload(externalId), Times.Once);
+    }
+
+    [TestMethod]
+    public async Task GetFileUpload_ShouldReturn_NotFound()
+    {
+        // Arrange
+        var externalId = Guid.NewGuid();
+        var expected = new AccreditationFileUploadDto { FileId = Guid.NewGuid(), Filename = "file1.txt" };
+
+        _serviceMock.Setup(s => s.GetFileUpload(externalId))
+            .ReturnsAsync((AccreditationFileUploadDto)null);
+
+        // Act
+        var result = await _controller.GetFileUpload(externalId);
+
+        // Assert
+        result.Should().BeOfType<NotFoundResult>();
+        _serviceMock.Verify(s => s.GetFileUpload(externalId), Times.Once);
+    }
+
+    [TestMethod]
     public async Task GetFileUploads_ShouldReturnOk_WithFileUploads()
     {
         // Arrange
