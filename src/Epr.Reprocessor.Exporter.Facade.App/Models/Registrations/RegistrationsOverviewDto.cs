@@ -29,6 +29,8 @@ namespace Epr.Reprocessor.Exporter.Facade.App.Models.Registrations
 
         public AddressDto? ReprocessingSiteAddress { get; set; }
 
-        public int Year { get; set; }
+        public int? RegistrationYear { get; set; }
+
+        public int? AccreditationYear { get; set; }
     }
 }
