@@ -5,11 +5,8 @@ using Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
 using Epr.Reprocessor.Exporter.Facade.App.Services.Registration;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
-using static Epr.Reprocessor.Exporter.Facade.App.Constants.Endpoints;
-
 
 namespace Epr.Reprocessor.Exporter.Facade.Api.Controllers.Registrations;
-
 
 [Route("api/v{version:apiVersion}/registrationMaterials")]
 [ApiVersion("1.0")]
@@ -84,8 +81,7 @@ public class RegistrationMaterialController : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError, LogMessages.UnExpectedError);
         }
     }
-
-
+    
     [HttpPost("{id:Guid}/permits")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OkResult))]
     [ProducesResponseType(typeof(ValidationProblemDetails), (int)HttpStatusCode.BadRequest)]
@@ -184,6 +180,30 @@ public class RegistrationMaterialController : ControllerBase
             }
 
             return BadRequest();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, LogMessages.UnExpectedError);
+            return StatusCode(StatusCodes.Status500InternalServerError, LogMessages.UnExpectedError);
+        }
+    }
+
+    [HttpPost("{id:Guid}/contact")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RegistrationMaterialContactDto))]
+    [SwaggerOperation(
+        Summary = "Upserts the contact for a registration material",
+        Description = "attempting to upsert the registration material contact."
+    )]
+    [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
+    public async Task<IActionResult> UpsertRegistrationMaterialContactAsync([FromRoute] Guid id, [FromBody] RegistrationMaterialContactDto request)
+    {
+        try
+        {
+            _logger.LogInformation(LogMessages.UpsertRegistrationMaterialContact, id);
+
+            var response = await _registrationMaterialService.UpsertRegistrationMaterialContactAsync(id, request);
+
+            return Ok(response);
         }
         catch (Exception ex)
         {
