@@ -32,7 +32,7 @@ public class RegistrationController : ControllerBase
     )]
     public async Task<IActionResult> GetRegistrationByOrganisation([FromRoute] int applicationTypeId, [FromRoute] Guid organisationId)
     {
-        _logger.LogInformation(string.Format(LogMessages.GetRegistrationByOrganisation, applicationTypeId, organisationId));
+        _logger.LogInformation(LogMessages.GetRegistrationByOrganisation, applicationTypeId, organisationId);
 
         var registration = await _registrationService.GetRegistrationByOrganisationAsync(applicationTypeId, organisationId);
 
