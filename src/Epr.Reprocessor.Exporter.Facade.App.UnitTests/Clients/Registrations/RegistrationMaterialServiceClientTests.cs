@@ -21,7 +21,10 @@ public class RegistrationMaterialServiceClientTests
     private Mock<IOptions<PrnBackendServiceApiConfig>> _mockOptions = null!;
     private Mock<ILogger<RegistrationMaterialServiceClient>> _mockLogger = null!;
     private Mock<HttpMessageHandler> _mockHttpMessageHandler = null!;
-
+    private static readonly JsonSerializerOptions JsonSerializerOptions = new()
+    {
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+    };
     private RegistrationMaterialServiceClient _client = null!;
 
     [TestInitialize]
@@ -203,10 +206,7 @@ public class RegistrationMaterialServiceClientTests
             .ReturnsAsync(new HttpResponseMessage
             {
                 StatusCode = HttpStatusCode.OK,
-                Content = new StringContent(JsonSerializer.Serialize(registrationMaterialsDto, new JsonSerializerOptions
-                {
-                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-                }))
+                Content = new StringContent(JsonSerializer.Serialize(registrationMaterialsDto, JsonSerializerOptions))
             });
 
         // Act
@@ -214,5 +214,65 @@ public class RegistrationMaterialServiceClientTests
 
         // Assert
         result.Should().BeEquivalentTo(registrationMaterialsDto);
+    }
+
+    [TestMethod]
+    public async Task UpdateRegistrationMaterialPermitCapacity_SendsCorrectRequest()
+    {
+        // Arrange
+        var id = Guid.NewGuid();
+        var request = _fixture.Create<UpdateRegistrationMaterialPermitCapacityDto>();
+
+        HttpRequestMessage? capturedRequest = null;
+
+        _mockHttpMessageHandler
+            .Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.IsAny<HttpRequestMessage>(),
+                ItExpr.IsAny<CancellationToken>())
+            .Callback<HttpRequestMessage, CancellationToken>((req, _) => capturedRequest = req)
+            .ReturnsAsync(new HttpResponseMessage
+            {
+                StatusCode = System.Net.HttpStatusCode.OK,
+                Content = new StringContent(JsonSerializer.Serialize("true"))
+            });
+
+        // Act
+        var result = await _client.UpdateRegistrationMaterialPermitCapacityAsync(id, request);
+
+        // Assert
+        capturedRequest.Should().NotBeNull();
+        capturedRequest.Method.Should().Be(HttpMethod.Post);
+    }
+
+    [TestMethod]
+    public async Task DeleteAsync_SendsCorrectRequest()
+    {
+        // Arrange
+        var id = Guid.NewGuid();
+
+        HttpRequestMessage? capturedRequest = null;
+
+        _mockHttpMessageHandler
+            .Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.IsAny<HttpRequestMessage>(),
+                ItExpr.IsAny<CancellationToken>())
+            .Callback<HttpRequestMessage, CancellationToken>((req, _) => capturedRequest = req)
+            .ReturnsAsync(new HttpResponseMessage
+            {
+                StatusCode = System.Net.HttpStatusCode.OK,
+                Content = new StringContent(JsonSerializer.Serialize("true"))
+            });
+
+        // Act
+        var result = await _client.DeleteAsync(id);
+
+        // Assert
+        capturedRequest.Should().NotBeNull();
+        capturedRequest.Method.Should().Be(HttpMethod.Delete);
+        result.Should().BeTrue();
     }
 }

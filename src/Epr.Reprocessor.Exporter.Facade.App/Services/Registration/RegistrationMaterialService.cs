@@ -12,16 +12,18 @@ public class RegistrationMaterialService(IRegistrationMaterialServiceClient regi
         => await registrationMaterialServiceClient.CreateRegistrationMaterialAsync(requestDto);
 
 
-    public async Task<bool> UpdateRegistrationMaterialPermitsAsync(Guid id, UpdateRegistrationMaterialPermitsDto request)
-    {
-        return await registrationMaterialServiceClient.UpdateRegistrationMaterialPermitsAsync(id, request);
-    }
+    public async Task<bool> UpdateRegistrationMaterialPermitsAsync(Guid externalId, UpdateRegistrationMaterialPermitsDto request)
+        => await registrationMaterialServiceClient.UpdateRegistrationMaterialPermitsAsync(externalId, request);
+
+    public async Task<bool> UpdateRegistrationMaterialPermitCapacityAsync(Guid id, UpdateRegistrationMaterialPermitCapacityDto request)
+        => await registrationMaterialServiceClient.UpdateRegistrationMaterialPermitCapacityAsync(id, request);
 
     public async Task<List<MaterialsPermitTypeDto>> GetMaterialsPermitTypesAsync()
-    {
-        return await registrationMaterialServiceClient.GetMaterialsPermitTypesAsync();
-    }
+        => await registrationMaterialServiceClient.GetMaterialsPermitTypesAsync();
 
     public async Task<List<ApplicationRegistrationMaterialDto>> GetAllRegistrationsMaterials(Guid registrationId)
         => await registrationMaterialServiceClient.GetAllRegistrationMaterialsAsync(registrationId);
+
+    public async Task<bool> Delete(Guid registrationMaterialId) 
+        => await registrationMaterialServiceClient.DeleteAsync(registrationMaterialId);
 }

@@ -1,11 +1,12 @@
-﻿namespace Epr.Reprocessor.Exporter.Facade.Api.Controllers.Accreditation;
-
-using System.Diagnostics.CodeAnalysis;
-using Epr.Reprocessor.Exporter.Facade.Api.Constants;
+﻿using Epr.Reprocessor.Exporter.Facade.Api.Constants;
 using Epr.Reprocessor.Exporter.Facade.App.Models.Accreditations;
 using Epr.Reprocessor.Exporter.Facade.App.Services.Accreditation;
+
+namespace Epr.Reprocessor.Exporter.Facade.Api.Controllers.Accreditation;
+ 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.FeatureManagement.Mvc;
+using System.Diagnostics.CodeAnalysis;
 
 [ApiVersion("1.0")]
 [Route("api/v{version:apiVersion}/Accreditation")]
@@ -52,6 +53,37 @@ public class AccreditationController(IAccreditationService service) : Controller
     {
         // Temporary: Aid to QA whilst Accreditation uses in-memory database.
         await service.ClearDownDatabase();
+
+        return Ok();
+    }
+
+    [HttpGet("{accreditationId}/Files/{fileUploadTypeId}/{fileUploadStatusId?}")]
+    [ProducesResponseType(typeof(List<AccreditationFileUploadDto>), 200)]
+    public async Task<IActionResult> GetFileUploads([FromRoute] Guid accreditationId, [FromRoute] int fileUploadTypeId, [FromRoute] int fileUploadStatusId = 1)
+    {
+        List<AccreditationFileUploadDto> fileUploads = await service.GetFileUploads(accreditationId, fileUploadTypeId, fileUploadStatusId);
+
+        if (fileUploads == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(fileUploads);
+    }
+
+    [HttpPost("{accreditationId}/Files")]
+    [ProducesResponseType(typeof(AccreditationFileUploadDto), 200)]
+    public async Task<IActionResult> UpsertFileUpload([FromRoute] Guid accreditationId, [FromBody] AccreditationFileUploadDto request)
+    {
+        var fileUpload = await service.UpsertFileUpload(accreditationId, request);
+        return Ok(fileUpload);
+    }
+
+    [HttpDelete("{accreditationId}/Files/{fileId}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> DeleteFileUpload([FromRoute] Guid accreditationId, [FromRoute] Guid fileId)
+    {
+        await service.DeleteFileUpload(accreditationId, fileId);
 
         return Ok();
     }

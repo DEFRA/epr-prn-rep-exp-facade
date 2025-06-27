@@ -10,7 +10,10 @@ public interface IRegistrationMaterialService
 
     Task<bool> UpdateRegistrationMaterialPermitsAsync(Guid externalId, UpdateRegistrationMaterialPermitsDto request);
 
+    Task<bool> UpdateRegistrationMaterialPermitCapacityAsync(Guid id, UpdateRegistrationMaterialPermitCapacityDto request);
+
     Task<List<MaterialsPermitTypeDto>> GetMaterialsPermitTypesAsync();
 
     Task<List<ApplicationRegistrationMaterialDto>> GetAllRegistrationsMaterials(Guid registrationId);
+    Task<bool> Delete(Guid registrationMaterialId);
 }

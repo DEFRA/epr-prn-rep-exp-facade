@@ -5,6 +5,7 @@ using Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
 using Epr.Reprocessor.Exporter.Facade.App.Services.Registration;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
+using static Epr.Reprocessor.Exporter.Facade.App.Constants.Endpoints;
 
 
 namespace Epr.Reprocessor.Exporter.Facade.Api.Controllers.Registrations;
@@ -51,7 +52,7 @@ public class RegistrationMaterialController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, ex.Message);
+            _logger.LogError(ex, LogMessages.UnExpectedError);
             return StatusCode(StatusCodes.Status500InternalServerError, LogMessages.UnExpectedError);
         }
     }
@@ -79,7 +80,7 @@ public class RegistrationMaterialController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, ex.Message);
+            _logger.LogError(ex, LogMessages.UnExpectedError);
             return StatusCode(StatusCodes.Status500InternalServerError, LogMessages.UnExpectedError);
         }
     }
@@ -102,6 +103,21 @@ public class RegistrationMaterialController : ControllerBase
         _logger.LogInformation(LogMessages.UpdateRegistrationMaterialPermits, id);
 
         _ = await _registrationMaterialService.UpdateRegistrationMaterialPermitsAsync(id, request);
+
+        return NoContent();
+    }
+
+    [HttpPost("{id:Guid}/permitCapacity")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OkResult))]
+    [SwaggerOperation(
+        Summary = "updates an existing registration material permit capacity",
+        Description = "attempting to update the registration material permit capacity."
+    )]
+    public async Task<IActionResult> UpdateRegistrationMaterialPermitCapacity([FromRoute] Guid id, [FromBody] UpdateRegistrationMaterialPermitCapacityDto request)
+    {
+        _logger.LogInformation(LogMessages.UpdateRegistrationMaterialPermitCapacity, id);
+
+        _ = await _registrationMaterialService.UpdateRegistrationMaterialPermitCapacityAsync(id, request);
 
         return NoContent();
     }
@@ -142,7 +158,36 @@ public class RegistrationMaterialController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, ex.Message);
+            _logger.LogError(ex, LogMessages.UnExpectedError);
+            return StatusCode(StatusCodes.Status500InternalServerError, LogMessages.UnExpectedError);
+        }
+    }
+
+    [HttpDelete("{registrationMaterialId:guid}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OkResult))]
+    [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
+    [SwaggerOperation(
+        Summary = "delete a registration material",
+        Description = "attempting to delete a material registration."
+    )]
+    [SwaggerResponse(StatusCodes.Status200OK)]
+    [SwaggerResponse(StatusCodes.Status500InternalServerError, "If an unexpected error occurs.", typeof(ContentResult))]
+    public async Task<IActionResult> DeleteRegistrationMaterial([FromRoute] Guid registrationMaterialId)
+    {
+        _logger.LogInformation(LogMessages.DeleteRegistrationMaterial, registrationMaterialId);
+
+        try
+        {
+            if (await _registrationMaterialService.Delete(registrationMaterialId))
+            {
+                return Ok();
+            }
+
+            return BadRequest();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, LogMessages.UnExpectedError);
             return StatusCode(StatusCodes.Status500InternalServerError, LogMessages.UnExpectedError);
         }
     }

@@ -17,7 +17,10 @@ public class MaterialServiceClientTests
     private Mock<IOptions<PrnBackendServiceApiConfig>> _mockOptions = null!;
     private Mock<ILogger<MaterialServiceClient>> _mockLogger = null!;
     private Mock<HttpMessageHandler> _mockHttpMessageHandler = null!;
-
+    private static readonly JsonSerializerOptions JsonSerializerOptions = new()
+    {
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+    };
     private MaterialServiceClient _client = null!;
 
     [TestInitialize]
@@ -51,10 +54,7 @@ public class MaterialServiceClientTests
         {
             new() { Name = "Wood", Code = "W1" }
         };
-        var materialJson = JsonSerializer.Serialize(materials, new JsonSerializerOptions
-        {
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-        });
+        var materialJson = JsonSerializer.Serialize(materials, JsonSerializerOptions);
 
         _mockHttpMessageHandler.Protected()
             .Setup<Task<HttpResponseMessage>>(
