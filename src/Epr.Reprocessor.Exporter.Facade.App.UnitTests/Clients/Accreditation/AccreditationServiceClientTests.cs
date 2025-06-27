@@ -34,7 +34,8 @@ public class AccreditationServiceClientTests
                 AccreditationGetOrCreate = "api/v{0}/accreditation/{1}/{2}/{3}",
                 AccreditationGet = "api/v{0}/accreditation/{1}",
                 AccreditationPost = "api/v{0}/accreditation",
-                AccreditationFileUploadGet = "api/v{0}/accreditation/{1}/Files/{2}/{3}",
+                AccreditationFileUploadGet = "api/v{0}/accreditation/Files/{1}",
+                AccreditationFileUploadsGet = "api/v{0}/accreditation/{1}/Files/{2}/{3}",
                 AccreditationFileUploadPost = "api/v{0}/accreditation/{1}/Files",
                 AccreditationFileUploadDelete = "api/v{0}/accreditation/{1}/Files/{2}"
             }
@@ -138,6 +139,39 @@ public class AccreditationServiceClientTests
 
         // Act
         var result = await _client.UpsertAccreditation(request);
+
+        // Assert
+        result.Should().BeEquivalentTo(expected);
+    }
+
+    [TestMethod]
+    public async Task GetFileUpload_ShouldReturnExpectedData()
+    {
+        // Arrange
+        var externalId = Guid.NewGuid();
+        var fileUploadTypeId = 1;
+        var fileUploadStatusId = 2;
+        var expected = _fixture.Create<AccreditationFileUploadDto>();
+        var json = SerializeCamelCase(expected);
+        var url = $"api/v1/accreditation/Files/{externalId}";
+
+        _mockHttpMessageHandler.Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.Is<HttpRequestMessage>(msg =>
+                    msg.Method == HttpMethod.Get &&
+                    msg.RequestUri!.PathAndQuery.EndsWith(url)
+                ),
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .ReturnsAsync(new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = new StringContent(json)
+            });
+
+        // Act
+        var result = await _client.GetFileUpload(externalId);
 
         // Assert
         result.Should().BeEquivalentTo(expected);
