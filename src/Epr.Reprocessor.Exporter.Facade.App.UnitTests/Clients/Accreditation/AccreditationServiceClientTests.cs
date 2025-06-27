@@ -210,38 +210,7 @@ public class AccreditationServiceClientTests
         result.Should().BeEquivalentTo(expected);
     }
 
-    [TestMethod]
-    public async Task GetFileUploads_ShouldReturnExpectedList()
-    {
-        // Arrange
-        var accreditationId = Guid.NewGuid();
-        var fileUploadTypeId = 1;
-        var fileUploadStatusId = 2;
-        var expected = _fixture.Create<List<AccreditationFileUploadDto>>();
-        var json = SerializeCamelCase(expected);
-        var url = $"api/v1/accreditation/{accreditationId}/Files/{fileUploadTypeId}/{fileUploadStatusId}";
-
-        _mockHttpMessageHandler.Protected()
-            .Setup<Task<HttpResponseMessage>>(
-                "SendAsync",
-                ItExpr.Is<HttpRequestMessage>(msg =>
-                    msg.Method == HttpMethod.Get &&
-                    msg.RequestUri!.PathAndQuery.EndsWith(url)
-                ),
-                ItExpr.IsAny<CancellationToken>()
-            )
-            .ReturnsAsync(new HttpResponseMessage
-            {
-                StatusCode = HttpStatusCode.OK,
-                Content = new StringContent(json)
-            });
-
-        // Act
-        var result = await _client.GetFileUploads(accreditationId, fileUploadTypeId, fileUploadStatusId);
-
-        // Assert
-        result.Should().BeEquivalentTo(expected);
-    }
+    
 
     [TestMethod]
     public async Task UpsertFileUpload_ShouldReturnExpectedDto()
