@@ -5,13 +5,10 @@ namespace Epr.Reprocessor.Exporter.Facade.App.Services.Registration;
 public interface IRegistrationService
 {
     Task<CreateRegistrationResponseDto> CreateRegistrationAsync(CreateRegistrationDto dto);
-    
     Task<bool> UpdateRegistrationTaskStatusAsync(Guid registrationId, UpdateRegistrationTaskStatusDto dto);
-
+    Task<bool> UpdateApplicantRegistrationTaskStatusAsync(Guid registrationId, UpdateRegistrationTaskStatusDto dto);
     Task<bool> UpdateSiteAddressAsync(Guid registrationId, UpdateRegistrationSiteAddressDto dto);
-    
-    Task<RegistrationDto?> GetRegistrationByOrganisationAsync(int applicationTypeId, Guid organisationId);
-    
+    Task<RegistrationDto?> GetRegistrationByOrganisationAsync(int applicationTypeId, Guid organisationId);   
     Task<bool> UpdateAsync(Guid registrationId, UpdateRegistrationDto request); 
     Task<RegistrationOverviewDto> GetRegistrationOverviewAsync(Guid registrationId);
 }
