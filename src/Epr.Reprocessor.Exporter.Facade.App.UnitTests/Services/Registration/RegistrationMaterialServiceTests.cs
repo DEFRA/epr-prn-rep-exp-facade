@@ -166,4 +166,36 @@ public class RegistrationMaterialServiceTests
         // Assert
         result.Should().BeTrue();
     }
+
+	[TestMethod]
+	public async Task UpdateIsMaterialRegisteredAsync_ShouldReturnTrue_WhenClientReturnsTrue()
+	{
+		// Arrange
+		var request = _fixture.Create<List<UpdateIsMaterialRegisteredDto>>();
+		_clientMock.Setup(x => x.UpdateIsMaterialRegisteredAsync(request))
+				   .ReturnsAsync(true);
+
+		// Act
+		var result = await _service.UpdateIsMaterialRegisteredAsync(request);
+
+		// Assert
+		result.Should().BeTrue();
+		_clientMock.Verify(x => x.UpdateIsMaterialRegisteredAsync(request), Times.Once);
+	}
+
+	[TestMethod]
+	public async Task UpdateIsMaterialRegisteredAsync_ShouldReturnFalse_WhenClientReturnsFalse()
+	{
+		// Arrange
+		var request = _fixture.Create<List<UpdateIsMaterialRegisteredDto>>();
+		_clientMock.Setup(x => x.UpdateIsMaterialRegisteredAsync(request))
+				   .ReturnsAsync(false);
+
+		// Act
+		var result = await _service.UpdateIsMaterialRegisteredAsync(request);
+
+		// Assert
+		result.Should().BeFalse();
+		_clientMock.Verify(x => x.UpdateIsMaterialRegisteredAsync(request), Times.Once);
+	}
 }
