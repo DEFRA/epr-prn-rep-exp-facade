@@ -12,7 +12,6 @@ namespace Epr.Reprocessor.Exporter.Facade.App.UnitTests.Clients.Lookup;
 [TestClass]
 public class LookupServiceClientTests
 {
-    private PrnBackendServiceApiConfig _config = null!;
     private Mock<IOptions<PrnBackendServiceApiConfig>> _optionsMock = null!;
     private Mock<HttpMessageHandler> _httpMessageHandlerMock = null!;
     private HttpClient _httpClient = null!;
