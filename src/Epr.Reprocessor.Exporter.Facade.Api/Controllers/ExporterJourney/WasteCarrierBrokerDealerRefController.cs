@@ -31,8 +31,8 @@ namespace Epr.Reprocessor.Exporter.Facade.Api.Controllers.ExporterJourney
 			return dto == null ? NotFound() : Ok(dto);
 		}
 
-		[HttpPost]
-		public async virtual Task<IActionResult> Post([FromBody] WasteCarrierBrokerDealerRefDto value)
+		[HttpPost("{registrationId:Guid}/waste-carrier-broker-dealer-ref")]
+		public async virtual Task<IActionResult> Post(Guid registrationId, [FromBody] WasteCarrierBrokerDealerRefDto value)
 		{
 			var result = await _service.Create(value.RegistrationId, value);
 			return Ok(result);

@@ -72,7 +72,7 @@ namespace Epr.Reprocessor.Exporter.Facade.Api.UnitTests.Controllers.ExporterJour
             var createdId = Guid.NewGuid();
             _serviceMock.Setup(s => s.Create(registrationId, request)).ReturnsAsync(createdId);
 
-            var result = await _controller.Post(request);
+            var result = await _controller.Post(registrationId, request);
 
             result.Should().BeOfType<OkObjectResult>();
             var okResult = result as OkObjectResult;
