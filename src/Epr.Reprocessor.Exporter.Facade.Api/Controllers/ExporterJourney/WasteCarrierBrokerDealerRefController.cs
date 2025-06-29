@@ -27,14 +27,18 @@ namespace Epr.Reprocessor.Exporter.Facade.Api.Controllers.ExporterJourney
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public async virtual Task<IActionResult> Get(Guid registrationId)
 		{
-			var dto = await _service.Get(registrationId);
+			_logger.LogInformation($"Get WasteCarrierBrokerDealerRef for registrationId: {registrationId}");
+
+            var dto = await _service.Get(registrationId);
 			return dto == null ? NotFound() : Ok(dto);
 		}
 
 		[HttpPost("{registrationId:Guid}/waste-carrier-broker-dealer-ref")]
 		public async virtual Task<IActionResult> Post(Guid registrationId, [FromBody] WasteCarrierBrokerDealerRefDto value)
 		{
-			var result = await _service.Create(value.RegistrationId, value);
+			_logger.LogInformation($"Create WasteCarrierBrokerDealerRef for registrationId: {value.RegistrationId}");
+
+            var result = await _service.Create(value.RegistrationId, value);
 			return Ok(result);
 		}
 
@@ -42,7 +46,9 @@ namespace Epr.Reprocessor.Exporter.Facade.Api.Controllers.ExporterJourney
         [ProducesResponseType(StatusCodes.Status202Accepted)]
 		public async virtual Task<IActionResult> Put(Guid registrationId, [FromBody] WasteCarrierBrokerDealerRefDto value)
 		{
-			await _service.Update(registrationId, value);
+            _logger.LogInformation($"Update WasteCarrierBrokerDealerRef for registrationId: {value.RegistrationId}");
+
+            await _service.Update(registrationId, value);
 			return Accepted();
 		}
 	}

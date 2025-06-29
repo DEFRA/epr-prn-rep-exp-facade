@@ -8,22 +8,22 @@ namespace Epr.Reprocessor.Exporter.Facade.App.Services.ExporterJourney.Implement
 {
     public class WasteCarrierBrokerDealerRefService : IWasteCarrierBrokerDealerRefService
 	{
-		private readonly PrnBackendServiceApiConfig _config;
 		private readonly IExporterServiceClient _apiClient;
-		private int _apiVersion;
-		private string _baseGetUrl;
-		private string _basePostUrl;
-		private string _basePutUrl;
+		private readonly int _apiVersion;
+		private readonly string _baseGetUrl;
+		private readonly string _basePostUrl;
+		private readonly string _basePutUrl;
 
 		public WasteCarrierBrokerDealerRefService(IExporterServiceClient apiClient, IOptions<PrnBackendServiceApiConfig> options)
 		{
-			_config = options.Value;
-			_apiClient = apiClient;
-			_apiVersion = _config.ApiVersion;
+			var config = options.Value;
 
-			_baseGetUrl = _config.ExportEndpoints.WasteCarrierBrokerDealerRefGet;
-			_basePostUrl = _config.ExportEndpoints.WasteCarrierBrokerDealerRefPost;
-			_basePutUrl = _config.ExportEndpoints.WasteCarrierBrokerDealerRefPut;
+			_apiClient = apiClient;
+			_apiVersion = config.ApiVersion;
+
+			_baseGetUrl = config.ExportEndpoints.WasteCarrierBrokerDealerRefGet;
+			_basePostUrl = config.ExportEndpoints.WasteCarrierBrokerDealerRefPost;
+			_basePutUrl = config.ExportEndpoints.WasteCarrierBrokerDealerRefPut;
 		}
 
 		public async Task<Guid> Create(Guid registrationId, WasteCarrierBrokerDealerRefDto value)

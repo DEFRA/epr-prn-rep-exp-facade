@@ -13,7 +13,7 @@ namespace Epr.Reprocessor.Exporter.Facade.App.UnitTests.Services.ExportJourney
 	public class OtherPermitsServiceTests
 	{
 		private Mock<IExporterServiceClient> _mockServiceClient = null!;
-		private IOtherPermitsService _service = null!;
+		private OtherPermitsService _service = null!;
 		private IOptions<PrnBackendServiceApiConfig> _options;
 
         public OtherPermitsServiceTests()
@@ -125,7 +125,7 @@ namespace Epr.Reprocessor.Exporter.Facade.App.UnitTests.Services.ExportJourney
 			result.Should().BeTrue();
 		}
 
-		private IOptions<PrnBackendServiceApiConfig> CreateOptions()
+		private static IOptions<PrnBackendServiceApiConfig> CreateOptions()
 		{
 			var exportEndpoints = new PrnServiceApiConfigExportEndpoints
 			{
