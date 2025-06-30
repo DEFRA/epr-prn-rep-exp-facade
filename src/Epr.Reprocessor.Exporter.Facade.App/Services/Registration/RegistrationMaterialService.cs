@@ -29,4 +29,7 @@ public class RegistrationMaterialService(IRegistrationMaterialServiceClient regi
 
 	public async Task<bool> UpdateIsMaterialRegisteredAsync(List<UpdateIsMaterialRegisteredDto> request)
 		=> await registrationMaterialServiceClient.UpdateIsMaterialRegisteredAsync(request);
+
+    public async Task<RegistrationReprocessingIOResponseDto> UpsertRegistrationReprocessingDetailsAsync(Guid registrationMaterialId, RegistrationReprocessingIORequestDto request)
+        => await registrationMaterialServiceClient.UpsertRegistrationReprocessingDetailsAsync(registrationMaterialId, request);
 }
