@@ -397,6 +397,22 @@ public class RegistrationMaterialControllerTests
         result.Should().BeEquivalentTo(expectedResult);
     }
 
+	[TestMethod]
+	public async Task UpdateIsMaterialRegisteredAsync_ShouldReturnNoContent_WhenUpdateSucceeds()
+	{
+		// Arrange
+		var dto = _fixture.Create<List<UpdateIsMaterialRegisteredDto>>();
+		_registrationMaterialService.Setup(s => s.UpdateIsMaterialRegisteredAsync(dto))
+					.ReturnsAsync(true);
+
+		// Act
+		var result = await _controller.UpdateIsMaterialRegisteredAsync(dto);
+
+		// Assert
+		result.Should().BeOfType<NoContentResult>();
+		_registrationMaterialService.Verify(s => s.UpdateIsMaterialRegisteredAsync(dto), Times.Once);
+	}
+
     [TestMethod]
     public async Task UpsertRegistrationMaterialContactAsync_ReturnOkResult()
     {

@@ -277,6 +277,35 @@ public class RegistrationMaterialServiceClientTests
         result.Should().BeTrue();
     }
 
+	[TestMethod]
+	public async Task UpdateIsMaterialRegisteredAsync_SendsCorrectRequest()
+	{
+		// Arrange
+		var request = _fixture.Create<List<UpdateIsMaterialRegisteredDto>>();
+
+		HttpRequestMessage? capturedRequest = null;
+
+		_mockHttpMessageHandler
+			.Protected()
+			.Setup<Task<HttpResponseMessage>>(
+				"SendAsync",
+				ItExpr.IsAny<HttpRequestMessage>(),
+				ItExpr.IsAny<CancellationToken>())
+			.Callback<HttpRequestMessage, CancellationToken>((req, _) => capturedRequest = req)
+			.ReturnsAsync(new HttpResponseMessage
+			{
+				StatusCode = System.Net.HttpStatusCode.OK,
+				Content = new StringContent(JsonSerializer.Serialize("true"))
+			});
+
+		// Act
+		var result = await _client.UpdateIsMaterialRegisteredAsync(request);
+
+		// Assert
+		capturedRequest.Should().NotBeNull();
+		capturedRequest.Method.Should().Be(HttpMethod.Post);
+	}
+
     [TestMethod]
     public async Task UpsertRegistrationMaterialContactAsync_SendsCorrectRequest()
     {

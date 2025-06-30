@@ -39,7 +39,8 @@ public static class Endpoints
         public const string UpsertRegistrationMaterialContact = "api/v{0}/registrationMaterials/{1}/contact";
         public const string GetMaterialsPermitTypes = "api/v{0}/registrationMaterials/permitTypes";
         public const string Delete = "api/v{0}/registrationMaterials/{1}";
-    }
+		public const string UpdateIsMaterialRegistered = "api/v{0}/registrationMaterials/UpdateIsMaterialRegistered";
+	}
 
     /// <summary>
     /// Defines the endpoints for the material service.

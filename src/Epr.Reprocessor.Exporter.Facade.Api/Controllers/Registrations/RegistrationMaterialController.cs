@@ -188,6 +188,21 @@ public class RegistrationMaterialController : ControllerBase
         }
     }
 
+	[HttpPost("UpdateIsMaterialRegistered")]
+	[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OkResult))]
+	[SwaggerOperation(
+	Summary = "updates an existing registration material IsMaterialRegistered flag",
+	Description = "attempting to update the registration material IsMaterialRegistered flag."
+	)]
+	public async Task<IActionResult> UpdateIsMaterialRegisteredAsync([FromBody] List<UpdateIsMaterialRegisteredDto> request)
+	{
+		_logger.LogInformation(LogMessages.UpdateIsMaterialRegistered);
+
+		_ = await _registrationMaterialService.UpdateIsMaterialRegisteredAsync(request);
+
+		return NoContent();
+	}
+
     [HttpPost("{id:Guid}/contact")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RegistrationMaterialContactDto))]
     [SwaggerOperation(

@@ -78,6 +78,17 @@ public class RegistrationMaterialServiceClient(
         return await DeleteAsync(url);
     }
 
+	public async Task<bool> UpdateIsMaterialRegisteredAsync(List<UpdateIsMaterialRegisteredDto> request)
+	{
+		_logger.LogInformation("Attempting to update the registration material IsMaterialRegistered flag.");
+
+		var url = string.Format(Endpoints.RegistrationMaterial.UpdateIsMaterialRegistered, _config.ApiVersion);
+
+		await PostAsync<List<UpdateIsMaterialRegisteredDto>>(url, request);
+
+		return true;
+	}
+
     public async Task<RegistrationMaterialContactDto> UpsertRegistrationMaterialContactAsync(Guid registrationMaterialId, RegistrationMaterialContactDto request)
     {
         _logger.LogInformation("Attempting to upsert a contact for a registration material with External ID {Id}", registrationMaterialId);
