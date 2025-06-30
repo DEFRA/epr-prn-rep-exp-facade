@@ -48,4 +48,13 @@ public static class Endpoints
     {
         public const string GetAllMaterials = "api/v{0}/materials";
     }
+
+    /// <summary>
+    /// Defines the endpoints for the lookup service.
+    /// </summary>
+    public static class Lookup
+    {
+        public const string Countries = "api/v{0}/countries";
+    }
+
 }
