@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using AutoFixture;
 using Epr.Reprocessor.Exporter.Facade.App.Clients.Registrations;
 using Epr.Reprocessor.Exporter.Facade.App.Config;
@@ -274,5 +275,43 @@ public class RegistrationMaterialServiceClientTests
         capturedRequest.Should().NotBeNull();
         capturedRequest.Method.Should().Be(HttpMethod.Delete);
         result.Should().BeTrue();
+    }
+
+    [TestMethod]
+    public async Task UpsertRegistrationMaterialContactAsync_SendsCorrectRequest()
+    {
+        // Arrange
+        var registrationMaterialId = Guid.NewGuid();
+        var request = new RegistrationMaterialContactDto { Id = Guid.NewGuid() };
+        var expectedResponse = new RegistrationMaterialContactDto { Id = Guid.NewGuid() };
+
+        HttpRequestMessage? capturedRequest = null;
+
+        var options = new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            Converters = { new JsonStringEnumConverter(JsonNamingPolicy.CamelCase) }
+        };
+
+        _mockHttpMessageHandler
+            .Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.IsAny<HttpRequestMessage>(),
+                ItExpr.IsAny<CancellationToken>())
+            .Callback<HttpRequestMessage, CancellationToken>((req, _) => capturedRequest = req)
+            .ReturnsAsync(new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = new StringContent(JsonSerializer.Serialize(expectedResponse, options))
+            });
+
+        // Act
+        var result = await _client.UpsertRegistrationMaterialContactAsync(registrationMaterialId, request);
+
+        // Assert
+        capturedRequest.Should().NotBeNull();
+        capturedRequest.Method.Should().Be(HttpMethod.Post);
+        result.Should().BeEquivalentTo(expectedResponse);
     }
 }

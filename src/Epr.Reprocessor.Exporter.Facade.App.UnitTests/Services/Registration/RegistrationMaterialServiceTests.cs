@@ -166,4 +166,23 @@ public class RegistrationMaterialServiceTests
         // Assert
         result.Should().BeTrue();
     }
+
+    [TestMethod]
+    public async Task UpsertRegistrationMaterialContactAsync_ShouldReturnExpectedResult()
+    {
+        // Arrange
+        var registrationMaterialId = Guid.NewGuid();
+        var request = new RegistrationMaterialContactDto { Id = Guid.Empty };
+        var expectedResponse = new RegistrationMaterialContactDto { Id = Guid.NewGuid() };
+
+        _clientMock
+            .Setup(client => client.UpsertRegistrationMaterialContactAsync(registrationMaterialId, request))
+            .ReturnsAsync(expectedResponse);
+
+        // Act
+        var result = await _service.UpsertRegistrationMaterialContactAsync(registrationMaterialId, request);
+
+        // Assert
+        result.Should().BeEquivalentTo(expectedResponse);
+    }
 }
