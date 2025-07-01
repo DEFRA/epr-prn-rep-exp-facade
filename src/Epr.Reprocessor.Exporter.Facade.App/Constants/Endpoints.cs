@@ -24,6 +24,7 @@ public static class Endpoints
         public const string AccreditationPrnIssueAuthGet = "api/v{0}/accreditationPRNIssueAuth/{1}";
         public const string AccreditationPrnIssueAuthPost = "api/v{0}/accreditationPRNIssueAuth/{1}";
         public const string RegistrationGetById = "api/v{0}/registrations/{1}";
+        public const string GetRegistrationsOverviewByOrgId = "api/v{0}/registrations/{1}/overview";
     }
 
     /// <summary>
