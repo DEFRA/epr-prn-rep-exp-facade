@@ -217,4 +217,23 @@ public class RegistrationMaterialServiceTests
         // Assert
         result.Should().BeEquivalentTo(expectedResponse);
     }
+
+    [TestMethod]
+    public async Task psertRegistrationReprocessingDetailsAsync_ShouldReturnExpectedResult()
+    {
+        // Arrange
+        var registrationMaterialId = Guid.NewGuid();
+        var request = new RegistrationReprocessingIORequestDto { TypeOfSuppliers = "Supplier 123" };
+
+        _clientMock
+            .Setup(client => client.UpsertRegistrationReprocessingDetailsAsync(registrationMaterialId, request))
+            .Returns(Task.CompletedTask);
+
+        // Act
+        await _service.UpsertRegistrationReprocessingDetailsAsync(registrationMaterialId, request);
+
+        // Assert
+        _clientMock.Verify(
+          x => x.UpsertRegistrationReprocessingDetailsAsync(registrationMaterialId, request), Times.Once);
+    }
 }

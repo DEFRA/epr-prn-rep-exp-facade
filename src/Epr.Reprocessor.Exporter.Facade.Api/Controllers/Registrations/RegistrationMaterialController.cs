@@ -240,9 +240,9 @@ public class RegistrationMaterialController : ControllerBase
         {
             _logger.LogInformation(LogMessages.UpsertRegistrationReprocessingDetails, registrationMaterialId);
 
-            var response = await _registrationMaterialService.UpsertRegistrationReprocessingDetailsAsync(registrationMaterialId, request);
+            await _registrationMaterialService.UpsertRegistrationReprocessingDetailsAsync(registrationMaterialId, request);
 
-            return Ok(response);
+            return Ok();
         }
         catch (Exception ex)
         {

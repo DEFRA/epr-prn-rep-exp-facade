@@ -34,6 +34,6 @@ public class RegistrationMaterialService(IRegistrationMaterialServiceClient regi
         RegistrationMaterialContactDto request)
         => await registrationMaterialServiceClient.UpsertRegistrationMaterialContactAsync(registrationMaterialId, request);
 
-    public async Task<RegistrationReprocessingIOResponseDto> UpsertRegistrationReprocessingDetailsAsync(Guid registrationMaterialId, RegistrationReprocessingIORequestDto request)
+    public async Task UpsertRegistrationReprocessingDetailsAsync(Guid registrationMaterialId, RegistrationReprocessingIORequestDto request)
         => await registrationMaterialServiceClient.UpsertRegistrationReprocessingDetailsAsync(registrationMaterialId, request);
 }
