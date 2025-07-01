@@ -26,4 +26,5 @@ public static class LogMessages
     public const string DeleteRegistrationMaterial = "Attempting to delete a registration material with ID {RegistrationMaterialId}";
     public const string GetRegistrationsOverviewByOrganisationId = "Fetching registration overview for Organisation ID: {OrganisationId}"
         ;
+    public const string UpsertRegistrationMaterialContact = "Attempting to upsert a contact for registration material with ID {RegistrationMaterialId}";
 }

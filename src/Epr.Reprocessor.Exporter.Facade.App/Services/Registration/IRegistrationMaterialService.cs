@@ -18,4 +18,6 @@ public interface IRegistrationMaterialService
     Task<bool> Delete(Guid registrationMaterialId);
 
 	Task<bool> UpdateIsMaterialRegisteredAsync(List<UpdateIsMaterialRegisteredDto> request);
+
+    Task<RegistrationMaterialContactDto> UpsertRegistrationMaterialContactAsync(Guid registrationMaterialId, RegistrationMaterialContactDto request);
 }

@@ -88,4 +88,13 @@ public class RegistrationMaterialServiceClient(
 
 		return true;
 	}
+
+    public async Task<RegistrationMaterialContactDto> UpsertRegistrationMaterialContactAsync(Guid registrationMaterialId, RegistrationMaterialContactDto request)
+    {
+        _logger.LogInformation("Attempting to upsert a contact for a registration material with External ID {Id}", registrationMaterialId);
+
+        var url = string.Format(Endpoints.RegistrationMaterial.UpsertRegistrationMaterialContact, _config.ApiVersion, registrationMaterialId);
+
+        return await PostAsync<RegistrationMaterialContactDto, RegistrationMaterialContactDto>(url, request);
+    }
 }
