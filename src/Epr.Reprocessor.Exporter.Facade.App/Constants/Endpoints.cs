@@ -24,6 +24,7 @@ public static class Endpoints
         public const string AccreditationPrnIssueAuthGet = "api/v{0}/accreditationPRNIssueAuth/{1}";
         public const string AccreditationPrnIssueAuthPost = "api/v{0}/accreditationPRNIssueAuth/{1}";
         public const string RegistrationGetById = "api/v{0}/registrations/{1}";
+        public const string GetRegistrationsOverviewByOrgId = "api/v{0}/registrations/{1}/overview";
     }
 
     /// <summary>
@@ -36,6 +37,7 @@ public static class Endpoints
         public const string GetAllRegistrationMaterials = "api/v{0}/registrations/{1}/materials";
         public const string UpdateRegistrationMaterialPermits = "api/v{0}/registrationMaterials/{1}/permits";
         public const string UpdateRegistrationMaterialPermitCapacity = "api/v{0}/registrationMaterials/{1}/permitCapacity";
+        public const string UpsertRegistrationMaterialContact = "api/v{0}/registrationMaterials/{1}/contact";
         public const string GetMaterialsPermitTypes = "api/v{0}/registrationMaterials/permitTypes";
         public const string Delete = "api/v{0}/registrationMaterials/{1}";
 		public const string UpdateIsMaterialRegistered = "api/v{0}/registrationMaterials/UpdateIsMaterialRegistered";

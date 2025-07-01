@@ -1,4 +1,5 @@
 ﻿using AutoFixture;
+using Azure.Core;
 using Epr.Reprocessor.Exporter.Facade.Api.Controllers.Registrations;
 using Epr.Reprocessor.Exporter.Facade.App.Constants;
 using Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
@@ -372,6 +373,30 @@ public class RegistrationMaterialControllerTests
         result.Should().BeEquivalentTo(expectedResult);
     }
 
+    [TestMethod]
+    public async Task UpsertRegistrationMaterialContactAsync_ServiceException_ReturnInternalServerError()
+    {
+        // Arrange
+        var registrationMaterialId = Guid.NewGuid();
+        var request = new RegistrationMaterialContactDto();
+
+        var expectedResult = new ObjectResult(LogMessages.UnExpectedError)
+        {
+            StatusCode = StatusCodes.Status500InternalServerError,
+        };
+
+        // Expectations
+        _registrationMaterialService
+            .Setup(s => s.UpsertRegistrationMaterialContactAsync(registrationMaterialId, request))
+            .ThrowsAsync(new Exception());
+
+        // Act
+        var result = await _controller.UpsertRegistrationMaterialContactAsync(registrationMaterialId, request);
+
+        // Assert
+        result.Should().BeEquivalentTo(expectedResult);
+    }
+
 	[TestMethod]
 	public async Task UpdateIsMaterialRegisteredAsync_ShouldReturnNoContent_WhenUpdateSucceeds()
 	{
@@ -387,4 +412,28 @@ public class RegistrationMaterialControllerTests
 		result.Should().BeOfType<NoContentResult>();
 		_registrationMaterialService.Verify(s => s.UpdateIsMaterialRegisteredAsync(dto), Times.Once);
 	}
+
+    [TestMethod]
+    public async Task UpsertRegistrationMaterialContactAsync_ReturnOkResult()
+    {
+        // Arrange
+        var registrationMaterialId = Guid.NewGuid();
+        var request = new RegistrationMaterialContactDto { Id = Guid.Empty };
+        var response = new RegistrationMaterialContactDto { Id = Guid.NewGuid() };
+        var expectedResult = new OkResult();
+
+        // Expectations
+        _registrationMaterialService
+            .Setup(s => s.UpsertRegistrationMaterialContactAsync(registrationMaterialId, request))
+            .ReturnsAsync(response);
+
+        // Act
+        var result = await _controller.UpsertRegistrationMaterialContactAsync(registrationMaterialId, request);
+
+        // Assert
+        result.Should().BeEquivalentTo(expectedResult);
+
+        var okResult = result as OkObjectResult;
+        okResult.Value.Should().BeEquivalentTo(response);
+    }
 }

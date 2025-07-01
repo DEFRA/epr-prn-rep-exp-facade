@@ -14,4 +14,5 @@ public interface IRegistrationService
     
     Task<bool> UpdateAsync(Guid registrationId, UpdateRegistrationDto request); 
     Task<RegistrationOverviewDto> GetRegistrationOverviewAsync(Guid registrationId);
+    Task<IEnumerable<RegistrationsOverviewDto>> GetRegistrationsOverviewByOrgIdAsync(Guid organisationId);
 }
