@@ -324,7 +324,7 @@ public class RegistrationMaterialServiceClientTests
 
         _mockHttpMessageHandler
             .Protected()
-            .Setup<Task<HttpResponseMessage>>(  
+            .Setup<Task<HttpResponseMessage>>(
                 "SendAsync",
                 ItExpr.IsAny<HttpRequestMessage>(),
                 ItExpr.IsAny<CancellationToken>())

@@ -436,11 +436,6 @@ public class RegistrationMaterialControllerTests
         okResult.Value.Should().BeEquivalentTo(response);
     }
 
-    //UpsertRegistrationReprocessingDetailsAsync
-    //result.Should().BeOfType<Ok>();
-
-
-
     [TestMethod]
     public async Task UpsertRegistrationReprocessingDetailsAsync_ServiceException_ReturnInternalServerError()
     {
