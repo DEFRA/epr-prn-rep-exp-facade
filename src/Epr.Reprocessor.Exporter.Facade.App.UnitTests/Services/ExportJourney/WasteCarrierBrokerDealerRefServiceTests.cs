@@ -36,7 +36,7 @@ namespace Epr.Reprocessor.Exporter.Facade.App.UnitTests.Services.ExportJourney
 			var registrationId = Guid.NewGuid();
 			var responseDto = new WasteCarrierBrokerDealerRefDto
 			{
-				Id = Guid.NewGuid(),
+                CarrierBrokerDealerPermitId = Guid.NewGuid(),
 				RegistrationId = registrationId, 
 				WasteCarrierBrokerDealerRegistration = "abc"
 			};
@@ -62,7 +62,7 @@ namespace Epr.Reprocessor.Exporter.Facade.App.UnitTests.Services.ExportJourney
             var registrationId = Guid.NewGuid();
             var requestDto = new WasteCarrierBrokerDealerRefDto
             {
-                Id = Guid.NewGuid(),
+                CarrierBrokerDealerPermitId = Guid.NewGuid(),
                 RegistrationId = registrationId,
                 WasteCarrierBrokerDealerRegistration = "abc"
             };
@@ -89,7 +89,7 @@ namespace Epr.Reprocessor.Exporter.Facade.App.UnitTests.Services.ExportJourney
 
 			var requestDto = new WasteCarrierBrokerDealerRefDto
 			{
-				Id = Guid.NewGuid(),
+                CarrierBrokerDealerPermitId = Guid.NewGuid(),
 				RegistrationId = registrationId,
 				WasteCarrierBrokerDealerRegistration = "abc"
 			};
