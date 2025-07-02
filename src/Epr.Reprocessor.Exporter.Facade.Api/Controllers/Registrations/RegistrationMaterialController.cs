@@ -227,7 +227,7 @@ public class RegistrationMaterialController : ControllerBase
         }
     }
 
-    [HttpPost("{id:Guid}/registrationReprocessingDetails")]
+    [HttpPost("{registrationMaterialId:Guid}/registrationReprocessingDetails")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RegistrationReprocessingIORequestDto))]
     [SwaggerOperation(
       Summary = "Upserts the registration reprocessing io details for a registration material",

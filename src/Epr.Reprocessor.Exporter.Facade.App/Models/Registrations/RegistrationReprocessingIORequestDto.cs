@@ -33,5 +33,5 @@ public class RegistrationReprocessingIORequestDto
 
     public string? TypeOfSuppliers { get; set; }
 
-    public List<RegistrationReprocessingIORawMaterialOrProductsDto> RegistrationReprocessingIORawMaterialOrProducts { get; set; }
+    public List<RegistrationReprocessingIORawMaterialOrProductsDto> RegistrationReprocessingIORawMaterialOrProducts { get; set; } = [];
 }
