@@ -61,6 +61,24 @@ public class RegistrationServiceTests
     }
 
     [TestMethod]
+    public async Task UpdateApplicantRegistrationTaskStatusAsync_ShouldReturnExpectedResult()
+    {
+        // Arrange
+        var registrationId = Guid.NewGuid();
+        var requestDto = _fixture.Create<UpdateRegistrationTaskStatusDto>();
+
+        _mockRegistrationServiceClient
+            .Setup(client => client.UpdateApplicantRegistrationTaskStatusAsync(registrationId, requestDto))
+            .ReturnsAsync(true);
+
+        // Act
+        var result = await _service.UpdateApplicantRegistrationTaskStatusAsync(registrationId, requestDto);
+
+        // Assert
+        result.Should().BeTrue();
+    }
+
+    [TestMethod]
     public async Task GetRegistrationByOrganisationAsync_ShouldReturnExpectedResult()
     {
         // Arrange
