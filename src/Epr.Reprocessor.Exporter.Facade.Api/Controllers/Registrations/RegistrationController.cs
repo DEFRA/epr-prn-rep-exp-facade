@@ -94,17 +94,17 @@ public class RegistrationController : ControllerBase
         return NoContent();
     }
 
-    [HttpPost("{registrationId:guid}/ApplicantTaskStatus")]
+    [HttpPost("{registrationMaterialId:guid}/ApplicantTaskStatus")]
     [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(NoContentResult))]
     [SwaggerOperation(
         Summary = "update the applicant task status of an application registration",
         Description = "attempting to update the applicant task status of an application registration."
     )]
-    public async Task<IActionResult> UpdateApplicantRegistrationTaskStatus([FromRoute] Guid registrationId, [FromBody] UpdateRegistrationTaskStatusDto request)
+    public async Task<IActionResult> UpdateApplicantRegistrationTaskStatus([FromRoute] Guid registrationMaterialId, [FromBody] UpdateRegistrationTaskStatusDto request)
     {
         _logger.LogInformation(LogMessages.UpdateRegistrationTaskStatus);
 
-        await _registrationService.UpdateApplicantRegistrationTaskStatusAsync(registrationId, request);
+        await _registrationService.UpdateApplicantRegistrationTaskStatusAsync(registrationMaterialId, request);
 
         return NoContent();
     }
