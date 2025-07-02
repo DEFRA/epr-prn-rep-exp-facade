@@ -77,6 +77,21 @@ public class RegistrationControllerTests
     }
 
     [TestMethod]
+    public async Task UpdateApplicantRegistrationTaskStatus_ShouldReturnNoContentResult()
+    {
+        // Arrange
+        var registrationId = Guid.NewGuid();
+        var request = new UpdateRegistrationTaskStatusDto();
+
+        // Act
+        var result = await _controller.UpdateApplicantRegistrationTaskStatus(registrationId, request);
+
+        // Assert
+        result.Should().BeOfType<NoContentResult>();
+        _registrationServiceMock.Verify(s => s.UpdateApplicantRegistrationTaskStatusAsync(registrationId, request), Times.Once);
+    }
+
+    [TestMethod]
     public async Task CreateRegistration_EmptyValues()
     {
         // Arrange

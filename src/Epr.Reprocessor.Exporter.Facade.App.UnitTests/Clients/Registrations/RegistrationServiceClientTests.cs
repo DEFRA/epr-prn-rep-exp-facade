@@ -108,6 +108,33 @@ public class RegistrationServiceClientTests
     }
 
     [TestMethod]
+    public async Task UpdateApplicantTaskStatusAsync_ShouldReturnExpectedResult()
+    {
+        // Arrange
+        var registrationId = Guid.NewGuid();
+        var requestDto = _fixture.Create<UpdateRegistrationTaskStatusDto>();
+        _mockHttpMessageHandler.Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.Is<HttpRequestMessage>(msg =>
+                    msg.Method == HttpMethod.Post &&
+                    msg.RequestUri!.ToString().Contains("applicantTaskStatus")),
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .ReturnsAsync(new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = new StringContent("true")
+            });
+
+        // Act
+        var result = await _client.UpdateApplicantRegistrationTaskStatusAsync(registrationId, requestDto);
+
+        // Assert
+        result.Should().BeTrue();
+    }
+
+    [TestMethod]
     public async Task GetRegistrationByOrganisationAsync_Exists_ReturnDto()
     {
         // Arrange
