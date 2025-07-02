@@ -38,7 +38,7 @@ namespace Epr.Reprocessor.Exporter.Facade.App.UnitTests.Services.ExportJourney
             {
                 CarrierBrokerDealerPermitId = Guid.NewGuid(),
                 RegistrationId = registrationId,
-                wasteCarrierBrokerDealerRegistration = "XXX1",
+                WasteCarrierBrokerDealerRegistration = "XXX1",
                 WasteLicenseOrPermitNumber = "WASTE123",
                 PpcNumber = "PPC456",
                 WasteExemptionReference = new List<string> { "EX1", "EX2" }
@@ -82,7 +82,7 @@ namespace Epr.Reprocessor.Exporter.Facade.App.UnitTests.Services.ExportJourney
 			{
 				RegistrationId = registrationId,
 				PpcNumber = "ppcNumber",
-                wasteCarrierBrokerDealerRegistration = "XXX1",
+                WasteCarrierBrokerDealerRegistration = "XXX1",
                 WasteExemptionReference = new List<string>() { "ref1" },
 				WasteLicenseOrPermitNumber = "permitNumber"
 			};
@@ -112,7 +112,7 @@ namespace Epr.Reprocessor.Exporter.Facade.App.UnitTests.Services.ExportJourney
                 CarrierBrokerDealerPermitId = Guid.NewGuid(),
 				RegistrationId = registrationId,
 				PpcNumber = "ppcNumber",
-                wasteCarrierBrokerDealerRegistration = "XXX1",
+                WasteCarrierBrokerDealerRegistration = "XXX1",
                 WasteExemptionReference = new List<string> { "ref1" },
 				WasteLicenseOrPermitNumber = "permitNumber"
 			};
