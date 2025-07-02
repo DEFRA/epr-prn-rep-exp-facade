@@ -1,5 +1,7 @@
 ﻿using Epr.Reprocessor.Exporter.Facade.App.Config;
 using Epr.Reprocessor.Exporter.Facade.App.Constants;
+using Epr.Reprocessor.Exporter.Facade.App.Models.Exporter;
+using Epr.Reprocessor.Exporter.Facade.App.Models.Exporter.DTOs;
 using Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -76,5 +78,14 @@ public class RegistrationMaterialServiceClient(
         _logger.LogInformation("Calling {Url} to delete registration material.", url);
 
         return await DeleteAsync(url);
+    }
+
+    public async Task<bool> SaveOverseasReprocessorAsync(OverseasAddressRequest request)
+    {
+        var url = string.Format(Endpoints.RegistrationMaterial.SaveOverseasReprocessor, _config.ApiVersion, request.RegistrationMaterialId, request);
+        _logger.LogInformation("Calling {Url} to save overseas reprocessor.", url);
+
+        await PostAsync<OverseasAddressRequestDto>(url, OverseasAddressRequestDto.MapOverseasAddressRequestToDto(request));
+        return true;
     }
 }

@@ -1,4 +1,5 @@
-﻿using Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
+﻿using Epr.Reprocessor.Exporter.Facade.App.Models.Exporter;
+using Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
 
 namespace Epr.Reprocessor.Exporter.Facade.App.Services.Registration;
 
@@ -16,4 +17,6 @@ public interface IRegistrationMaterialService
 
     Task<List<ApplicationRegistrationMaterialDto>> GetAllRegistrationsMaterials(Guid registrationId);
     Task<bool> Delete(Guid registrationMaterialId);
+
+    Task<bool> SaveOverseasReprocessorAsync(OverseasAddressRequest requestDto);
 }
