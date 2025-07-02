@@ -3,6 +3,7 @@ using System.Text.Json;
 using AutoFixture;
 using Epr.Reprocessor.Exporter.Facade.App.Clients.Registrations;
 using Epr.Reprocessor.Exporter.Facade.App.Config;
+using Epr.Reprocessor.Exporter.Facade.App.Models;
 using Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
@@ -250,4 +251,194 @@ public class RegistrationServiceClientTests
         // Assert
         result.Should().BeTrue();
     }
+
+    [TestMethod]
+    public async Task GetRegistrationsOverviewByOrgIdAsync_RegistrationsFound_ShouldReturnExpectedResult()
+    {
+        // Arrange
+        var organisationId = Guid.NewGuid();
+        var registrationsOverview = new List<RegistrationsOverviewDto>
+    {
+        new RegistrationsOverviewDto
+        {
+            RegistrationId = Guid.NewGuid(),
+            RegistrationMaterialId = 1,
+            MaterialId = 101,
+            Material = "Plastic",
+            MaterialCode = "PL001",
+            ApplicationTypeId = 2,
+            ApplicationType = "Recycling",
+            RegistrationStatus = 1,
+            AccreditationStatus = 2,
+            ReprocessingSiteId = 123,
+            ReprocessingSiteAddress = new AddressDto
+            {
+                AddressLine1 = "123 Recycling Lane",
+                AddressLine2 = "Unit 5",
+                TownCity = "Recycle City",
+                County = "Green County",
+                Country = "EcoLand",
+                GridReference = "GR12345",
+                PostCode = "RC1 2PL"
+            },
+            RegistrationYear = 2023,
+            AccreditationYear = 2022
+        }
+    };
+        // Correct the URL to match the actual format
+        var url = $"api/v1/registrations/{organisationId}/overview";
+        _mockHttpMessageHandler.Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.Is<HttpRequestMessage>(msg =>
+                    msg.Method == HttpMethod.Get &&
+                    msg.RequestUri!.ToString().Contains(url)), // Match the correct URL
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .ReturnsAsync(new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = new StringContent(JsonSerializer.Serialize(registrationsOverview, JsonSerializerOptions))
+            });
+        // Act
+        var result = await _client.GetRegistrationsOverviewByOrgIdAsync(organisationId);
+        // Assert
+        result.Should().BeEquivalentTo(registrationsOverview);
+        // Verify the request was made with the correct HTTP method and URL
+        _mockHttpMessageHandler.Protected()
+            .Verify(
+                "SendAsync",
+                Times.Once(),
+                ItExpr.Is<HttpRequestMessage>(req =>
+                    req.Method == HttpMethod.Get &&
+                    req.RequestUri!.ToString().Contains(url)), // Match the correct URL
+                ItExpr.IsAny<CancellationToken>()
+            );
+    }
+
+    [TestMethod]
+    public async Task GetRegistrationsOverviewByOrgIdAsync_NotFound_ShouldReturnNull()
+    {
+        // Arrange
+        var organisationId = Guid.NewGuid();
+        // Correct the URL to match the actual format
+        var url = $"api/v1/registrations/{organisationId}/overview";
+        _mockHttpMessageHandler.Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.Is<HttpRequestMessage>(msg =>
+                    msg.Method == HttpMethod.Get &&
+                    msg.RequestUri!.ToString().Contains(url)), // Match the correct URL
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .ReturnsAsync(new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.NotFound // Simulate a 404 response
+            });
+        // Act
+        var result = await _client.GetRegistrationsOverviewByOrgIdAsync(organisationId);
+        // Assert
+        result.Should().BeNull();
+        // Verify the request was made with the correct HTTP method and URL
+        _mockHttpMessageHandler.Protected()
+            .Verify(
+                "SendAsync",
+                Times.Once(),
+                ItExpr.Is<HttpRequestMessage>(req =>
+                    req.Method == HttpMethod.Get &&
+                    req.RequestUri!.ToString().Contains(url)), // Match the correct URL
+                ItExpr.IsAny<CancellationToken>()
+            );
+    }
+
+
+    [TestMethod]
+    public async Task GetRegistrationsOverviewByOrgIdAsync_OtherError_ShouldThrowException()
+    {
+        // Arrange
+        var organisationId = Guid.NewGuid();
+        var url = $"api/v1/registrations/overview/{organisationId}";
+        _mockHttpMessageHandler.Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.Is<HttpRequestMessage>(msg =>
+                    msg.Method == HttpMethod.Get &&
+                    msg.RequestUri!.ToString().EndsWith(url)),
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .ReturnsAsync(new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.InternalServerError
+            });
+        // Act
+        var act = async () => await _client.GetRegistrationsOverviewByOrgIdAsync(organisationId);
+        // Assert
+        await act.Should().ThrowAsync<Exception>();
+    }
+
+    [TestMethod]
+    public async Task GetRegistrationsOverviewByOrgIdAsync_ShouldReturnExpectedResult()
+    {
+        // Arrange
+        var organisationId = Guid.NewGuid();
+        var registrationsOverview = new List<RegistrationsOverviewDto>
+    {
+        new RegistrationsOverviewDto
+        {
+            RegistrationId = Guid.NewGuid(),
+            RegistrationMaterialId = 1,
+            MaterialId = 101,
+            Material = "Plastic",
+            MaterialCode = "PL001",
+            ApplicationTypeId = 2,
+            ApplicationType = "Recycling",
+            RegistrationStatus = 1,
+            AccreditationStatus = 2,
+            ReprocessingSiteId = 123,
+            ReprocessingSiteAddress = new AddressDto
+            {
+                AddressLine1 = "123 Recycling Lane",
+                AddressLine2 = "Unit 5",
+                TownCity = "Recycle City",
+                County = "Green County",
+                Country = "EcoLand",
+                GridReference = "GR12345",
+                PostCode = "RC1 2PL"
+            },
+            RegistrationYear = 2023,
+            AccreditationYear = 2022
+        }
+    };
+        // Correct the URL to match the actual format
+        var url = $"api/v1/registrations/{organisationId}/overview";
+        _mockHttpMessageHandler.Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.Is<HttpRequestMessage>(msg =>
+                    msg.Method == HttpMethod.Get &&
+                    msg.RequestUri!.ToString().Contains(url)), // Match the correct URL
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .ReturnsAsync(new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = new StringContent(JsonSerializer.Serialize(registrationsOverview, JsonSerializerOptions))
+            });
+        // Act
+        var result = await _client.GetRegistrationsOverviewByOrgIdAsync(organisationId);
+        // Assert
+        result.Should().BeEquivalentTo(registrationsOverview);
+        // Verify the request was made with the correct HTTP method and URL
+        _mockHttpMessageHandler.Protected()
+            .Verify(
+                "SendAsync",
+                Times.Once(),
+                ItExpr.Is<HttpRequestMessage>(req =>
+                    req.Method == HttpMethod.Get &&
+                    req.RequestUri!.ToString().Contains(url)), // Match the correct URL
+                ItExpr.IsAny<CancellationToken>()
+            );
+    }
+
+
 }
