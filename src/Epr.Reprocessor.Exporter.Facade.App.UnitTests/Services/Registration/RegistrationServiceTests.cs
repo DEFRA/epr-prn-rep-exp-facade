@@ -144,6 +144,7 @@ public class RegistrationServiceTests
     [TestMethod]
     public async Task GetRegistrationsOverviewByOrgIdAsync_ShouldReturnExpectedResult()
     {
+
         // Arrange
         var organisationId = Guid.NewGuid();
         var expectedOverviews = _fixture.Create<IEnumerable<RegistrationsOverviewDto>>();
