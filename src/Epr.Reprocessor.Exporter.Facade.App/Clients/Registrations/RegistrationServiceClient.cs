@@ -42,11 +42,11 @@ ILogger<RegistrationServiceClient> logger)
         return await this.PostAsync<UpdateRegistrationTaskStatusDto, bool>(url, request);
     }
 
-    public async Task<bool> UpdateApplicantRegistrationTaskStatusAsync(Guid registrationMaterialId, UpdateRegistrationTaskStatusDto request)
+    public async Task<bool> UpdateApplicationRegistrationTaskStatusAsync(Guid registrationMaterialId, UpdateRegistrationTaskStatusDto request)
     {
         logger.LogInformation("UpdateRegistrationTaskStatusAsync for registrationMaterialId: {registrationMaterialId}", registrationMaterialId);
 
-        var url = string.Format(Endpoints.Registration.ApplicantRegistrationUpdateTaskStatus, _config.ApiVersion, registrationMaterialId);
+        var url = string.Format(Endpoints.Registration.ApplicationRegistrationUpdateTaskStatus, _config.ApiVersion, registrationMaterialId);
 
         return await this.PostAsync<UpdateRegistrationTaskStatusDto, bool>(url, request);
     }

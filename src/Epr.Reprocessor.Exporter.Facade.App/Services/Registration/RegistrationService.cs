@@ -29,9 +29,9 @@ public class RegistrationService(IRegistrationServiceClient registrationServiceC
     {
         return await registrationServiceClient.UpdateRegistrationTaskStatusAsync(registrationId, dto);
     }
-    public async Task<bool> UpdateApplicantRegistrationTaskStatusAsync(Guid registrationMaterialId, UpdateRegistrationTaskStatusDto dto)
+    public async Task<bool> UpdateApplicationRegistrationTaskStatusAsync(Guid registrationMaterialId, UpdateRegistrationTaskStatusDto dto)
     {
-        return await registrationServiceClient.UpdateApplicantRegistrationTaskStatusAsync(registrationMaterialId, dto);
+        return await registrationServiceClient.UpdateApplicationRegistrationTaskStatusAsync(registrationMaterialId, dto);
     }
 
     public async Task<RegistrationOverviewDto> GetRegistrationOverviewAsync(Guid registrationId)
