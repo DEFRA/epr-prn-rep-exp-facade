@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
 using AutoFixture;
@@ -274,5 +273,35 @@ public class RegistrationMaterialServiceClientTests
         capturedRequest.Should().NotBeNull();
         capturedRequest.Method.Should().Be(HttpMethod.Delete);
         result.Should().BeTrue();
+    }
+
+    [TestMethod]
+    public async Task UpdateMaximumWeightAsync_SendsCorrectRequest()
+    {
+        // Arrange
+        var id = Guid.NewGuid();
+        var request = _fixture.Create<UpdateMaximumWeightDto>();
+
+        HttpRequestMessage? capturedRequest = null;
+
+        _mockHttpMessageHandler
+            .Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.IsAny<HttpRequestMessage>(),
+                ItExpr.IsAny<CancellationToken>())
+            .Callback<HttpRequestMessage, CancellationToken>((req, _) => capturedRequest = req)
+            .ReturnsAsync(new HttpResponseMessage
+            {
+                StatusCode = System.Net.HttpStatusCode.OK,
+                Content = new StringContent(JsonSerializer.Serialize("true"))
+            });
+
+        // Act
+        var result = await _client.UpdateMaximumWeightAsync(id, request);
+
+        // Assert
+        capturedRequest.Should().NotBeNull();
+        capturedRequest.Method.Should().Be(HttpMethod.Put);
     }
 }

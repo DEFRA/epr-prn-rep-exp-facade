@@ -5,11 +5,8 @@ using Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
 using Epr.Reprocessor.Exporter.Facade.App.Services.Registration;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
-using static Epr.Reprocessor.Exporter.Facade.App.Constants.Endpoints;
-
 
 namespace Epr.Reprocessor.Exporter.Facade.Api.Controllers.Registrations;
-
 
 [Route("api/v{version:apiVersion}/registrationMaterials")]
 [ApiVersion("1.0")]
@@ -190,5 +187,24 @@ public class RegistrationMaterialController : ControllerBase
             _logger.LogError(ex, LogMessages.UnExpectedError);
             return StatusCode(StatusCodes.Status500InternalServerError, LogMessages.UnExpectedError);
         }
+    }
+
+    [HttpPut("{registrationMaterialId:Guid}/max-weight")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OkResult))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(BadRequestResult))]
+    [SwaggerOperation(
+        Summary = "update the maximum weight the site is capable of processing for the material",
+        Description = "attempting to update the maximum weight the site is capable of processing for the material."
+    )]
+    public async Task<IActionResult> UpdateMaximumWeight([FromRoute] Guid registrationMaterialId, [FromBody] UpdateMaximumWeightDto request)
+    {
+        _logger.LogInformation(LogMessages.UpdateRegistrationMaterialPermitCapacity, registrationMaterialId);
+
+        if (!await _registrationMaterialService.UpdateMaximumWeight(registrationMaterialId, request))
+        {
+            return BadRequest();
+        }
+
+        return Ok();
     }
 }

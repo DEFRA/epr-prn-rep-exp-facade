@@ -71,6 +71,14 @@ public abstract class BaseHttpClient
         return JsonSerializer.Deserialize<TResponse>(json, _jsonOptions);
     }
 
+    protected async Task<bool> PutAsync<TRequest>(string url, TRequest data)
+    {
+        var content = CreateJsonContent(data);
+        var response = await _httpClient.PutAsync(url, content);
+        response.EnsureSuccessStatusCode();
+        return response.IsSuccessStatusCode;
+    }
+
     protected async Task<bool> PatchAsync<TRequest>(string url, TRequest data)
     {
         var content = CreateJsonContent(data);
