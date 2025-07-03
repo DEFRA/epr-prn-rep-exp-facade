@@ -14,6 +14,6 @@ public record OverseasAddressDto(
     string CountryName,
     string SiteCoordinates,
     Guid CreatedBy,
-    List<OverseasAddressContactDto> OverseasAddressContact,
+    List<OverseasAddressContactDto> OverseasAddressContacts,
     List<OverseasAddressWasteCodesDto> OverseasAddressWasteCodes
 );

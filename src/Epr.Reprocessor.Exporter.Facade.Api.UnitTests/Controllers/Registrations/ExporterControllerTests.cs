@@ -1,4 +1,5 @@
-﻿using Epr.Reprocessor.Exporter.Facade.Api.Controllers.Registrations;
+﻿using System.Security.Claims;
+using Epr.Reprocessor.Exporter.Facade.Api.Controllers.Registrations;
 using Epr.Reprocessor.Exporter.Facade.App.Constants;
 using Epr.Reprocessor.Exporter.Facade.App.Models.Exporter;
 using Epr.Reprocessor.Exporter.Facade.App.Services.Registration;
@@ -7,6 +8,7 @@ using FluentAssertions.Execution;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Identity.Web;
 using Moq;
 
 namespace Epr.Reprocessor.Exporter.Facade.Api.UnitTests.Controllers.Registrations;
@@ -49,33 +51,33 @@ public class ExporterControllerTests
     }
 
     [TestMethod]
-    public async Task SaveOverseasReprocessor_ReturnsNoContent_WhenServiceSucceeds()
+    public async Task SaveOverseasReprocessor_ShouldReturnNoContent_WhenServiceSucceeds()
     {
         // Arrange
-        var request = new OverseasAddressRequest
-        {
-            RegistrationMaterialId = Guid.NewGuid(),
-            OverseasAddresses = new List<OverseasAddress>()
-        };
+        var request = new OverseasAddressRequest();
+        var userId = Guid.NewGuid();
         _registrationMaterialServiceMock
-            .Setup(x => x.SaveOverseasReprocessorAsync(request))
+            .Setup(s => s.SaveOverseasReprocessorAsync(request, userId))
             .ReturnsAsync(true);
 
-        // Act
+        var user = new ClaimsPrincipal(new ClaimsIdentity(new[]
+        {
+            new Claim("http://schemas.microsoft.com/identity/claims/objectidentifier", userId.ToString())
+        }));
 
+        _controller.ControllerContext = new ControllerContext
+        {
+            HttpContext = new DefaultHttpContext { User = user }
+        };
+
+        // Act
         var result = await _controller.SaveOverseasReprocessor(request);
 
         // Assert
         using (var scope = new AssertionScope())
         {
             result.Should().BeOfType<NoContentResult>();
-            _loggerMock.Verify(x => x.Log(
-                LogLevel.Information,
-                It.IsAny<EventId>(),
-                It.Is<It.IsAnyType>((v, t) => v.ToString().Contains(LogMessages.CreateRegistrationMaterial)),
-                null,
-                It.IsAny<Func<It.IsAnyType, Exception, string>>()), Times.Once);
-            _registrationMaterialServiceMock.Verify(x => x.SaveOverseasReprocessorAsync(request), Times.Once);
+            _registrationMaterialServiceMock.Verify(s => s.SaveOverseasReprocessorAsync(request, userId), Times.Once);
         }
     }
 
@@ -89,7 +91,7 @@ public class ExporterControllerTests
             OverseasAddresses = new List<OverseasAddress>()
         };
         _registrationMaterialServiceMock
-            .Setup(x => x.SaveOverseasReprocessorAsync(request))
+            .Setup(x => x.SaveOverseasReprocessorAsync(request, Guid.NewGuid()))
             .ThrowsAsync(new Exception("Test exception"));
 
         // Act

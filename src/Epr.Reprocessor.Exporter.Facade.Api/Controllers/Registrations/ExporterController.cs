@@ -1,4 +1,5 @@
-﻿using Epr.Reprocessor.Exporter.Facade.App.Constants;
+﻿using Epr.Reprocessor.Exporter.Facade.Api.Extensions;
+using Epr.Reprocessor.Exporter.Facade.App.Constants;
 using Epr.Reprocessor.Exporter.Facade.App.Models.Exporter;
 using Epr.Reprocessor.Exporter.Facade.App.Services.Registration;
 using Microsoft.AspNetCore.Mvc;
@@ -40,7 +41,7 @@ public class ExporterController : ControllerBase
 
         try
         {
-            await _registrationMaterialService.SaveOverseasReprocessorAsync(request);
+            await _registrationMaterialService.SaveOverseasReprocessorAsync(request, HttpContext.User.UserId());
 
             return NoContent();
         }

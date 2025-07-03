@@ -172,33 +172,33 @@ public class RegistrationMaterialServiceTests
     public async Task SaveOverseasReprocessorAsync_ShouldReturnTrue_WhenClientReturnsTrue()
     {
         // Arrange
-        var id = Guid.NewGuid();
+        var createdBy = Guid.NewGuid();
         var request = _fixture.Create<OverseasAddressRequest>();
-        _clientMock.Setup(x => x.SaveOverseasReprocessorAsync(request))
+        _clientMock.Setup(x => x.SaveOverseasReprocessorAsync(request, createdBy))
                    .ReturnsAsync(true);
 
         // Act
-        var result = await _service.SaveOverseasReprocessorAsync(request);
+        var result = await _service.SaveOverseasReprocessorAsync(request, createdBy);
 
         // Assert
         result.Should().BeTrue();
-        _clientMock.Verify(x => x.SaveOverseasReprocessorAsync(request), Times.Once);
+        _clientMock.Verify(x => x.SaveOverseasReprocessorAsync(request, createdBy), Times.Once);
     }
 
     [TestMethod]
     public async Task SaveOverseasReprocessorAsync_ShouldReturnFalse_WhenClientReturnsFalse()
     {
         // Arrange
-        var id = Guid.NewGuid();
+        var createdBy = Guid.NewGuid();
         var request = _fixture.Create<OverseasAddressRequest>();
-        _clientMock.Setup(x => x.SaveOverseasReprocessorAsync(request))
+        _clientMock.Setup(x => x.SaveOverseasReprocessorAsync(request, createdBy))
                    .ReturnsAsync(false);
 
         // Act
-        var result = await _service.SaveOverseasReprocessorAsync(request);
+        var result = await _service.SaveOverseasReprocessorAsync(request, createdBy);
 
         // Assert
         result.Should().BeFalse();
-        _clientMock.Verify(x => x.SaveOverseasReprocessorAsync(request), Times.Once);
+        _clientMock.Verify(x => x.SaveOverseasReprocessorAsync(request, createdBy), Times.Once);
     }
 }

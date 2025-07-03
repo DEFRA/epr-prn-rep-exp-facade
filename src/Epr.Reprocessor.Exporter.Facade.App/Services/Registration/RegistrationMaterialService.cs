@@ -28,6 +28,6 @@ public class RegistrationMaterialService(IRegistrationMaterialServiceClient regi
     public async Task<bool> Delete(Guid registrationMaterialId) 
         => await registrationMaterialServiceClient.DeleteAsync(registrationMaterialId);
 
-    public async Task<bool> SaveOverseasReprocessorAsync(OverseasAddressRequest request)
-        => await registrationMaterialServiceClient.SaveOverseasReprocessorAsync(request);
+    public async Task<bool> SaveOverseasReprocessorAsync(OverseasAddressRequest request, Guid createdBy)
+        => await registrationMaterialServiceClient.SaveOverseasReprocessorAsync(request, createdBy);
 }

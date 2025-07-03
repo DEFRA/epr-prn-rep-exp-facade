@@ -80,12 +80,11 @@ public class RegistrationMaterialServiceClient(
         return await DeleteAsync(url);
     }
 
-    public async Task<bool> SaveOverseasReprocessorAsync(OverseasAddressRequest request)
+    public async Task<bool> SaveOverseasReprocessorAsync(OverseasAddressRequest request, Guid createdBy)
     {
         var url = string.Format(Endpoints.RegistrationMaterial.SaveOverseasReprocessor, _config.ApiVersion, request.RegistrationMaterialId, request);
-        _logger.LogInformation("Calling {Url} to save overseas reprocessor.", url);
-
-        await PostAsync<OverseasAddressRequestDto>(url, OverseasAddressRequestDto.MapOverseasAddressRequestToDto(request));
+        
+        await PostAsync<OverseasAddressRequestDto>(url, OverseasAddressRequestDto.MapOverseasAddressRequestToDto(request, createdBy));
         return true;
     }
 }

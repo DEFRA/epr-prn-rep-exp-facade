@@ -13,5 +13,5 @@ public interface IRegistrationMaterialServiceClient
     Task<List<ApplicationRegistrationMaterialDto>> GetAllRegistrationMaterialsAsync(Guid registrationId);
     Task<bool> DeleteAsync(Guid registrationMaterialId);
 
-    Task<bool> SaveOverseasReprocessorAsync(OverseasAddressRequest requestDto);
+    Task<bool> SaveOverseasReprocessorAsync(OverseasAddressRequest requestDto, Guid createdBy);
 }

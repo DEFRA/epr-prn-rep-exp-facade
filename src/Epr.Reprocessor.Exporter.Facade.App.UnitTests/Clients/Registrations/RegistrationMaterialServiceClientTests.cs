@@ -300,7 +300,7 @@ public class RegistrationMaterialServiceClientTests
             });
 
         // Act
-        var result = await _client.SaveOverseasReprocessorAsync(request);
+        var result = await _client.SaveOverseasReprocessorAsync(request, Guid.NewGuid());
 
         // Assert
         capturedRequest.Should().NotBeNull();

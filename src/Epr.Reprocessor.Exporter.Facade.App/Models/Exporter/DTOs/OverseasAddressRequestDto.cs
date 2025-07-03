@@ -8,7 +8,7 @@ public record OverseasAddressRequestDto(
     List<OverseasAddressDto>? OverseasAddresses
 )
 {
-    public static OverseasAddressRequestDto MapOverseasAddressRequestToDto(OverseasAddressRequest? request)
+    public static OverseasAddressRequestDto MapOverseasAddressRequestToDto(OverseasAddressRequest? request, Guid createdBy)
     {
         if (request == null)
         {
@@ -25,12 +25,12 @@ public record OverseasAddressRequestDto(
             address.PostCode,
             address.Country,
             address.SiteCoordinates,
-            Guid.NewGuid(), // TODO: Provide the correct CreatedBy value
+            createdBy,
             address.OverseasAddressContact.Select(contact => new OverseasAddressContactDto(
                 contact.FullName,
                 contact.Email,
                 contact.PhoneNumber,
-                Guid.NewGuid())).ToList(), // TODO: Provide the correct CreatedBy value
+                createdBy)).ToList(),
             address.OverseasAddressWasteCodes.Select(wasteCode => new OverseasAddressWasteCodesDto(
                 wasteCode.Id,
                 wasteCode.CodeName)).ToList()
