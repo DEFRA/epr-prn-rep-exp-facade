@@ -15,7 +15,7 @@ public static class Endpoints
     {
         public const string CreateRegistration = "api/v{0}/registrations";
         public const string RegistrationUpdateTaskStatus = "api/v{0}/registrations/{1}/taskStatus";
-        public const string ApplicantRegistrationUpdateTaskStatus = "api/v{0}/registrations/{1}/applicantTaskStatus";
+        public const string ApplicationRegistrationUpdateTaskStatus = "api/v{0}/registrations/{1}/applicationTaskStatus";
         public const string RegistrationUpdateSiteAddress = "api/v{0}/registrations/{1}/siteAddress";
         public const string GetRegistrationByOrganisation = "api/v{0}/registrations/{1}/organisations/{2}";
         public const string UpdateRegistration = "api/v{0}/registrations/{1}/update";
