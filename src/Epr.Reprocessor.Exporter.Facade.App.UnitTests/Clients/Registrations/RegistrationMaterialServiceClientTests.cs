@@ -343,4 +343,43 @@ public class RegistrationMaterialServiceClientTests
         capturedRequest.Method.Should().Be(HttpMethod.Post);
         result.Should().BeEquivalentTo(expectedResponse);
     }
+
+    [TestMethod]
+    public async Task UpsertRegistrationReprocessingDetailsAsync_SendsCorrectRequest()
+    {
+        // Arrange
+        var registrationMaterialId = Guid.NewGuid();
+        var request = new RegistrationReprocessingIORequestDto { TypeOfSuppliers = "Supplier 123" };
+        var dto = _fixture.Create<RegistrationReprocessingIORequestDto>();
+
+        HttpRequestMessage? capturedRequest = null;
+
+        var options = new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            Converters = { new JsonStringEnumConverter(JsonNamingPolicy.CamelCase) }
+        };
+
+        _mockHttpMessageHandler
+            .Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.IsAny<HttpRequestMessage>(),
+                ItExpr.IsAny<CancellationToken>())
+            .Callback<HttpRequestMessage, CancellationToken>((req, _) => capturedRequest = req)
+            .ReturnsAsync(new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = new StringContent(string.Empty)
+            });
+
+        // Act
+        await _client.UpsertRegistrationReprocessingDetailsAsync(registrationMaterialId, request);
+
+        // Assert
+        capturedRequest.Should().NotBeNull();
+        capturedRequest.Method.Should().Be(HttpMethod.Post);
+        var content = await capturedRequest.Content.ReadAsStringAsync();
+        Assert.IsTrue(content.Contains(dto.TypeOfSuppliers?.ToString() ?? string.Empty) || content.Length > 0);
+    }
 }

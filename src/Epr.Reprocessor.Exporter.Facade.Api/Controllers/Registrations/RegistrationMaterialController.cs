@@ -226,4 +226,28 @@ public class RegistrationMaterialController : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError, LogMessages.UnExpectedError);
         }
     }
+
+    [HttpPost("{registrationMaterialId:Guid}/registrationReprocessingDetails")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RegistrationReprocessingIORequestDto))]
+    [SwaggerOperation(
+      Summary = "Upserts the registration reprocessing io details for a registration material",
+      Description = "attempting to upsert the registration reprocessing io details."
+  )]
+    [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
+    public async Task<IActionResult> UpsertRegistrationReprocessingDetailsAsync([FromRoute] Guid registrationMaterialId, [FromBody] RegistrationReprocessingIORequestDto request)
+    {
+        try
+        {
+            _logger.LogInformation(LogMessages.UpsertRegistrationReprocessingDetails, registrationMaterialId);
+
+            await _registrationMaterialService.UpsertRegistrationReprocessingDetailsAsync(registrationMaterialId, request);
+
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, LogMessages.UnExpectedError);
+            return StatusCode(StatusCodes.Status500InternalServerError, LogMessages.UnExpectedError);
+        }
+    }
 }

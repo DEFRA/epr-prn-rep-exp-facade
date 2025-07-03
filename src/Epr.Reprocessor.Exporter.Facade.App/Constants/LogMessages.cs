@@ -1,6 +1,4 @@
-﻿using static Epr.Reprocessor.Exporter.Facade.App.Constants.Endpoints;
-
-namespace Epr.Reprocessor.Exporter.Facade.App.Constants;
+﻿namespace Epr.Reprocessor.Exporter.Facade.App.Constants;
 public static class LogMessages
 {
     public const string CreateRegistration = "Attempting to create registration application";
@@ -24,7 +22,7 @@ public static class LogMessages
     public const string GetAllMaterials = "Attempting to retrieve a list of applicable materials";
     public const string GetAllRegistrationMaterials = "Attempting to retrieve all registration materials for registration {RegistrationId}";
     public const string DeleteRegistrationMaterial = "Attempting to delete a registration material with ID {RegistrationMaterialId}";
-    public const string GetRegistrationsOverviewByOrganisationId = "Fetching registration overview for Organisation ID: {OrganisationId}"
-        ;
+    public const string GetRegistrationsOverviewByOrganisationId = "Fetching registration overview for Organisation ID: {OrganisationId}";
     public const string UpsertRegistrationMaterialContact = "Attempting to upsert a contact for registration material with ID {RegistrationMaterialId}";
+    public const string UpsertRegistrationReprocessingDetails = "Attempting to upsert registration reprocessing details for registration material with ID {RegistrationMaterialId}";
 }

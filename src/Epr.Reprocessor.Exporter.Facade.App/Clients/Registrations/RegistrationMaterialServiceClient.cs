@@ -97,4 +97,13 @@ public class RegistrationMaterialServiceClient(
 
         return await PostAsync<RegistrationMaterialContactDto, RegistrationMaterialContactDto>(url, request);
     }
+
+    public async Task UpsertRegistrationReprocessingDetailsAsync(Guid registrationMaterialId, RegistrationReprocessingIORequestDto request)
+    {
+        _logger.LogInformation("Attempting to upsert registration reprocessing details for a registration material with External ID {Id}", registrationMaterialId);
+
+        var url = string.Format(Endpoints.RegistrationMaterial.UpsertRegistrationReprocessingDetails, _config.ApiVersion, registrationMaterialId);
+
+        await PostAsync<RegistrationReprocessingIORequestDto>(url, request);
+    }
 }

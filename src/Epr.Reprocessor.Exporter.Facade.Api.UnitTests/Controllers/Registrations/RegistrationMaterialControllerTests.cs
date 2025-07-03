@@ -1,5 +1,4 @@
 ﻿using AutoFixture;
-using Azure.Core;
 using Epr.Reprocessor.Exporter.Facade.Api.Controllers.Registrations;
 using Epr.Reprocessor.Exporter.Facade.App.Constants;
 using Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
@@ -69,14 +68,14 @@ public class RegistrationMaterialControllerTests
             Times.Once
         );
     }
-    
+
     [TestMethod]
     public async Task CreateRegistrationMaterialAndExemptionReferences_ShouldCallServiceAndLogMessage_WhenDtoIsValid()
     {
         // Arrange
         var dto = new CreateExemptionReferencesDto
         {
-            MaterialExemptionReferences = new List<MaterialExemptionReferenceDto>(),          
+            MaterialExemptionReferences = new List<MaterialExemptionReferenceDto>(),
         };
 
         _registrationMaterialService
@@ -397,21 +396,21 @@ public class RegistrationMaterialControllerTests
         result.Should().BeEquivalentTo(expectedResult);
     }
 
-	[TestMethod]
-	public async Task UpdateIsMaterialRegisteredAsync_ShouldReturnNoContent_WhenUpdateSucceeds()
-	{
-		// Arrange
-		var dto = _fixture.Create<List<UpdateIsMaterialRegisteredDto>>();
-		_registrationMaterialService.Setup(s => s.UpdateIsMaterialRegisteredAsync(dto))
-					.ReturnsAsync(true);
+    [TestMethod]
+    public async Task UpdateIsMaterialRegisteredAsync_ShouldReturnNoContent_WhenUpdateSucceeds()
+    {
+        // Arrange
+        var dto = _fixture.Create<List<UpdateIsMaterialRegisteredDto>>();
+        _registrationMaterialService.Setup(s => s.UpdateIsMaterialRegisteredAsync(dto))
+                    .ReturnsAsync(true);
 
-		// Act
-		var result = await _controller.UpdateIsMaterialRegisteredAsync(dto);
+        // Act
+        var result = await _controller.UpdateIsMaterialRegisteredAsync(dto);
 
-		// Assert
-		result.Should().BeOfType<NoContentResult>();
-		_registrationMaterialService.Verify(s => s.UpdateIsMaterialRegisteredAsync(dto), Times.Once);
-	}
+        // Assert
+        result.Should().BeOfType<NoContentResult>();
+        _registrationMaterialService.Verify(s => s.UpdateIsMaterialRegisteredAsync(dto), Times.Once);
+    }
 
     [TestMethod]
     public async Task UpsertRegistrationMaterialContactAsync_ReturnOkResult()
@@ -435,5 +434,49 @@ public class RegistrationMaterialControllerTests
 
         var okResult = result as OkObjectResult;
         okResult.Value.Should().BeEquivalentTo(response);
+    }
+
+    [TestMethod]
+    public async Task UpsertRegistrationReprocessingDetailsAsync_ServiceException_ReturnInternalServerError()
+    {
+        // Arrange
+        var registrationMaterialId = Guid.NewGuid();
+        var request = new RegistrationReprocessingIORequestDto();
+
+        var expectedResult = new ObjectResult(LogMessages.UnExpectedError)
+        {
+            StatusCode = StatusCodes.Status500InternalServerError,
+        };
+
+        // Expectations
+        _registrationMaterialService
+            .Setup(s => s.UpsertRegistrationReprocessingDetailsAsync(registrationMaterialId, request))
+            .ThrowsAsync(new Exception());
+
+        // Act
+        var result = await _controller.UpsertRegistrationReprocessingDetailsAsync(registrationMaterialId, request);
+
+        // Assert
+        result.Should().BeEquivalentTo(expectedResult);
+    }
+
+    [TestMethod]
+    public async Task UpsertRegistrationReprocessingDetailsAsync_ReturnOkResult()
+    {
+        // Arrange
+        var registrationMaterialId = Guid.NewGuid();
+        var request = new RegistrationReprocessingIORequestDto { TypeOfSuppliers = "Supplier 123" };
+        var expectedResult = new OkResult();
+
+        // Expectations
+        _registrationMaterialService
+            .Setup(s => s.UpsertRegistrationReprocessingDetailsAsync(registrationMaterialId, request)).Returns(Task.CompletedTask);
+
+        // Act
+        var result = await _controller.UpsertRegistrationReprocessingDetailsAsync(registrationMaterialId, request);
+
+        // Assert
+        Assert.IsInstanceOfType(result, typeof(OkResult));
+        _registrationMaterialService.Verify(s => s.UpsertRegistrationReprocessingDetailsAsync(registrationMaterialId, request), Times.Once);
     }
 }
