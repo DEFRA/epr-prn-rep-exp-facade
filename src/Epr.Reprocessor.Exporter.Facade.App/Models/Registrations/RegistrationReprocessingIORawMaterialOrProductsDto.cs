@@ -5,10 +5,6 @@ namespace Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
 [ExcludeFromCodeCoverage]
 public class RegistrationReprocessingIORawMaterialOrProductsDto
 {
-    public int Id { get; set; }
-
-    public Guid ExternalId { get; set; }
-
     public int RegistrationReprocessingIOId { get; set; }
 
     public string RawMaterialOrProductName { get; set; }
