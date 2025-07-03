@@ -82,7 +82,7 @@ public class RegistrationMaterialServiceClient(
     {
         var url = string.Format(Endpoints.RegistrationMaterial.UpdateMaximumWeight, _config.ApiVersion, registrationMaterialId);
 
-        _logger.LogInformation("Calling {Url} to update the maximum weight for the registration material.", url);
+        logger.LogInformation("Calling {Url} to update the maximum weight for the registration material.", url);
 
         return await PutAsync(url, request);
     }
