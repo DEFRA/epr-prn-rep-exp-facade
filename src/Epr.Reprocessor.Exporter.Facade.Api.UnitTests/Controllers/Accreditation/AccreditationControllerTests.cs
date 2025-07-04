@@ -1,4 +1,5 @@
 ﻿using Epr.Reprocessor.Exporter.Facade.Api.Controllers.Accreditation;
+using Epr.Reprocessor.Exporter.Facade.App.Clients.Accreditation;
 using Epr.Reprocessor.Exporter.Facade.App.Models.Accreditations;
 using Epr.Reprocessor.Exporter.Facade.App.Services.Accreditation;
 using FluentAssertions;
@@ -101,10 +102,19 @@ public class AccreditationControllerTests
     {
         // Arrange
         var externalId = Guid.NewGuid();
-        var expected = new AccreditationFileUploadDto { FileId = Guid.NewGuid(), Filename = "file1.txt" };
+        var expectedDto = new AccreditationFileUploadDto
+        {
+            ExternalId = externalId,
+            Filename = "testfile.txt",
+            FileId = Guid.NewGuid(),
+            UploadedOn = DateTime.UtcNow,
+            UploadedBy = "tester",
+            FileUploadTypeId = 1,
+            FileUploadStatusId = 2
+        };
 
         _serviceMock.Setup(s => s.GetFileUpload(externalId))
-            .ReturnsAsync(expected);
+            .ReturnsAsync(expectedDto);
 
         // Act
         var result = await _controller.GetFileUpload(externalId);
@@ -113,7 +123,7 @@ public class AccreditationControllerTests
         result.Should().NotBeNull();
         result.Should().BeOfType<OkObjectResult>();
         var okResult = result as OkObjectResult;
-        okResult!.Value.Should().BeEquivalentTo(expected);
+        okResult!.Value.Should().BeEquivalentTo(expectedDto);
         _serviceMock.Verify(s => s.GetFileUpload(externalId), Times.Once);
     }
 
