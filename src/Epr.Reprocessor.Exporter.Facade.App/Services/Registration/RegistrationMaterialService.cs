@@ -1,4 +1,5 @@
 ﻿using Epr.Reprocessor.Exporter.Facade.App.Clients.Registrations;
+using Epr.Reprocessor.Exporter.Facade.App.Models.Exporter;
 using Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
 
 namespace Epr.Reprocessor.Exporter.Facade.App.Services.Registration;
@@ -26,4 +27,7 @@ public class RegistrationMaterialService(IRegistrationMaterialServiceClient regi
 
     public async Task<bool> Delete(Guid registrationMaterialId) 
         => await registrationMaterialServiceClient.DeleteAsync(registrationMaterialId);
+
+    public async Task<bool> SaveOverseasReprocessorAsync(OverseasAddressRequest request, Guid createdBy)
+        => await registrationMaterialServiceClient.SaveOverseasReprocessorAsync(request, createdBy);
 }

@@ -5,6 +5,7 @@ using System.Text.Json;
 using AutoFixture;
 using Epr.Reprocessor.Exporter.Facade.App.Clients.Registrations;
 using Epr.Reprocessor.Exporter.Facade.App.Config;
+using Epr.Reprocessor.Exporter.Facade.App.Models.Exporter;
 using Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
@@ -275,5 +276,35 @@ public class RegistrationMaterialServiceClientTests
         capturedRequest.Should().NotBeNull();
         capturedRequest.Method.Should().Be(HttpMethod.Delete);
         result.Should().BeTrue();
+    }
+
+    [TestMethod]
+    public async Task SaveOverseasReprocessorAsync_SendsCorrectRequest()
+    {
+        // Arrange
+        var id = Guid.NewGuid();
+        var request = _fixture.Create<OverseasAddressRequest>();
+
+        HttpRequestMessage? capturedRequest = null;
+
+        _mockHttpMessageHandler
+            .Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.IsAny<HttpRequestMessage>(),
+                ItExpr.IsAny<CancellationToken>())
+            .Callback<HttpRequestMessage, CancellationToken>((req, _) => capturedRequest = req)
+            .ReturnsAsync(new HttpResponseMessage
+            {
+                StatusCode = System.Net.HttpStatusCode.OK,
+                Content = new StringContent(JsonSerializer.Serialize("true"))
+            });
+
+        // Act
+        var result = await _client.SaveOverseasReprocessorAsync(request, Guid.NewGuid());
+
+        // Assert
+        capturedRequest.Should().NotBeNull();
+        capturedRequest.Method.Should().Be(HttpMethod.Post);
     }
 }
