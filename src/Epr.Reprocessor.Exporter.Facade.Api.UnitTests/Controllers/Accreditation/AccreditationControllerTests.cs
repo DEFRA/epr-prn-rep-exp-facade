@@ -110,6 +110,7 @@ public class AccreditationControllerTests
         var result = await _controller.GetFileUpload(externalId);
 
         // Assert
+        result.Should().NotBeNull();
         result.Should().BeOfType<OkObjectResult>();
         var okResult = result as OkObjectResult;
         okResult!.Value.Should().BeEquivalentTo(expected);
