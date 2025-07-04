@@ -80,7 +80,7 @@ public class BaseHttpClientTests
         using (new AssertionScope())
         {
             result.Should().NotBeNull();
-            result!.Result.Should().Be("success");
+            result.Result.Should().Be("success");
         }
     }
 
