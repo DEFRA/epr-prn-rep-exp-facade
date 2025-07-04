@@ -15,6 +15,7 @@ public static class Endpoints
     {
         public const string CreateRegistration = "api/v{0}/registrations";
         public const string RegistrationUpdateTaskStatus = "api/v{0}/registrations/{1}/taskStatus";
+        public const string ApplicantRegistrationUpdateTaskStatus = "api/v{0}/registrations/{1}/applicantTaskStatus";
         public const string RegistrationUpdateSiteAddress = "api/v{0}/registrations/{1}/siteAddress";
         public const string GetRegistrationByOrganisation = "api/v{0}/registrations/{1}/organisations/{2}";
         public const string UpdateRegistration = "api/v{0}/registrations/{1}/update";
@@ -48,4 +49,13 @@ public static class Endpoints
     {
         public const string GetAllMaterials = "api/v{0}/materials";
     }
+
+    /// <summary>
+    /// Defines the endpoints for the lookup service.
+    /// </summary>
+    public static class Lookup
+    {
+        public const string Countries = "api/v{0}/countries";
+    }
+
 }
