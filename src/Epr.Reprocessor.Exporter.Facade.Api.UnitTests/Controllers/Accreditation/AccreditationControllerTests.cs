@@ -1,4 +1,5 @@
 ﻿using Epr.Reprocessor.Exporter.Facade.Api.Controllers.Accreditation;
+using Epr.Reprocessor.Exporter.Facade.App.Clients.Accreditation;
 using Epr.Reprocessor.Exporter.Facade.App.Models.Accreditations;
 using Epr.Reprocessor.Exporter.Facade.App.Services.Accreditation;
 using FluentAssertions;
@@ -94,6 +95,54 @@ public class AccreditationControllerTests
         var okResult = result as OkObjectResult;
         okResult!.Value.Should().Be(accreditation);
         _serviceMock.Verify(s => s.UpsertAccreditation(request), Times.Once);
+    }
+
+    [TestMethod]
+    public async Task GetFileUpload_ShouldReturnOk_WithFileUpload()
+    {
+        // Arrange
+        var externalId = Guid.NewGuid();
+        var expectedDto = new AccreditationFileUploadDto
+        {
+            ExternalId = externalId,
+            Filename = "testfile.txt",
+            FileId = Guid.NewGuid(),
+            UploadedOn = DateTime.UtcNow,
+            UploadedBy = "tester",
+            FileUploadTypeId = 1,
+            FileUploadStatusId = 2
+        };
+
+        _serviceMock.Setup(s => s.GetFileUpload(externalId))
+            .ReturnsAsync(expectedDto);
+
+        // Act
+        var result = await _controller.GetFileUpload(externalId);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Should().BeOfType<OkObjectResult>();
+        var okResult = result as OkObjectResult;
+        okResult!.Value.Should().BeEquivalentTo(expectedDto);
+        _serviceMock.Verify(s => s.GetFileUpload(externalId), Times.Once);
+    }
+
+    [TestMethod]
+    public async Task GetFileUpload_ShouldReturn_NotFound()
+    {
+        // Arrange
+        var externalId = Guid.NewGuid();
+        var expected = new AccreditationFileUploadDto { FileId = Guid.NewGuid(), Filename = "file1.txt" };
+
+        _serviceMock.Setup(s => s.GetFileUpload(externalId))
+            .ReturnsAsync((AccreditationFileUploadDto)null);
+
+        // Act
+        var result = await _controller.GetFileUpload(externalId);
+
+        // Assert
+        result.Should().BeOfType<NotFoundResult>();
+        _serviceMock.Verify(s => s.GetFileUpload(externalId), Times.Once);
     }
 
     [TestMethod]
