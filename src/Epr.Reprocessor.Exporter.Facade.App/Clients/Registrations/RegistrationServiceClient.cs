@@ -46,7 +46,7 @@ ILogger<RegistrationServiceClient> logger)
     {
         logger.LogInformation("UpdateRegistrationTaskStatusAsync for registrationMaterialId: {registrationMaterialId}", registrationMaterialId);
 
-        var url = string.Format(Endpoints.Registration.ApplicationRegistrationUpdateTaskStatus, _config.ApiVersion, registrationMaterialId);
+        var url = string.Format(Endpoints.RegistrationMaterial.ApplicationRegistrationUpdateTaskStatus, _config.ApiVersion, registrationMaterialId);
 
         return await this.PostAsync<UpdateRegistrationTaskStatusDto, bool>(url, request);
     }
