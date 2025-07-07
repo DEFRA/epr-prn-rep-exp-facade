@@ -439,4 +439,26 @@ public class RegistrationMaterialControllerTests
 
         _registrationMaterialService.Verify(s => s.GetMaterialExemptionReferenceAsync(It.IsAny<Guid>()), Times.Once);
     }
+
+    [TestMethod]
+    public async Task GetExemptionReferences_ServiceException_ReturnInternalServerError()
+    {
+        // Arrange
+        var materialRegistrationId = Guid.NewGuid();
+
+        var expectedResult = new ObjectResult(LogMessages.UnExpectedError)
+        {
+            StatusCode = StatusCodes.Status500InternalServerError,
+        };
+
+        // Expectations
+        _registrationMaterialService.Setup(s => s.GetMaterialExemptionReferenceAsync(It.IsAny<Guid>())).
+                   ThrowsAsync(new Exception());
+
+        // Act
+        var result = await _controller.GetExemptionReferences(materialRegistrationId);
+
+        // Assert
+        result.Should().BeEquivalentTo(expectedResult);
+    }
 }
