@@ -419,4 +419,24 @@ public class RegistrationMaterialControllerTests
         // Assert
         result.Should().BeEquivalentTo(expectedResult);
     }
+
+    [TestMethod]
+    public async Task GetExemptionReferences_ShouldReturnOkWithData_WhenServiceReturnsList()
+    {
+        // Arrange
+        var materialRegistrationId = Guid.NewGuid();
+        var expectedList = _fixture.Create<List<GetMaterialExemptionReferenceDto>>();
+
+        _registrationMaterialService.Setup(s => s.GetMaterialExemptionReferenceAsync(It.IsAny<Guid>()))
+                    .ReturnsAsync(expectedList);
+
+        // Act
+        var result = await _controller.GetExemptionReferences(materialRegistrationId);
+
+        // Assert
+        result.Should().BeOfType<OkObjectResult>()
+            .Which.Value.Should().BeEquivalentTo(expectedList);
+
+        _registrationMaterialService.Verify(s => s.GetMaterialExemptionReferenceAsync(It.IsAny<Guid>()), Times.Once);
+    }
 }
