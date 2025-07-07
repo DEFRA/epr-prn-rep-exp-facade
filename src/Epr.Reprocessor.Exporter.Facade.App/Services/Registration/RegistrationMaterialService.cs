@@ -29,4 +29,7 @@ public class RegistrationMaterialService(IRegistrationMaterialServiceClient regi
 
     public async Task<bool> UpdateMaximumWeight(Guid registrationMaterialId, UpdateMaximumWeightDto request)
         => await registrationMaterialServiceClient.UpdateMaximumWeightAsync(registrationMaterialId, request);
+
+    public async Task UpdateRegistrationTaskStatusAsync(Guid registrationMaterialId, UpdateRegistrationTaskStatusDto request) => 
+        await registrationMaterialServiceClient.UpdateRegistrationTaskStatusAsync(registrationMaterialId, request);
 }

@@ -30,7 +30,7 @@ ILogger<RegistrationServiceClient> logger)
     public async Task<RegistrationOverviewDto> GetRegistrationOverviewAsync(Guid registrationId)
     {
         logger.LogInformation("GetRegistrationOverviewAsync for Registration ID: {RegistrationId}", registrationId);
-        var url = string.Format(Endpoints.Registration.RegistrationGetById, _config.ApiVersion, registrationId);
+        var url = string.Format(Endpoints.Registration.GetRegistrationTaskStatus, _config.ApiVersion, registrationId);
 
         return await this.GetAsync<RegistrationOverviewDto>(url);
     }

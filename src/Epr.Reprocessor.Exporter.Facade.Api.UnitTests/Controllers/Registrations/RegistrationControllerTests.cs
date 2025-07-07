@@ -1,5 +1,4 @@
 ﻿using Epr.Reprocessor.Exporter.Facade.Api.Controllers.Registrations;
-using Epr.Reprocessor.Exporter.Facade.App.Clients.Registrations;
 using Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
 using Epr.Reprocessor.Exporter.Facade.App.Services.Registration;
 using FluentAssertions;
@@ -262,7 +261,7 @@ public class RegistrationControllerTests
     {
         // Arrange
         var registrationId = Guid.NewGuid();
-        var request = new RegistrationOverviewDto { OrganisationName = "Org Name",Regulator = "UK"};
+        var request = new RegistrationOverviewDto { Regulator = "UK"};
 
         // Act
         var result = await _controller.RegistrationTaskStatus(registrationId);
@@ -277,7 +276,7 @@ public class RegistrationControllerTests
     {
         // Arrange
         var registrationId = Guid.NewGuid();
-        var request = new RegistrationOverviewDto { OrganisationName = "Org Name", Regulator = "UK" };
+        var request = new RegistrationOverviewDto { Regulator = "UK" };
         _registrationServiceMock.Setup(r => r.GetRegistrationOverviewAsync(registrationId)).ReturnsAsync(request);
 
         // Act

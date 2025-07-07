@@ -107,4 +107,9 @@ public class ApplicationRegistrationMaterialDto
     /// Collection of associated exemption references for the material.
     /// </summary>
     public List<MaterialExemptionReferenceDto> ExemptionReferences { get; set; } = new();
+
+    /// <summary>
+    /// Collection of tasks at the material level.
+    /// </summary>
+    public List<RegistrationTaskDto> Tasks { get; set; } = new();
 }

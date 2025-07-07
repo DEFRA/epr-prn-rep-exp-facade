@@ -86,4 +86,13 @@ public class RegistrationMaterialServiceClient(
 
         return await PutAsync(url, request);
     }
+
+    public async Task<bool> UpdateRegistrationTaskStatusAsync(Guid registrationMaterialId, UpdateRegistrationTaskStatusDto request)
+    {
+        logger.LogInformation("UpdateRegistrationTaskStatusAsync for Registration Material ID: {RegistrationMaterialId}", registrationMaterialId);
+
+        var url = string.Format(Endpoints.RegistrationMaterial.UpdateTaskStatus, _config.ApiVersion, registrationMaterialId);
+
+        return await PostAsync<UpdateRegistrationTaskStatusDto, bool>(url, request);
+    }
 }
