@@ -183,4 +183,21 @@ public class RegistrationMaterialServiceTests
         result.Should().BeTrue();
         _clientMock.Verify(x => x.UpdateMaximumWeightAsync(id, request), Times.Once);
     }
+
+    [TestMethod]
+    public async Task GetMaterialExemptionReferenceAsync_ShouldReturnExpectedList()
+    {
+        var materialRegId = Guid.NewGuid();
+        // Arrange
+        var expectedList = _fixture.Create<List<GetMaterialExemptionReferenceDto>>();
+        _clientMock.Setup(x => x.GetMaterialExemptionReferenceAsync(It.IsAny<Guid>()))
+                   .ReturnsAsync(expectedList);
+
+        // Act
+        var result = await _service.GetMaterialExemptionReferenceAsync(materialRegId);
+
+        // Assert
+        result.Should().BeEquivalentTo(expectedList);
+        _clientMock.Verify(x => x.GetMaterialExemptionReferenceAsync(It.IsAny<Guid>()), Times.Once);
+    }
 }

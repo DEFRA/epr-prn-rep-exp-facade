@@ -69,6 +69,14 @@ public class RegistrationMaterialServiceClient(
         return await GetAsync<List<ApplicationRegistrationMaterialDto>>(url);
     }
 
+    public async Task<List<GetMaterialExemptionReferenceDto>> GetMaterialExemptionReferenceAsync(Guid materialRegistrationId)
+    {
+        var url = string.Format(Endpoints.RegistrationMaterial.GetExemptionReferences, _config.ApiVersion, materialRegistrationId);
+        _logger.LogInformation("Calling {Url} to retrieve all exemption references.", url);
+
+        return await GetAsync<List<GetMaterialExemptionReferenceDto>>(url);
+    }
+
     public async Task<bool> DeleteAsync(Guid registrationMaterialId)
     {
         var url = string.Format(Endpoints.RegistrationMaterial.Delete, _config.ApiVersion, registrationMaterialId);
