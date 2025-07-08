@@ -124,15 +124,15 @@ public class RegistrationController : ControllerBase
         return NoContent();
     }
 
-    [HttpGet("{registrationId:int}/RegistrationTaskStatus")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<RegistrationTaskDto>))]
+    [HttpGet("{registrationId:Guid}/RegistrationTaskStatus")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<ApplicantRegistrationTaskOverviewDto>))]
     [SwaggerOperation(
         Summary = "get the task statuses of a registration",
         Description = "retrieving a list of task statuses for a registration."
     )]
-    public async Task<IActionResult> RegistrationTaskStatus([FromRoute] Guid registrationId)
+    public async Task<IActionResult> RegistrationTaskStatus([FromRoute] Guid registrationId )
     {
-        _logger.LogInformation(LogMessages.GetRegistrationOverview, registrationId);
+        _logger.LogInformation(LogMessages.GetRegistrationOverview,registrationId);
 
         var overview = await _registrationService.GetRegistrationOverviewAsync(registrationId);
 
@@ -141,7 +141,7 @@ public class RegistrationController : ControllerBase
             return NoContent();
         }
 
-        return Ok(overview.Tasks);
+        return Ok(overview);
     }
 
     [HttpGet("{organisationId:guid}/overview")]

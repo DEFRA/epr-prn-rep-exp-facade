@@ -65,7 +65,7 @@ public class RegistrationServiceTests
     {
         // Arrange
         var registrationId = Guid.NewGuid();
-        var expectedOverview = _fixture.Create<RegistrationOverviewDto>();
+        var expectedOverview = _fixture.Create<ApplicantRegistrationTaskOverviewDto>();
 
         _mockRegistrationServiceClient
             .Setup(client => client.GetRegistrationOverviewAsync(registrationId))

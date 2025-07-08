@@ -1,11 +1,12 @@
-﻿namespace Epr.Reprocessor.Exporter.Facade.Api.Controllers.Accreditation;
-
-using System.Diagnostics.CodeAnalysis;
-using Epr.Reprocessor.Exporter.Facade.Api.Constants;
+﻿using Epr.Reprocessor.Exporter.Facade.Api.Constants;
 using Epr.Reprocessor.Exporter.Facade.App.Models.Accreditations;
 using Epr.Reprocessor.Exporter.Facade.App.Services.Accreditation;
+
+namespace Epr.Reprocessor.Exporter.Facade.Api.Controllers.Accreditation;
+ 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.FeatureManagement.Mvc;
+using System.Diagnostics.CodeAnalysis;
 
 [ApiVersion("1.0")]
 [Route("api/v{version:apiVersion}/Accreditation")]

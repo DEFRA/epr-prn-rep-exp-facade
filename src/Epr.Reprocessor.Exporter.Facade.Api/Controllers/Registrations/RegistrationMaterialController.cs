@@ -138,7 +138,7 @@ public class RegistrationMaterialController : ControllerBase
     }
 
     [HttpGet("{registrationId:guid}/materials")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<RegistrationMaterialDto>))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<ApplicationRegistrationMaterialDto>))]
     [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
     [SwaggerOperation(
         Summary = "gets existing registration materials associated with a registration.",
@@ -206,5 +206,20 @@ public class RegistrationMaterialController : ControllerBase
         }
 
         return Ok();
+    }
+
+    [HttpPost("{registrationMaterialId:guid}/task-status")]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(NoContentResult))]
+    [SwaggerOperation(
+        Summary = "update the task status of an application registration material",
+        Description = "attempting to update the task status of an application registration material."
+    )]
+    public async Task<IActionResult> UpdateRegistrationTaskStatus([FromRoute]Guid registrationMaterialId, [FromBody]UpdateRegistrationTaskStatusDto request)
+    {
+        _logger.LogInformation(LogMessages.UpdateRegistrationTaskStatus);
+
+        await _registrationMaterialService.UpdateRegistrationTaskStatusAsync(registrationMaterialId, request);
+
+        return NoContent();
     }
 }

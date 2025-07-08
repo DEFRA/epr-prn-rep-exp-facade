@@ -183,4 +183,21 @@ public class RegistrationMaterialServiceTests
         result.Should().BeTrue();
         _clientMock.Verify(x => x.UpdateMaximumWeightAsync(id, request), Times.Once);
     }
+
+    [TestMethod]
+    public void UpdateRegistrationTaskStatusAsync_ShouldReturnTrue_WhenClientReturnsTrue()
+    {
+        // Arrange
+        var id = Guid.NewGuid();
+        var request = _fixture.Create<UpdateRegistrationTaskStatusDto>();
+        _clientMock.Setup(x => x.UpdateRegistrationTaskStatusAsync(id, request))
+            .ReturnsAsync(true);
+
+        // Act
+        var task = _service.UpdateRegistrationTaskStatusAsync(id, request);
+        
+        // Assert
+        Assert.IsTrue(task.IsCompleted);
+        _clientMock.Verify(x => x.UpdateRegistrationTaskStatusAsync(id, request), Times.Once);
+    }
 }

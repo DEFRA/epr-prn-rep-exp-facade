@@ -34,7 +34,7 @@ public class RegistrationService(IRegistrationServiceClient registrationServiceC
         return await registrationServiceClient.UpdateApplicantRegistrationTaskStatusAsync(registrationId, dto);
     }
 
-    public async Task<RegistrationOverviewDto> GetRegistrationOverviewAsync(Guid registrationId)
+    public async Task<ApplicantRegistrationTaskOverviewDto> GetRegistrationOverviewAsync(Guid registrationId)
     {
         return await registrationServiceClient.GetRegistrationOverviewAsync(registrationId);
     }

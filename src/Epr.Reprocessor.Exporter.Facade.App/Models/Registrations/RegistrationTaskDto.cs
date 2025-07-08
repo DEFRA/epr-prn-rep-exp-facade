@@ -12,7 +12,7 @@ public class RegistrationTaskDto
     /// <summary>
     /// The unique identifier for the task.
     /// </summary>
-    public required Guid Id { get; set; }
+    public required Guid? Id { get; set; }
 
     /// <summary>
     /// The name of the task.

@@ -1,5 +1,6 @@
 ﻿using Epr.Reprocessor.Exporter.Facade.Api.Controllers.Registrations;
 using Epr.Reprocessor.Exporter.Facade.App.Constants;
+using Epr.Reprocessor.Exporter.Facade.App.Enums;
 using Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
 using Epr.Reprocessor.Exporter.Facade.App.Services.Registration;
 using FluentAssertions;
@@ -413,6 +414,30 @@ public class RegistrationMaterialControllerTests
 
         // Act
         var result = await _controller.UpdateMaximumWeight(registrationMaterialId, request);
+
+        // Assert
+        result.Should().BeEquivalentTo(expectedResult);
+    }
+
+    [TestMethod]
+    public async Task UpdateRegistrationTaskStatus_SuccessfulResponse()
+    {
+        // Arrange
+        var registrationMaterialId = Guid.NewGuid();
+        var request = new UpdateRegistrationTaskStatusDto
+        {
+            Status = TaskStatuses.Started,
+            TaskName = "SiteAndContactDetails"
+        };
+        var expectedResult = new NoContentResult();
+
+        // Expectations
+        _registrationMaterialService
+            .Setup(s => s.UpdateRegistrationTaskStatusAsync(registrationMaterialId, request))
+            .Returns(Task.CompletedTask);
+
+        // Act
+        var result = await _controller.UpdateRegistrationTaskStatus(registrationMaterialId, request);
 
         // Assert
         result.Should().BeEquivalentTo(expectedResult);
