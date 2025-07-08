@@ -94,6 +94,21 @@ public class RegistrationController : ControllerBase
         return NoContent();
     }
 
+    [HttpPost("{registrationId:guid}/ApplicantTaskStatus")]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(NoContentResult))]
+    [SwaggerOperation(
+        Summary = "update the applicant task status of an application registration",
+        Description = "attempting to update the applicant task status of an application registration."
+    )]
+    public async Task<IActionResult> UpdateApplicantRegistrationTaskStatus([FromRoute] Guid registrationId, [FromBody] UpdateRegistrationTaskStatusDto request)
+    {
+        _logger.LogInformation(LogMessages.UpdateRegistrationTaskStatus);
+
+        await _registrationService.UpdateApplicantRegistrationTaskStatusAsync(registrationId, request);
+
+        return NoContent();
+    }
+
     [HttpPost("{registrationId:guid}/SiteAddress")]
     [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(NoContentResult))]
     [SwaggerOperation(
@@ -127,5 +142,23 @@ public class RegistrationController : ControllerBase
         }
 
         return Ok(overview.Tasks);
+    }
+
+    [HttpGet("{organisationId:guid}/overview")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<RegistrationsOverviewDto>))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
+    [SwaggerResponse(StatusCodes.Status200OK, "Returns a list of registration overviews for the specified organisation.", typeof(IEnumerable<RegistrationsOverviewDto>))]
+    [SwaggerResponse(StatusCodes.Status404NotFound, "No registrations were found for the specified organisation ID.", typeof(ProblemDetails))]
+    [SwaggerOperation(
+        Summary = "Retrieve registration overviews by organisation ID",
+        Description = "Fetches a list of registration overviews for a given organisation ID. This includes details such as registration status, material information, and site address."
+    )]
+    public async Task<IActionResult> GetRegistrationOverviewsByOrganisation([FromRoute] Guid organisationId)
+    {
+        _logger.LogInformation(LogMessages.GetRegistrationsOverviewByOrganisationId, organisationId);
+
+        var registration = await _registrationService.GetRegistrationsOverviewByOrgIdAsync(organisationId);
+
+        return registration is null ? NotFound() : Ok(registration);
     }
 }

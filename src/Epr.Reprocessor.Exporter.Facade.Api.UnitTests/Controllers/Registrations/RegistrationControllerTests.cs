@@ -1,5 +1,6 @@
 ﻿using Epr.Reprocessor.Exporter.Facade.Api.Controllers.Registrations;
 using Epr.Reprocessor.Exporter.Facade.App.Clients.Registrations;
+using Epr.Reprocessor.Exporter.Facade.App.Models;
 using Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
 using Epr.Reprocessor.Exporter.Facade.App.Services.Registration;
 using FluentAssertions;
@@ -74,6 +75,21 @@ public class RegistrationControllerTests
         // Assert
         result.Should().BeOfType<NoContentResult>();
         _registrationServiceMock.Verify(s => s.UpdateRegistrationTaskStatusAsync(registrationId, request), Times.Once);
+    }
+
+    [TestMethod]
+    public async Task UpdateApplicantRegistrationTaskStatus_ShouldReturnNoContentResult()
+    {
+        // Arrange
+        var registrationId = Guid.NewGuid();
+        var request = new UpdateRegistrationTaskStatusDto();
+
+        // Act
+        var result = await _controller.UpdateApplicantRegistrationTaskStatus(registrationId, request);
+
+        // Assert
+        result.Should().BeOfType<NoContentResult>();
+        _registrationServiceMock.Verify(s => s.UpdateApplicantRegistrationTaskStatusAsync(registrationId, request), Times.Once);
     }
 
     [TestMethod]
@@ -287,4 +303,64 @@ public class RegistrationControllerTests
         result.Should().BeOfType<OkObjectResult>(); 
         _registrationServiceMock.Verify(s => s.GetRegistrationOverviewAsync(registrationId), Times.Once);
     }
+
+    [TestMethod]
+    public async Task GetRegistrationOverviewsByOrganisation_RegistrationFound_ShouldReturnOkResult()
+    {
+        // Arrange
+        var organisationId = Guid.NewGuid();
+        var registrations = new List<RegistrationsOverviewDto>
+    {
+        new RegistrationsOverviewDto
+        {
+            RegistrationId = Guid.NewGuid(),
+            RegistrationMaterialId = 1,
+            MaterialId = 101,
+            Material = "Plastic",
+            MaterialCode = "PL001",
+            ApplicationTypeId = 2,
+            ApplicationType = "Recycling",
+            RegistrationStatus = 1,
+            AccreditationStatus = 2,
+            ReprocessingSiteId = 123,
+            ReprocessingSiteAddress = new AddressDto
+            {
+                AddressLine1 = "123 Recycling Lane",
+                AddressLine2 = "Unit 5",
+                TownCity = "Recycle City",
+                County = "Green County",
+                Country = "EcoLand",
+                GridReference = "GR12345",
+                PostCode = "RC1 2PL"
+            },
+            RegistrationYear = 2023,
+            AccreditationYear = 2022
+        }
+    };
+        _registrationServiceMock
+            .Setup(s => s.GetRegistrationsOverviewByOrgIdAsync(organisationId))
+            .ReturnsAsync(registrations);
+        // Act
+        var result = await _controller.GetRegistrationOverviewsByOrganisation(organisationId);
+        // Assert
+        result.Should().BeOfType<OkObjectResult>();
+        var okResult = result as OkObjectResult;
+        okResult!.Value.Should().BeEquivalentTo(registrations);
+        _registrationServiceMock.Verify(s => s.GetRegistrationsOverviewByOrgIdAsync(organisationId), Times.Once);
+    }
+    [TestMethod]
+    public async Task GetRegistrationOverviewsByOrganisation_NoRegistrationFound_ShouldReturnNotFoundResult()
+    {
+        // Arrange
+        var organisationId = Guid.NewGuid();
+        _registrationServiceMock
+            .Setup(s => s.GetRegistrationsOverviewByOrgIdAsync(organisationId))
+            .ReturnsAsync((IEnumerable<RegistrationsOverviewDto>?)null);
+        // Act
+        var result = await _controller.GetRegistrationOverviewsByOrganisation(organisationId);
+        // Assert
+        result.Should().BeOfType<NotFoundResult>();
+        _registrationServiceMock.Verify(s => s.GetRegistrationsOverviewByOrgIdAsync(organisationId), Times.Once);
+    }
+
 }

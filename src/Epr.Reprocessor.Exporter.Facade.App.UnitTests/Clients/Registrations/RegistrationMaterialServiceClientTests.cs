@@ -24,6 +24,7 @@ public class RegistrationMaterialServiceClientTests
     {
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase
     };
+
     private RegistrationMaterialServiceClient _client = null!;
 
     [TestInitialize]
@@ -294,7 +295,7 @@ public class RegistrationMaterialServiceClientTests
             .ReturnsAsync(new HttpResponseMessage
             {
                 StatusCode = System.Net.HttpStatusCode.OK,
-                Content = new StringContent(JsonSerializer.Serialize("true"))
+                Content = new StringContent("true")
             });
 
         // Act

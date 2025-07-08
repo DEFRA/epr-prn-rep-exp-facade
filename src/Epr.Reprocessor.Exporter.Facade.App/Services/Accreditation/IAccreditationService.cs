@@ -15,6 +15,8 @@ public interface IAccreditationService
 
     Task ClearDownDatabase();
 
+    Task<AccreditationFileUploadDto> GetFileUpload(Guid externalId);
+
     Task<List<AccreditationFileUploadDto>> GetFileUploads(Guid accreditationId, int fileUploadTypeId, int fileUploadStatusId);
 
     Task<AccreditationFileUploadDto> UpsertFileUpload(Guid accreditationId, AccreditationFileUploadDto request);
