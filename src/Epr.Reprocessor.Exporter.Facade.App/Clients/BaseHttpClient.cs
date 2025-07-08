@@ -25,8 +25,12 @@ public abstract class BaseHttpClient
     protected async Task<TResponse> GetAsync<TResponse>(string url)
     {
         var response = await _httpClient.GetAsync(url);
-        response.EnsureSuccessStatusCode();
 
+        if (response.StatusCode == HttpStatusCode.NotFound)
+            return default;
+        
+        response.EnsureSuccessStatusCode();
+        
         return await response.Content.ReadFromJsonAsync<TResponse>(new JsonSerializerOptions
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
@@ -39,11 +43,14 @@ public abstract class BaseHttpClient
         var content = CreateJsonContent(data);
         var response = await _httpClient.PostAsync(url, content);
 
-        response.EnsureSuccessStatusCode();
-
         if (response.StatusCode == HttpStatusCode.NoContent)
             return default;
 
+        if(response.StatusCode == HttpStatusCode.Created && response.Content.Headers.ContentLength == 0)
+            return default;
+
+        response.EnsureSuccessStatusCode();
+       
         var options = new JsonSerializerOptions
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
