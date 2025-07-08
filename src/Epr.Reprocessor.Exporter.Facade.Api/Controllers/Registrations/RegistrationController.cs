@@ -125,7 +125,7 @@ public class RegistrationController : ControllerBase
     }
 
     [HttpGet("{registrationId:Guid}/RegistrationTaskStatus")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<RegistrationOverviewDto>))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<ApplicantRegistrationTaskOverviewDto>))]
     [SwaggerOperation(
         Summary = "get the task statuses of a registration",
         Description = "retrieving a list of task statuses for a registration."

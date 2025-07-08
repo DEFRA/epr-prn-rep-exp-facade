@@ -278,7 +278,7 @@ public class RegistrationControllerTests
     {
         // Arrange
         var registrationId = Guid.NewGuid();
-        var request = new RegistrationOverviewDto { Regulator = "UK"};
+        var request = new ApplicantRegistrationTaskOverviewDto { Regulator = "UK"};
 
         // Act
         var result = await _controller.RegistrationTaskStatus(registrationId);
@@ -293,7 +293,7 @@ public class RegistrationControllerTests
     {
         // Arrange
         var registrationId = Guid.NewGuid();
-        var request = new RegistrationOverviewDto { Regulator = "UK" };
+        var request = new ApplicantRegistrationTaskOverviewDto { Regulator = "UK" };
         _registrationServiceMock.Setup(r => r.GetRegistrationOverviewAsync(registrationId)).ReturnsAsync(request);
 
         // Act

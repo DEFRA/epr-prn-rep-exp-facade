@@ -2,20 +2,6 @@
 
 namespace Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
 
-[ExcludeFromCodeCoverage]
-public class RegistrationOverviewDto
-{
-    public Guid Id { get; set; }
-
-    public Guid OrganisationId { get; set; }
-
-    public string Regulator { get; set; }
-
-    public List<RegistrationTaskDto> Tasks { get; set; } = [];
-
-    public List<ApplicantRegistrationMaterialTaskOverviewDto> Materials { get; set; } = [];
-}
-
 /// <summary>
 /// Represents details of the tasks associated with a registration material.
 /// </summary>

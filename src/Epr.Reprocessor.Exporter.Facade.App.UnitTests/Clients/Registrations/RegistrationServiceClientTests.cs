@@ -4,7 +4,6 @@ using AutoFixture;
 using Epr.Reprocessor.Exporter.Facade.App.Clients.Registrations;
 using Epr.Reprocessor.Exporter.Facade.App.Config;
 using Epr.Reprocessor.Exporter.Facade.App.Models;
-using Epr.Reprocessor.Exporter.Facade.App.Enums;
 using Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
@@ -61,18 +60,16 @@ public class RegistrationServiceClientTests
     {
         // Arrange
         var registrationId = Guid.NewGuid();
-        var overviewDto = new RegistrationOverviewDto
+        var overviewDto = new ApplicantRegistrationTaskOverviewDto
         {
-            Id = 1,
-            OrganisationName = "Test Org",
+            Id = registrationId,
             Regulator = "Test Regulator",
-            OrganisationType = ApplicationOrganisationType.Reprocessor,
             Tasks = new List<RegistrationTaskDto>(),
-            Materials = new List<RegistrationMaterialDto>()
+            Materials = new List<ApplicantRegistrationMaterialTaskOverviewDto>()
         };
 
         // Use the same URL format as the implementation
-        var url = string.Format("api/v{0}/registrations/{1}", 1, registrationId);
+        var url = $"api/v1/registrations_tasks/{registrationId}";
 
         _mockHttpMessageHandler.Protected()
             .Setup<Task<HttpResponseMessage>>(
