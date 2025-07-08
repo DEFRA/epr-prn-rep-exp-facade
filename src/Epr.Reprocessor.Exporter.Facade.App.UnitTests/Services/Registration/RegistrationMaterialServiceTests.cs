@@ -1,5 +1,6 @@
 ﻿using AutoFixture;
 using Epr.Reprocessor.Exporter.Facade.App.Clients.Registrations;
+using Epr.Reprocessor.Exporter.Facade.App.Models.Exporter;
 using Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
 using Epr.Reprocessor.Exporter.Facade.App.Services.Registration;
 using FluentAssertions;
@@ -165,5 +166,39 @@ public class RegistrationMaterialServiceTests
 
         // Assert
         result.Should().BeTrue();
+    }
+
+    [TestMethod]
+    public async Task SaveOverseasReprocessorAsync_ShouldReturnTrue_WhenClientReturnsTrue()
+    {
+        // Arrange
+        var createdBy = Guid.NewGuid();
+        var request = _fixture.Create<OverseasAddressRequest>();
+        _clientMock.Setup(x => x.SaveOverseasReprocessorAsync(request, createdBy))
+                   .ReturnsAsync(true);
+
+        // Act
+        var result = await _service.SaveOverseasReprocessorAsync(request, createdBy);
+
+        // Assert
+        result.Should().BeTrue();
+        _clientMock.Verify(x => x.SaveOverseasReprocessorAsync(request, createdBy), Times.Once);
+    }
+
+    [TestMethod]
+    public async Task SaveOverseasReprocessorAsync_ShouldReturnFalse_WhenClientReturnsFalse()
+    {
+        // Arrange
+        var createdBy = Guid.NewGuid();
+        var request = _fixture.Create<OverseasAddressRequest>();
+        _clientMock.Setup(x => x.SaveOverseasReprocessorAsync(request, createdBy))
+                   .ReturnsAsync(false);
+
+        // Act
+        var result = await _service.SaveOverseasReprocessorAsync(request, createdBy);
+
+        // Assert
+        result.Should().BeFalse();
+        _clientMock.Verify(x => x.SaveOverseasReprocessorAsync(request, createdBy), Times.Once);
     }
 }
