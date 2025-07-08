@@ -207,27 +207,4 @@ public class RegistrationMaterialController : ControllerBase
 
         return Ok();
     }
-
-    [HttpGet("{materialRegistrationId:guid}/exemptionReferences")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<GetMaterialExemptionReferenceDto>))]
-    [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-    [SwaggerOperation(
-    Summary = "gets existing exemption references associated with a material registration.",
-    Description = "attempting to get existing exemption references associated with a material registration."
-)]
-    public async Task<IActionResult> GetExemptionReferences([FromRoute] Guid materialRegistrationId)
-    {
-        _logger.LogInformation(LogMessages.GetExemptionReferences, materialRegistrationId);
-
-        try
-        {
-            var exemptionReferences = await _registrationMaterialService.GetMaterialExemptionReferenceAsync(materialRegistrationId);
-            return Ok(exemptionReferences);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, LogMessages.UnExpectedError);
-            return StatusCode(StatusCodes.Status500InternalServerError, LogMessages.UnExpectedError);
-        }
-    }
 }

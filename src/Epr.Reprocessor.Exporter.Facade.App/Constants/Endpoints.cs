@@ -39,7 +39,6 @@ public static class Endpoints
         public const string GetMaterialsPermitTypes = "api/v{0}/registrationMaterials/permitTypes";
         public const string Delete = "api/v{0}/registrationMaterials/{1}";
         public const string UpdateMaximumWeight = "api/v{0}/registrationMaterials/{1}/max-weight";
-        public const string GetExemptionReferences = "api/v{0}/registrationMaterials/{1}/exemptionReferences";
     }
 
     /// <summary>
