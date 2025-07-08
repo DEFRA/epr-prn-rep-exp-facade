@@ -304,34 +304,4 @@ public class RegistrationMaterialServiceClientTests
         capturedRequest.Should().NotBeNull();
         capturedRequest.Method.Should().Be(HttpMethod.Put);
     }
-
-    [TestMethod]
-    public async Task GetMaterialExemptionReferenceAsync_SendsCorrectRequest()
-    {
-        // Arrange
-        var materialRegId = Guid.NewGuid();
-        var response = _fixture.Create<List<GetMaterialExemptionReferenceDto>>();
-
-        HttpRequestMessage? capturedRequest = null;
-
-        _mockHttpMessageHandler
-            .Protected()
-            .Setup<Task<HttpResponseMessage>>(
-                "SendAsync",
-                ItExpr.IsAny<HttpRequestMessage>(),
-                ItExpr.IsAny<CancellationToken>())
-            .Callback<HttpRequestMessage, CancellationToken>((req, _) => capturedRequest = req)
-            .ReturnsAsync(new HttpResponseMessage
-            {
-                StatusCode = System.Net.HttpStatusCode.OK,
-                Content = new StringContent(JsonSerializer.Serialize(response))
-            });
-
-        // Act
-        var result = await _client.GetMaterialExemptionReferenceAsync(materialRegId);
-
-        // Assert
-        capturedRequest.Should().NotBeNull();
-        capturedRequest.Method.Should().Be(HttpMethod.Get);
-    }
 }

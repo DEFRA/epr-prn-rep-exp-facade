@@ -17,6 +17,4 @@ public interface IRegistrationMaterialService
     Task<List<ApplicationRegistrationMaterialDto>> GetAllRegistrationsMaterials(Guid registrationId);
     Task<bool> Delete(Guid registrationMaterialId);
     Task<bool> UpdateMaximumWeight(Guid registrationMaterialId, UpdateMaximumWeightDto request);
-
-    Task<List<GetMaterialExemptionReferenceDto>> GetMaterialExemptionReferenceAsync(Guid materialRegistrationId);
 }
