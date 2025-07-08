@@ -14,7 +14,8 @@ public class WasteCarrierBrokerDealerRefService : IWasteCarrierBrokerDealerRefSe
     private readonly string _basePostUrl;
     private readonly string _basePutUrl;
 
-    public WasteCarrierBrokerDealerRefService(IExporterServiceClient apiClient, IOptions<PrnBackendServiceApiConfig> options)
+    public WasteCarrierBrokerDealerRefService(IExporterServiceClient apiClient,
+        IOptions<PrnBackendServiceApiConfig> options)
     {
         var config = options.Value;
 

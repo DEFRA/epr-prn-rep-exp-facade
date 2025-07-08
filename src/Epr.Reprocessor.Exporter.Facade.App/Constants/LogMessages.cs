@@ -2,7 +2,8 @@
 public static class LogMessages
 {
     public const string CreateRegistration = "Attempting to create registration application";
-    public const string UpdateRegistrationTaskStatus = "Attempting to update registration site address and contact details";
+    public const string UpdateRegistrationTaskStatus = "Attempting to update registration task status";
+    public const string UpdateApplicantRegistrationTaskStatus = "Attempting to update applicant registration task status";
     public const string UpdateRegistrationSiteAddress = "Attempting to update registration site address and contact details";
     public const string InvalidRequest = "Invalid Request";
     public const string  MaterialExemptionReferencesCreated = "Material Exemption References created successfully";
@@ -23,4 +24,8 @@ public static class LogMessages
     public const string GetAllMaterials = "Attempting to retrieve a list of applicable materials";
     public const string GetAllRegistrationMaterials = "Attempting to retrieve all registration materials for registration {RegistrationId}";
     public const string DeleteRegistrationMaterial = "Attempting to delete a registration material with ID {RegistrationMaterialId}";
+    public const string GetRegistrationsOverviewByOrganisationId = "Fetching registration overview for Organisation ID: {OrganisationId}"
+        ;
+
+    public const string GetCountries = "Attempting to get Countries";
 }

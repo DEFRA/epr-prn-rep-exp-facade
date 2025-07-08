@@ -21,6 +21,7 @@ public class MaterialServiceClientTests
     {
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase
     };
+
     private MaterialServiceClient _client = null!;
 
     [TestInitialize]

@@ -365,3 +365,5 @@ src/FacadeAccountCreation/.idea/.idea.FacadeAccountCreation/.idea/misc.xml
 
 
 **/appsettings.Development.json
+/src/Epr.Reprocessor.Exporter.Facade.Api.UnitTests/coveragereport
+/src/Epr.Reprocessor.Exporter.Facade.App.UnitTests/coveragereport

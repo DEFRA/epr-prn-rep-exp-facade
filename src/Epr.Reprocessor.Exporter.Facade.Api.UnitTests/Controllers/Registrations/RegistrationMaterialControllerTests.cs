@@ -1,5 +1,4 @@
-﻿using AutoFixture;
-using Epr.Reprocessor.Exporter.Facade.Api.Controllers.Registrations;
+﻿using Epr.Reprocessor.Exporter.Facade.Api.Controllers.Registrations;
 using Epr.Reprocessor.Exporter.Facade.App.Constants;
 using Epr.Reprocessor.Exporter.Facade.App.Enums;
 using Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
@@ -18,7 +17,6 @@ public class RegistrationMaterialControllerTests
     private Mock<IRegistrationMaterialService> _registrationMaterialService = null!;
     private Mock<ILogger<RegistrationMaterialController>> _loggerMock = null!;
     private RegistrationMaterialController _controller = null!;
-    private readonly Fixture _fixture = new();
 
     [TestInitialize]
     public void SetUp()
@@ -210,7 +208,7 @@ public class RegistrationMaterialControllerTests
     {
         // Arrange
         var id = Guid.NewGuid();
-        var dto = _fixture.Create<UpdateRegistrationMaterialPermitsDto>();
+        var dto = new UpdateRegistrationMaterialPermitsDto();
         _registrationMaterialService.Setup(s => s.UpdateRegistrationMaterialPermitsAsync(id, dto))
                     .ReturnsAsync(true);
 
@@ -227,7 +225,7 @@ public class RegistrationMaterialControllerTests
     {
         // Arrange
         var id = Guid.NewGuid();
-        var dto = _fixture.Create<UpdateRegistrationMaterialPermitCapacityDto>();
+        var dto = new UpdateRegistrationMaterialPermitCapacityDto();
         _registrationMaterialService.Setup(s => s.UpdateRegistrationMaterialPermitCapacityAsync(id, dto))
                     .ReturnsAsync(true);
 
@@ -243,7 +241,7 @@ public class RegistrationMaterialControllerTests
     public async Task GetMaterialsPermitTypes_ShouldReturnOkWithData_WhenServiceReturnsList()
     {
         // Arrange
-        var expectedList = _fixture.Create<List<MaterialsPermitTypeDto>>();
+        var expectedList = new List<MaterialsPermitTypeDto>();
 
         _registrationMaterialService.Setup(s => s.GetMaterialsPermitTypesAsync())
                     .ReturnsAsync(expectedList);

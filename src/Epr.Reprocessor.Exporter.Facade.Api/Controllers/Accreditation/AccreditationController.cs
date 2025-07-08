@@ -57,18 +57,22 @@ public class AccreditationController(IAccreditationService service) : Controller
         return Ok();
     }
 
+    [HttpGet("Files/{externalId}")]
+    [ProducesResponseType(typeof(List<AccreditationFileUploadDto>), 200)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetFileUpload([FromRoute] Guid externalId)
+    {
+        var fileUpload = await service.GetFileUpload(externalId);
+        return fileUpload != null ? Ok(fileUpload) : NotFound();
+    }
+
     [HttpGet("{accreditationId}/Files/{fileUploadTypeId}/{fileUploadStatusId?}")]
     [ProducesResponseType(typeof(List<AccreditationFileUploadDto>), 200)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetFileUploads([FromRoute] Guid accreditationId, [FromRoute] int fileUploadTypeId, [FromRoute] int fileUploadStatusId = 1)
     {
-        List<AccreditationFileUploadDto> fileUploads = await service.GetFileUploads(accreditationId, fileUploadTypeId, fileUploadStatusId);
-
-        if (fileUploads == null)
-        {
-            return NotFound();
-        }
-
-        return Ok(fileUploads);
+        var fileUploads = await service.GetFileUploads(accreditationId, fileUploadTypeId, fileUploadStatusId);
+        return fileUploads != null ? Ok(fileUploads) : NotFound();
     }
 
     [HttpPost("{accreditationId}/Files")]

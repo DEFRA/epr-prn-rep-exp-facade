@@ -2,9 +2,9 @@
 
 public interface IExporterServiceClient
 {
-    Task<TOut> SendGetRequest<TOut>(string uri);
+	Task<TOut> SendGetRequest<TOut>(string uri);
 
-    Task<Guid> SendPostRequest<TBody>(string uri, TBody body);
+	Task<Guid> SendPostRequest<TBody>(string uri, TBody body);
 
-    Task SendPutRequest<TBody>(string uri, TBody body);
+	Task SendPutRequest<TBody>(string uri, TBody body);
 }
