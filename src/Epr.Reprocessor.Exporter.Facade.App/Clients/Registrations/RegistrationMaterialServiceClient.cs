@@ -84,7 +84,7 @@ public class RegistrationMaterialServiceClient(
 
         logger.LogInformation("Calling {Url} to update the maximum weight for the registration material.", url);
 
-        return await PutAsync<UpdateMaximumWeightDto, bool>(url, request);
+        return await PutAsync(url, request);
     }
 
     public async Task<bool> UpdateRegistrationTaskStatusAsync(Guid registrationMaterialId, UpdateRegistrationTaskStatusDto request)
