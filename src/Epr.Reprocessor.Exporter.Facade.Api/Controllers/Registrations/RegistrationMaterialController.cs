@@ -232,7 +232,7 @@ public class RegistrationMaterialController : ControllerBase
     [SwaggerOperation(
       Summary = "Upserts the registration reprocessing io details for a registration material",
       Description = "attempting to upsert the registration reprocessing io details."
-  )]
+    )]
     [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
     public async Task<IActionResult> UpsertRegistrationReprocessingDetailsAsync([FromRoute] Guid registrationMaterialId, [FromBody] RegistrationReprocessingIORequestDto request)
     {
@@ -241,6 +241,30 @@ public class RegistrationMaterialController : ControllerBase
             _logger.LogInformation(LogMessages.UpsertRegistrationReprocessingDetails, registrationMaterialId);
 
             await _registrationMaterialService.UpsertRegistrationReprocessingDetailsAsync(registrationMaterialId, request);
+
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, LogMessages.UnExpectedError);
+            return StatusCode(StatusCodes.Status500InternalServerError, LogMessages.UnExpectedError);
+        }
+    }
+
+    [HttpPost("{registrationMaterialId:Guid}/materialNotRegisteringReason")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RegistrationReprocessingIORequestDto))]
+    [SwaggerOperation(
+      Summary = "Update the reason for not registreing a registration material",
+      Description = "attempting to update the reason for not registreing a registration material."
+    )]
+    [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
+    public async Task<IActionResult> UpdateMaterialNotRegisteringReasonAsync([FromRoute] Guid registrationMaterialId, [FromBody] string materialNotRegisteringReason)
+    {
+        try
+        {
+            _logger.LogInformation(LogMessages.UpdateMaterialNotRegistrationReason, registrationMaterialId);
+
+            await _registrationMaterialService.UpdateMaterialNotRegisteringReasonAsync(registrationMaterialId, materialNotRegisteringReason);
 
             return Ok();
         }

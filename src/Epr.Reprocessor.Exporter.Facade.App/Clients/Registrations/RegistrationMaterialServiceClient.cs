@@ -106,4 +106,13 @@ public class RegistrationMaterialServiceClient(
 
         await PostAsync<RegistrationReprocessingIORequestDto>(url, request);
     }
+
+    public async Task UpdateMaterialNotRegisteringReasonAsync(Guid registrationMaterialId, string materialNotRegisteringReason)
+    {
+        _logger.LogInformation("Attempting to to update the reason for not registering registration material with External ID {Id}", registrationMaterialId);
+
+        var url = string.Format(Endpoints.RegistrationMaterial.UpdateMaterialNotRegisteringReason, _config.ApiVersion, registrationMaterialId);
+
+        await PostAsync<string>(url, materialNotRegisteringReason);
+    }
 }
