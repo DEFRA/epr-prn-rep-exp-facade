@@ -232,7 +232,7 @@ public class RegistrationMaterialController : ControllerBase
     [SwaggerOperation(
       Summary = "Upserts the registration reprocessing io details for a registration material",
       Description = "attempting to upsert the registration reprocessing io details."
-    )]
+  )]
     [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
     public async Task<IActionResult> UpsertRegistrationReprocessingDetailsAsync([FromRoute] Guid registrationMaterialId, [FromBody] RegistrationReprocessingIORequestDto request)
     {

@@ -209,7 +209,7 @@ public class RegistrationMaterialControllerTests
     {
         // Arrange
         var id = Guid.NewGuid();
-        var dto = _fixture.Create<UpdateRegistrationMaterialPermitsDto>();
+        var dto = new UpdateRegistrationMaterialPermitsDto();
         _registrationMaterialService.Setup(s => s.UpdateRegistrationMaterialPermitsAsync(id, dto))
                     .ReturnsAsync(true);
 
@@ -226,7 +226,7 @@ public class RegistrationMaterialControllerTests
     {
         // Arrange
         var id = Guid.NewGuid();
-        var dto = _fixture.Create<UpdateRegistrationMaterialPermitCapacityDto>();
+        var dto = new UpdateRegistrationMaterialPermitCapacityDto();
         _registrationMaterialService.Setup(s => s.UpdateRegistrationMaterialPermitCapacityAsync(id, dto))
                     .ReturnsAsync(true);
 
@@ -242,7 +242,7 @@ public class RegistrationMaterialControllerTests
     public async Task GetMaterialsPermitTypes_ShouldReturnOkWithData_WhenServiceReturnsList()
     {
         // Arrange
-        var expectedList = _fixture.Create<List<MaterialsPermitTypeDto>>();
+        var expectedList = new List<MaterialsPermitTypeDto>();
 
         _registrationMaterialService.Setup(s => s.GetMaterialsPermitTypesAsync())
                     .ReturnsAsync(expectedList);
