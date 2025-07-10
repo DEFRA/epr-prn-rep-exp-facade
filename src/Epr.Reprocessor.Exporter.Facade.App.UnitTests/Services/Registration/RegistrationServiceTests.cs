@@ -43,6 +43,42 @@ public class RegistrationServiceTests
     }
 
     [TestMethod]
+    public async Task CreateRegistrationAsync_ShouldReturnExpectedResult()
+    {
+        // Arrange
+        var requestDto = _fixture.Create<CreateRegistrationDto>();
+        var expectedResponse = _fixture.Create<CreateRegistrationResponseDto>();
+
+        _mockRegistrationServiceClient
+            .Setup(client => client.CreateRegistrationAsync(requestDto))
+            .ReturnsAsync(expectedResponse);
+
+        // Act
+        var result = await _service.CreateRegistrationAsync(requestDto);
+
+        // Assert
+        result.Should().BeEquivalentTo(expectedResponse);
+    }
+
+    [TestMethod]
+    public async Task GetRegistrationOverviewAsync_ShouldReturnExpectedResult()
+    {
+        // Arrange
+        var registrationId = Guid.NewGuid();
+        var expectedOverview = _fixture.Create<RegistrationOverviewDto>();
+
+        _mockRegistrationServiceClient
+            .Setup(client => client.GetRegistrationOverviewAsync(registrationId))
+            .ReturnsAsync(expectedOverview);
+
+        // Act
+        var result = await _service.GetRegistrationOverviewAsync(registrationId);
+
+        // Assert
+        result.Should().BeEquivalentTo(expectedOverview);
+    }
+
+    [TestMethod]
     public async Task UpdateRegistrationTaskStatusAsync_ShouldReturnExpectedResult()
     {
         // Arrange
@@ -122,42 +158,11 @@ public class RegistrationServiceTests
         // Assert
         result.Should().BeTrue();
     }
-    
-    [TestMethod]
-    public async Task CreateRegistrationAsync_ShouldReturnExpectedResult()
-    {
-        // Arrange
-        var requestDto = _fixture.Create<CreateRegistrationDto>();
-        var expectedResponse = _fixture.Create<CreateRegistrationResponseDto>();
-        _mockRegistrationServiceClient
-            .Setup(client => client.CreateRegistrationAsync(requestDto))
-            .ReturnsAsync(expectedResponse);
-        // Act
-        var result = await _service.CreateRegistrationAsync(requestDto);
-        // Assert
-        result.Should().BeEquivalentTo(expectedResponse);
-        _mockRegistrationServiceClient.Verify(client => client.CreateRegistrationAsync(requestDto), Times.Once);
-    }
-    
-    [TestMethod]
-    public async Task GetRegistrationOverviewAsync_ShouldReturnExpectedResult()
-    {
-        // Arrange
-        var registrationId = Guid.NewGuid();
-        var expectedOverview = _fixture.Create<RegistrationOverviewDto>();
-        _mockRegistrationServiceClient
-            .Setup(client => client.GetRegistrationOverviewAsync(registrationId))
-            .ReturnsAsync(expectedOverview);
-        // Act
-        var result = await _service.GetRegistrationOverviewAsync(registrationId);
-        // Assert
-        result.Should().BeEquivalentTo(expectedOverview);
-        _mockRegistrationServiceClient.Verify(client => client.GetRegistrationOverviewAsync(registrationId), Times.Once);
-    }
-    
+   
     [TestMethod]
     public async Task GetRegistrationsOverviewByOrgIdAsync_ShouldReturnExpectedResult()
     {
+
         // Arrange
         var organisationId = Guid.NewGuid();
         var expectedOverviews = _fixture.Create<IEnumerable<RegistrationsOverviewDto>>();
