@@ -1,6 +1,7 @@
 ﻿using AutoFixture;
 using Epr.Reprocessor.Exporter.Facade.App.Clients.Registrations;
 using Epr.Reprocessor.Exporter.Facade.App.Models.Exporter;
+using Epr.Reprocessor.Exporter.Facade.App.Models.Exporter.DTOs;
 using Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
 using Epr.Reprocessor.Exporter.Facade.App.Services.Registration;
 using FluentAssertions;
@@ -200,5 +201,41 @@ public class RegistrationMaterialServiceTests
         // Assert
         result.Should().BeFalse();
         _clientMock.Verify(x => x.SaveOverseasReprocessorAsync(request, createdBy), Times.Once);
+    }
+
+    [TestMethod]
+    public async Task GetOverseasMaterialReprocessingSites_ShouldReturnExpectedList()
+    {
+        // Arrange
+        var registrationMaterialId = Guid.NewGuid();
+        var expectedList = _fixture.Create<List<OverseasMaterialReprocessingSiteDto>>();
+        _clientMock
+            .Setup(x => x.GetOverseasMaterialReprocessingSites(registrationMaterialId))
+            .ReturnsAsync(expectedList);
+
+        // Act
+        var result = await _service.GetOverseasMaterialReprocessingSites(registrationMaterialId);
+
+        // Assert
+        result.Should().BeEquivalentTo(expectedList);
+        _clientMock.Verify(x => x.GetOverseasMaterialReprocessingSites(registrationMaterialId), Times.Once);
+    }
+
+    [TestMethod]
+    public async Task SaveInterimSitesAsync_CallsClientWithCorrectParameters()
+    {
+        // Arrange
+        var requestDto = _fixture.Create<SaveInterimSitesRequestDto>();
+        var createdBy = Guid.NewGuid();
+
+        // Act
+        await _service.SaveInterimSitesAsync(requestDto, createdBy);
+
+        // Assert
+        _clientMock.Verify(
+            x => x.SaveInterimSitesAsync(
+                It.Is<SaveInterimSitesRequestDto>(r => r == requestDto),
+                It.Is<Guid>(g => g == createdBy)),
+            Times.Once);
     }
 }

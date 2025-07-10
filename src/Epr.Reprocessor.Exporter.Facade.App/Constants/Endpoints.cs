@@ -41,6 +41,8 @@ public static class Endpoints
         public const string GetMaterialsPermitTypes = "api/v{0}/registrationMaterials/permitTypes";
         public const string Delete = "api/v{0}/registrationMaterials/{1}";
         public const string SaveOverseasReprocessor = "api/v{0}/registrationMaterials/{1}/overseasReprocessingSites";
+        public const string GetOverseasMaterialReprocessingSites = "api/v{0}/registrationMaterials/{1}/overseasMaterialReprocessingSites";
+        public const string SaveInterimSites = "api/v{0}/registrationMaterials/{1}/interimSites";
     }
 
     /// <summary>

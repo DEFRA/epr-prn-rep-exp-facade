@@ -22,8 +22,9 @@ public static class LogMessages
     public const string GetAllMaterials = "Attempting to retrieve a list of applicable materials";
     public const string GetAllRegistrationMaterials = "Attempting to retrieve all registration materials for registration {RegistrationId}";
     public const string DeleteRegistrationMaterial = "Attempting to delete a registration material with ID {RegistrationMaterialId}";
-    public const string GetRegistrationsOverviewByOrganisationId = "Fetching registration overview for Organisation ID: {OrganisationId}"
-        ;
+    public const string GetRegistrationsOverviewByOrganisationId = "Fetching registration overview for Organisation ID: {OrganisationId}";
 
     public const string GetCountries = "Attempting to get Countries";
+    public const string GetOverseasMaterialReprocessingSites = "Attempting to retrieve overseas reprocessing sites including corresponding interim sites for registrationMaterial {RegistrationMaterialId}";
+    public const string SaveInterimSites = "Attempting to create or update interim sites.";
 }
