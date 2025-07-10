@@ -17,7 +17,9 @@ public class PrnBackendServiceApiConfig
 
     public int ServiceRetryCount { get; set; }
 
-    public PrnServiceApiConfigEndpoints Endpoints { get; set; } = null!;
+	public PrnServiceApiConfigEndpoints Endpoints { get; set; } = null!;
+
+	public PrnServiceApiConfigExportEndpoints ExportEndpoints { get; set; } = null!;
 }
 
 [ExcludeFromCodeCoverage]
@@ -29,6 +31,19 @@ public class PrnServiceApiConfigEndpoints
     public string AccreditationPrnIssueAuthGet { get; set; }
     public string AccreditationPrnIssueAuthPost { get; set; }
     public string AccreditationFileUploadGet { get; set; }
+    public string AccreditationFileUploadsGet { get; set; }
     public string AccreditationFileUploadPost { get; set; }
     public string AccreditationFileUploadDelete { get; set; }
+}
+
+[ExcludeFromCodeCoverage]
+public class PrnServiceApiConfigExportEndpoints
+{
+	public string OtherPermitsGet { get; set; }
+	public string OtherPermitsPost { get; set; }
+    public string OtherPermitsPut { get; set; }
+
+	public string WasteCarrierBrokerDealerRefGet { get; set; }
+	public string WasteCarrierBrokerDealerRefPost { get; set; }
+	public string WasteCarrierBrokerDealerRefPut { get; set; }
 }
