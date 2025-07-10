@@ -33,7 +33,11 @@ public class AccreditationServiceClientTests
             {
                 AccreditationGetOrCreate = "api/v{0}/accreditation/{1}/{2}/{3}",
                 AccreditationGet = "api/v{0}/accreditation/{1}",
-                AccreditationPost = "api/v{0}/accreditation"
+                AccreditationPost = "api/v{0}/accreditation",
+                AccreditationFileUploadGet = "api/v{0}/accreditation/Files/{1}",
+                AccreditationFileUploadsGet = "api/v{0}/accreditation/{1}/Files/{2}/{3}",
+                AccreditationFileUploadPost = "api/v{0}/accreditation/{1}/Files",
+                AccreditationFileUploadDelete = "api/v{0}/accreditation/{1}/Files/{2}"
             }
         };
         _mockOptions.Setup(x => x.Value).Returns(config);
@@ -138,6 +142,143 @@ public class AccreditationServiceClientTests
 
         // Assert
         result.Should().BeEquivalentTo(expected);
+    }
+
+    [TestMethod]
+    public async Task GetFileUploads_ShouldReturnExpectedList()
+    {
+        // Arrange
+        var accreditationId = Guid.NewGuid();
+        var fileUploadTypeId = 1;
+        var fileUploadStatusId = 2;
+        var expected = _fixture.Create<List<AccreditationFileUploadDto>>();
+        var json = SerializeCamelCase(expected);
+        var url = $"api/v1/accreditation/{accreditationId}/Files/{fileUploadTypeId}/{fileUploadStatusId}";
+
+        _mockHttpMessageHandler.Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.Is<HttpRequestMessage>(msg =>
+                    msg.Method == HttpMethod.Get &&
+                    msg.RequestUri!.PathAndQuery.EndsWith(url)
+                ),
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .ReturnsAsync(new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = new StringContent(json)
+            });
+
+        // Act
+        var result = await _client.GetFileUploads(accreditationId, fileUploadTypeId, fileUploadStatusId);
+
+        // Assert
+        result.Should().BeEquivalentTo(expected);
+    }
+
+    [TestMethod]
+    public async Task GetFileUpload_ShouldReturnExpectedData()
+    {
+        // Arrange
+        var externalId = Guid.NewGuid();
+        var fileUploadTypeId = 1;
+        var fileUploadStatusId = 2;
+        var expected = _fixture.Create<AccreditationFileUploadDto>();
+        var json = SerializeCamelCase(expected);
+        var url = $"api/v1/accreditation/Files/{externalId}";
+
+        _mockHttpMessageHandler.Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.Is<HttpRequestMessage>(msg =>
+                    msg.Method == HttpMethod.Get &&
+                    msg.RequestUri!.PathAndQuery.EndsWith(url)
+                ),
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .ReturnsAsync(new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = new StringContent(json)
+            });
+
+        // Act
+        var result = await _client.GetFileUpload(externalId);
+
+        // Assert
+        result.Should().BeEquivalentTo(expected);
+    }
+
+    
+
+    [TestMethod]
+    public async Task UpsertFileUpload_ShouldReturnExpectedDto()
+    {
+        // Arrange
+        var accreditationId = Guid.NewGuid();
+        var request = _fixture.Create<AccreditationFileUploadDto>();
+        var expected = _fixture.Create<AccreditationFileUploadDto>();
+        var json = SerializeCamelCase(expected);
+        var url = $"api/v1/accreditation/{accreditationId}/Files";
+
+        _mockHttpMessageHandler.Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.Is<HttpRequestMessage>(msg =>
+                    msg.Method == HttpMethod.Post &&
+                    msg.RequestUri!.PathAndQuery.EndsWith(url)
+                ),
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .ReturnsAsync(new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = new StringContent(json)
+            });
+
+        // Act
+        var result = await _client.UpsertFileUpload(accreditationId, request);
+
+        // Assert
+        result.Should().BeEquivalentTo(expected);
+    }
+
+    [TestMethod]
+    public async Task DeleteFileUpload_ShouldSendDeleteRequest()
+    {
+        // Arrange
+        var accreditationId = Guid.NewGuid();
+        var fileId = Guid.NewGuid();
+        var url = $"api/v1/accreditation/{accreditationId}/Files/{fileId}";
+
+        _mockHttpMessageHandler.Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.Is<HttpRequestMessage>(msg =>
+                    msg.Method == HttpMethod.Delete &&
+                    msg.RequestUri!.PathAndQuery.EndsWith(url)
+                ),
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .ReturnsAsync(new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK
+            });
+
+        // Act
+        await _client.DeleteFileUpload(accreditationId, fileId);
+
+        // Assert
+        _mockHttpMessageHandler.Protected().Verify(
+            "SendAsync",
+            Times.Once(),
+            ItExpr.Is<HttpRequestMessage>(msg =>
+                msg.Method == HttpMethod.Delete &&
+                msg.RequestUri!.PathAndQuery.EndsWith(url)
+            ),
+            ItExpr.IsAny<CancellationToken>()
+        );
     }
 
     private static string SerializeCamelCase<T>(T obj)

@@ -55,4 +55,39 @@ public class AccreditationController(IAccreditationService service) : Controller
 
         return Ok();
     }
+
+    [HttpGet("Files/{externalId}")]
+    [ProducesResponseType(typeof(List<AccreditationFileUploadDto>), 200)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetFileUpload([FromRoute] Guid externalId)
+    {
+        var fileUpload = await service.GetFileUpload(externalId);
+        return fileUpload != null ? Ok(fileUpload) : NotFound();
+    }
+
+    [HttpGet("{accreditationId}/Files/{fileUploadTypeId}/{fileUploadStatusId?}")]
+    [ProducesResponseType(typeof(List<AccreditationFileUploadDto>), 200)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetFileUploads([FromRoute] Guid accreditationId, [FromRoute] int fileUploadTypeId, [FromRoute] int fileUploadStatusId = 1)
+    {
+        var fileUploads = await service.GetFileUploads(accreditationId, fileUploadTypeId, fileUploadStatusId);
+        return fileUploads != null ? Ok(fileUploads) : NotFound();
+    }
+
+    [HttpPost("{accreditationId}/Files")]
+    [ProducesResponseType(typeof(AccreditationFileUploadDto), 200)]
+    public async Task<IActionResult> UpsertFileUpload([FromRoute] Guid accreditationId, [FromBody] AccreditationFileUploadDto request)
+    {
+        var fileUpload = await service.UpsertFileUpload(accreditationId, request);
+        return Ok(fileUpload);
+    }
+
+    [HttpDelete("{accreditationId}/Files/{fileId}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> DeleteFileUpload([FromRoute] Guid accreditationId, [FromRoute] Guid fileId)
+    {
+        await service.DeleteFileUpload(accreditationId, fileId);
+
+        return Ok();
+    }
 }

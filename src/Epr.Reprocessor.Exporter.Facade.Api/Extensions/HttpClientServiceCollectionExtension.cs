@@ -1,6 +1,8 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Epr.Reprocessor.Exporter.Facade.Api.Handlers;
 using Epr.Reprocessor.Exporter.Facade.App.Clients.Accreditation;
+using Epr.Reprocessor.Exporter.Facade.App.Clients.Lookup;
+using Epr.Reprocessor.Exporter.Facade.App.Clients.ExporterJourney;
 using Epr.Reprocessor.Exporter.Facade.App.Clients.Registrations;
 using Epr.Reprocessor.Exporter.Facade.App.Config;
 using Microsoft.Extensions.Options;
@@ -28,6 +30,22 @@ public static class HttpClientServiceCollectionExtension
         .AddHttpMessageHandler<PrnBackendServiceAuthorisationHandler>()
         .AddPolicyHandler(GetRetryPolicy(prnServiceApiSettings.ServiceRetryCount));
 
+        services.AddHttpClient<ILookupServiceClient, LookupServiceClient>((sp, client) =>
+        {
+            client.BaseAddress = new Uri(prnServiceApiSettings.BaseUrl);
+            client.Timeout = TimeSpan.FromSeconds(prnServiceApiSettings.Timeout);
+        })
+        .AddHttpMessageHandler<PrnBackendServiceAuthorisationHandler>()
+        .AddPolicyHandler(GetRetryPolicy(prnServiceApiSettings.ServiceRetryCount));
+
+        services.AddHttpClient<IMaterialServiceClient, MaterialServiceClient>((sp, client) =>
+        {
+            client.BaseAddress = new Uri(prnServiceApiSettings.BaseUrl);
+            client.Timeout = TimeSpan.FromSeconds(prnServiceApiSettings.Timeout);
+        })
+        .AddHttpMessageHandler<PrnBackendServiceAuthorisationHandler>()
+        .AddPolicyHandler(GetRetryPolicy(prnServiceApiSettings.ServiceRetryCount));
+
         services.AddHttpClient<IAccreditationServiceClient, AccreditationServiceClient>((sp, client) =>
         {
             client.BaseAddress = new Uri(prnServiceApiSettings.BaseUrl);
@@ -43,8 +61,24 @@ public static class HttpClientServiceCollectionExtension
         })
         .AddHttpMessageHandler<PrnBackendServiceAuthorisationHandler>()
         .AddPolicyHandler(GetRetryPolicy(prnServiceApiSettings.ServiceRetryCount));
+       
+        services.AddHttpClient<IRegistrationMaterialServiceClient, RegistrationMaterialServiceClient>((sp, client) =>
+        {
+            client.BaseAddress = new Uri(prnServiceApiSettings.BaseUrl);
+            client.Timeout = TimeSpan.FromSeconds(prnServiceApiSettings.Timeout);
+        })
+        .AddHttpMessageHandler<PrnBackendServiceAuthorisationHandler>()
+        .AddPolicyHandler(GetRetryPolicy(prnServiceApiSettings.ServiceRetryCount));
 
-        return services;
+        services.AddHttpClient<IExporterServiceClient, ExporterServiceClient>((sp, client) =>
+		{
+			client.BaseAddress = new Uri(prnServiceApiSettings.BaseUrl);
+			client.Timeout = TimeSpan.FromSeconds(prnServiceApiSettings.Timeout);
+		})
+        .AddHttpMessageHandler<PrnBackendServiceAuthorisationHandler>()
+        .AddPolicyHandler(GetRetryPolicy(prnServiceApiSettings.ServiceRetryCount));
+
+		return services;
     }
 
     private static Polly.Retry.AsyncRetryPolicy<HttpResponseMessage> GetRetryPolicy(int retryCount)

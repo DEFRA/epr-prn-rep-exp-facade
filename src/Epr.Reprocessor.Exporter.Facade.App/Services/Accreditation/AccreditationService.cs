@@ -35,4 +35,26 @@ public class AccreditationService(IAccreditationServiceClient serviceClient) : I
         // Temporary: Aid to QA whilst Accreditation uses in-memory database.
         await serviceClient.ClearDownDatabase();
     }
+
+    public async Task<AccreditationFileUploadDto> GetFileUpload(Guid externalId)
+    {
+        return await serviceClient.GetFileUpload(externalId);
+    }
+
+    public async Task<List<AccreditationFileUploadDto>> GetFileUploads(Guid accreditationId, int fileUploadTypeId, int fileUploadStatusId)
+    {
+        List<AccreditationFileUploadDto> fileUploads = await serviceClient.GetFileUploads(accreditationId, fileUploadTypeId, fileUploadStatusId);
+        return fileUploads;
+    }
+
+    public async Task<AccreditationFileUploadDto> UpsertFileUpload(Guid accreditationId, AccreditationFileUploadDto request)
+    {
+        var fileUpload = await serviceClient.UpsertFileUpload(accreditationId, request);
+        return fileUpload;
+    }
+
+    public async Task DeleteFileUpload(Guid accreditationId, Guid fileId)
+    {
+        await serviceClient.DeleteFileUpload(accreditationId, fileId);
+    }
 }
