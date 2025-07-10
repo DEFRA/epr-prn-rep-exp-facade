@@ -24,5 +24,5 @@ public interface IRegistrationMaterialService
 
     Task UpsertRegistrationReprocessingDetailsAsync(Guid registrationMaterialId, RegistrationReprocessingIORequestDto request);
 
-    Task<bool> SaveOverseasReprocessorAsync(OverseasAddressRequest requestDto, Guid createdBy);
+    Task<bool> SaveOverseasReprocessorAsync(OverseasAddressRequest request, Guid createdBy);
 }
