@@ -1,4 +1,5 @@
 ﻿using Epr.Reprocessor.Exporter.Facade.App.Models.Exporter;
+using Epr.Reprocessor.Exporter.Facade.App.Models.Exporter.DTOs;
 using Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
 
 namespace Epr.Reprocessor.Exporter.Facade.App.Services.Registration;
@@ -25,4 +26,6 @@ public interface IRegistrationMaterialService
     Task UpsertRegistrationReprocessingDetailsAsync(Guid registrationMaterialId, RegistrationReprocessingIORequestDto request);
 
     Task<bool> SaveOverseasReprocessorAsync(OverseasAddressRequest requestDto, Guid createdBy);
+    Task<List<OverseasMaterialReprocessingSiteDto>> GetOverseasMaterialReprocessingSites(Guid registrationMaterialId);
+    Task SaveInterimSitesAsync(SaveInterimSitesRequestDto requestDto, Guid createdBy);
 }
