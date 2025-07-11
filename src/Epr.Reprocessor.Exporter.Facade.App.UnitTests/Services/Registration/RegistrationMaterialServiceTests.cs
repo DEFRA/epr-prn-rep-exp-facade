@@ -166,4 +166,74 @@ public class RegistrationMaterialServiceTests
         // Assert
         result.Should().BeTrue();
     }
+
+	[TestMethod]
+	public async Task UpdateIsMaterialRegisteredAsync_ShouldReturnTrue_WhenClientReturnsTrue()
+	{
+		// Arrange
+		var request = _fixture.Create<List<UpdateIsMaterialRegisteredDto>>();
+		_clientMock.Setup(x => x.UpdateIsMaterialRegisteredAsync(request))
+				   .ReturnsAsync(true);
+
+		// Act
+		var result = await _service.UpdateIsMaterialRegisteredAsync(request);
+
+		// Assert
+		result.Should().BeTrue();
+		_clientMock.Verify(x => x.UpdateIsMaterialRegisteredAsync(request), Times.Once);
+	}
+
+	[TestMethod]
+	public async Task UpdateIsMaterialRegisteredAsync_ShouldReturnFalse_WhenClientReturnsFalse()
+	{
+		// Arrange
+		var request = _fixture.Create<List<UpdateIsMaterialRegisteredDto>>();
+		_clientMock.Setup(x => x.UpdateIsMaterialRegisteredAsync(request))
+				   .ReturnsAsync(false);
+
+		// Act
+		var result = await _service.UpdateIsMaterialRegisteredAsync(request);
+
+		// Assert
+		result.Should().BeFalse();
+		_clientMock.Verify(x => x.UpdateIsMaterialRegisteredAsync(request), Times.Once);
+	}
+
+    [TestMethod]
+    public async Task UpsertRegistrationMaterialContactAsync_ShouldReturnExpectedResult()
+    {
+        // Arrange
+        var registrationMaterialId = Guid.NewGuid();
+        var request = new RegistrationMaterialContactDto { Id = Guid.Empty };
+        var expectedResponse = new RegistrationMaterialContactDto { Id = Guid.NewGuid() };
+
+        _clientMock
+            .Setup(client => client.UpsertRegistrationMaterialContactAsync(registrationMaterialId, request))
+            .ReturnsAsync(expectedResponse);
+
+        // Act
+        var result = await _service.UpsertRegistrationMaterialContactAsync(registrationMaterialId, request);
+
+        // Assert
+        result.Should().BeEquivalentTo(expectedResponse);
+    }
+
+    [TestMethod]
+    public async Task psertRegistrationReprocessingDetailsAsync_ShouldReturnExpectedResult()
+    {
+        // Arrange
+        var registrationMaterialId = Guid.NewGuid();
+        var request = new RegistrationReprocessingIORequestDto { TypeOfSuppliers = "Supplier 123" };
+
+        _clientMock
+            .Setup(client => client.UpsertRegistrationReprocessingDetailsAsync(registrationMaterialId, request))
+            .Returns(Task.CompletedTask);
+
+        // Act
+        await _service.UpsertRegistrationReprocessingDetailsAsync(registrationMaterialId, request);
+
+        // Assert
+        _clientMock.Verify(
+          x => x.UpsertRegistrationReprocessingDetailsAsync(registrationMaterialId, request), Times.Once);
+    }
 }
