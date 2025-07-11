@@ -1,5 +1,7 @@
 ﻿using Epr.Reprocessor.Exporter.Facade.App.Config;
 using Epr.Reprocessor.Exporter.Facade.App.Constants;
+using Epr.Reprocessor.Exporter.Facade.App.Models.Exporter;
+using Epr.Reprocessor.Exporter.Facade.App.Models.Exporter.DTOs;
 using Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -105,6 +107,14 @@ public class RegistrationMaterialServiceClient(
         var url = string.Format(Endpoints.RegistrationMaterial.UpsertRegistrationReprocessingDetails, _config.ApiVersion, registrationMaterialId);
 
         await PostAsync<RegistrationReprocessingIORequestDto>(url, request);
+    }
+
+    public async Task<bool> SaveOverseasReprocessorAsync(OverseasAddressRequest request, Guid createdBy)
+    {
+        var url = string.Format(Endpoints.RegistrationMaterial.SaveOverseasReprocessor, _config.ApiVersion, request.RegistrationMaterialId);
+        
+        await PostAsync<OverseasAddressRequestDto>(url, OverseasAddressRequestDto.MapOverseasAddressRequestToDto(request, createdBy));
+        return true;
     }
 
     public async Task UpdateMaterialNotRegisteringReasonAsync(Guid registrationMaterialId, string materialNotRegisteringReason)
