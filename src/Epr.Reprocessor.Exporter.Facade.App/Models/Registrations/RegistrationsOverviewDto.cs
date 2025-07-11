@@ -17,6 +17,8 @@ namespace Epr.Reprocessor.Exporter.Facade.App.Models.Registrations
 
         public string? MaterialCode { get; set; }
 
+        public bool? IsMaterialRegistered { get; set; }
+
         public int ApplicationTypeId { get; set; }
 
         public string? ApplicationType { get; set; }
