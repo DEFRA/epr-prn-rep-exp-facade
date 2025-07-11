@@ -227,4 +227,38 @@ public class AccreditationControllerTests
         result.Should().BeOfType<OkResult>();
         _serviceMock.Verify(s => s.DeleteFileUpload(accreditationId, fileId), Times.Once);
     }
+
+    [TestMethod]
+    public async Task GetFileUpload_ReturnsOk_WhenFileUploadExists()
+    {
+        // Arrange
+        var externalId = Guid.NewGuid();
+        var fileUploadDto = new AccreditationFileUploadDto { ExternalId = externalId };
+        _serviceMock.Setup(s => s.GetFileUpload(externalId))
+            .ReturnsAsync(fileUploadDto);
+
+        // Act
+        var result = await _controller.GetFileUpload(externalId);
+
+        // Assert
+        var okResult = result as OkObjectResult;
+        okResult.Should().NotBeNull();
+        okResult!.StatusCode.Should().Be(200);
+        okResult.Value.Should().Be(fileUploadDto);
+    }
+
+    [TestMethod]
+    public async Task GetFileUpload_ReturnsNotFound_WhenFileUploadDoesNotExist()
+    {
+        // Arrange
+        var externalId = Guid.NewGuid();
+        _serviceMock.Setup(s => s.GetFileUpload(externalId))
+            .ReturnsAsync((AccreditationFileUploadDto)null);
+
+        // Act
+        var result = await _controller.GetFileUpload(externalId);
+
+        // Assert
+        result.Should().BeOfType<NotFoundResult>();
+    }
 }

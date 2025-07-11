@@ -43,6 +43,7 @@ public static class Endpoints
         public const string Delete = "api/v{0}/registrationMaterials/{1}";
 		public const string UpdateIsMaterialRegistered = "api/v{0}/registrationMaterials/UpdateIsMaterialRegistered";
         public const string UpsertRegistrationReprocessingDetails = "api/v{0}/registrationMaterials/{1}/registrationReprocessingDetails";
+        public const string SaveOverseasReprocessor = "api/v{0}/registrationMaterials/{1}/overseasReprocessingSites";
     }
 
     /// <summary>
