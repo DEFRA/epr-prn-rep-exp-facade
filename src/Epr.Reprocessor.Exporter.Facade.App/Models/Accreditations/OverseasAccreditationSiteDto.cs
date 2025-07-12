@@ -7,7 +7,7 @@ public class OverseasAccreditationSiteDto
 {
     public Guid ExternalId { get; set; }
 
-    public required string OrganisationName { get; set; }
+    public string OrganisationName { get; set; }
 
     public int MeetConditionsOfExportId { get; set; }
 
