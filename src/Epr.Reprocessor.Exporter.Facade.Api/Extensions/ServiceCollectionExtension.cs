@@ -31,7 +31,8 @@ public static class ServiceCollectionExtension
         services.AddScoped<IRegistrationServiceClient, RegistrationServiceClient>();
         services.AddScoped<ILookupServiceClient, LookupServiceClient>();
         services.AddScoped<IAccreditationServiceClient, AccreditationServiceClient>();
-        services.AddScoped<IAccreditationPrnIssueAuthServiceClient, AccreditationPrnIssueAuthServiceClient>();        
+        services.AddScoped<IAccreditationPrnIssueAuthServiceClient, AccreditationPrnIssueAuthServiceClient>();
+        services.AddScoped<IOverseasAccreditationSiteServiceClient, OverseasAccreditationSiteServiceClient>();
         services.AddScoped<IRegistrationMaterialServiceClient, RegistrationMaterialServiceClient>();
         services.AddScoped<IMaterialServiceClient, MaterialServiceClient>();
 
@@ -40,6 +41,7 @@ public static class ServiceCollectionExtension
         services.AddScoped<ILookupService, LookupService>();
         services.AddScoped<IAccreditationService, AccreditationService>();
         services.AddScoped<IAccreditationPrnIssueAuthService, AccreditationPrnIssueAuthService>();
+        services.AddScoped<IOverseasAccreditationSiteService, OverseasAccreditationSiteService>();
         services.AddScoped<IRegistrationMaterialService, RegistrationMaterialService>();
         services.AddScoped<IMaterialService, MaterialService>();
 
