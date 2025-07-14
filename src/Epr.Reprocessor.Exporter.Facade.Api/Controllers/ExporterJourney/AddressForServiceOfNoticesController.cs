@@ -26,7 +26,7 @@ namespace Epr.Reprocessor.Exporter.Facade.Api.Controllers.ExporterJourney
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public async virtual Task<IActionResult> Get(Guid registrationId)
 		{
-			_logger.LogInformation($"Get AddressForServiceOfNotices for registrationId: {registrationId}");
+            _logger.LogInformation("Get AddressForServiceOfNotices for registrationId: {RegistrationId}", registrationId);
 
             var dto = await _service.Get(registrationId);
 			return dto == null ? NotFound() : Ok(dto);
@@ -36,7 +36,7 @@ namespace Epr.Reprocessor.Exporter.Facade.Api.Controllers.ExporterJourney
         [ProducesResponseType(StatusCodes.Status202Accepted)]
 		public async virtual Task<IActionResult> Put(Guid registrationId, [FromBody] AddressForServiceOfNoticesDto value)
 		{
-            _logger.LogInformation($"Update AddressForServiceOfNotices for registrationId: {value.RegistrationId}");
+            _logger.LogInformation("Update AddressForServiceOfNotices for registrationId: {RegistrationId}", registrationId);
 
             await _service.Update(registrationId, value);
 			return Accepted();
