@@ -39,8 +39,12 @@ public static class Endpoints
         public const string GetAllRegistrationMaterials = "api/v{0}/registrations/{1}/materials";
         public const string UpdateRegistrationMaterialPermits = "api/v{0}/registrationMaterials/{1}/permits";
         public const string UpdateRegistrationMaterialPermitCapacity = "api/v{0}/registrationMaterials/{1}/permitCapacity";
+        public const string UpsertRegistrationMaterialContact = "api/v{0}/registrationMaterials/{1}/contact";
         public const string GetMaterialsPermitTypes = "api/v{0}/registrationMaterials/permitTypes";
         public const string Delete = "api/v{0}/registrationMaterials/{1}";
+		public const string UpdateIsMaterialRegistered = "api/v{0}/registrationMaterials/UpdateIsMaterialRegistered";
+        public const string UpsertRegistrationReprocessingDetails = "api/v{0}/registrationMaterials/{1}/registrationReprocessingDetails";
+        public const string SaveOverseasReprocessor = "api/v{0}/registrationMaterials/{1}/overseasReprocessingSites";
         public const string UpdateMaximumWeight = "api/v{0}/registrationMaterials/{1}/max-weight";
         public const string UpdateTaskStatus = "api/v{0}/registrationMaterials/{1}/task-status";
     }

@@ -1,5 +1,6 @@
 ﻿using AutoFixture;
 using Epr.Reprocessor.Exporter.Facade.App.Clients.Registrations;
+using Epr.Reprocessor.Exporter.Facade.App.Models.Exporter;
 using Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
 using Epr.Reprocessor.Exporter.Facade.App.Services.Registration;
 using FluentAssertions;
@@ -167,6 +168,110 @@ public class RegistrationMaterialServiceTests
         result.Should().BeTrue();
     }
 
+	[TestMethod]
+	public async Task UpdateIsMaterialRegisteredAsync_ShouldReturnTrue_WhenClientReturnsTrue()
+	{
+		// Arrange
+		var request = _fixture.Create<List<UpdateIsMaterialRegisteredDto>>();
+		_clientMock.Setup(x => x.UpdateIsMaterialRegisteredAsync(request))
+				   .ReturnsAsync(true);
+
+		// Act
+		var result = await _service.UpdateIsMaterialRegisteredAsync(request);
+
+		// Assert
+		result.Should().BeTrue();
+		_clientMock.Verify(x => x.UpdateIsMaterialRegisteredAsync(request), Times.Once);
+	}
+
+	[TestMethod]
+	public async Task UpdateIsMaterialRegisteredAsync_ShouldReturnFalse_WhenClientReturnsFalse()
+	{
+		// Arrange
+		var request = _fixture.Create<List<UpdateIsMaterialRegisteredDto>>();
+		_clientMock.Setup(x => x.UpdateIsMaterialRegisteredAsync(request))
+				   .ReturnsAsync(false);
+
+		// Act
+		var result = await _service.UpdateIsMaterialRegisteredAsync(request);
+
+		// Assert
+		result.Should().BeFalse();
+		_clientMock.Verify(x => x.UpdateIsMaterialRegisteredAsync(request), Times.Once);
+	}
+
+    [TestMethod]
+    public async Task UpsertRegistrationMaterialContactAsync_ShouldReturnExpectedResult()
+    {
+        // Arrange
+        var registrationMaterialId = Guid.NewGuid();
+        var request = new RegistrationMaterialContactDto { Id = Guid.Empty };
+        var expectedResponse = new RegistrationMaterialContactDto { Id = Guid.NewGuid() };
+
+        _clientMock
+            .Setup(client => client.UpsertRegistrationMaterialContactAsync(registrationMaterialId, request))
+            .ReturnsAsync(expectedResponse);
+
+        // Act
+        var result = await _service.UpsertRegistrationMaterialContactAsync(registrationMaterialId, request);
+
+        // Assert
+        result.Should().BeEquivalentTo(expectedResponse);
+    }
+
+    [TestMethod]
+    public async Task psertRegistrationReprocessingDetailsAsync_ShouldReturnExpectedResult()
+    {
+        // Arrange
+        var registrationMaterialId = Guid.NewGuid();
+        var request = new RegistrationReprocessingIORequestDto { TypeOfSuppliers = "Supplier 123" };
+
+        _clientMock
+            .Setup(client => client.UpsertRegistrationReprocessingDetailsAsync(registrationMaterialId, request))
+            .Returns(Task.CompletedTask);
+
+        // Act
+        await _service.UpsertRegistrationReprocessingDetailsAsync(registrationMaterialId, request);
+
+        // Assert
+        _clientMock.Verify(
+          x => x.UpsertRegistrationReprocessingDetailsAsync(registrationMaterialId, request), Times.Once);
+    }
+
+    [TestMethod]
+    public async Task SaveOverseasReprocessorAsync_ShouldReturnTrue_WhenClientReturnsTrue()
+    {
+        // Arrange
+        var createdBy = Guid.NewGuid();
+        var request = _fixture.Create<OverseasAddressRequest>();
+        _clientMock.Setup(x => x.SaveOverseasReprocessorAsync(request, createdBy))
+                   .ReturnsAsync(true);
+
+        // Act
+        var result = await _service.SaveOverseasReprocessorAsync(request, createdBy);
+
+        // Assert
+        result.Should().BeTrue();
+        _clientMock.Verify(x => x.SaveOverseasReprocessorAsync(request, createdBy), Times.Once);
+    }
+
+    [TestMethod]
+    public async Task SaveOverseasReprocessorAsync_ShouldReturnFalse_WhenClientReturnsFalse()
+    {
+        // Arrange
+        var createdBy = Guid.NewGuid();
+        var request = _fixture.Create<OverseasAddressRequest>();
+        _clientMock.Setup(x => x.SaveOverseasReprocessorAsync(request, createdBy))
+                   .ReturnsAsync(false);
+
+        // Act
+        var result = await _service.SaveOverseasReprocessorAsync(request, createdBy);
+
+        // Assert
+        result.Should().BeFalse();
+        _clientMock.Verify(x => x.SaveOverseasReprocessorAsync(request, createdBy), Times.Once);
+    }
+
     [TestMethod]
     public async Task UpdateMaximumWeight_ShouldReturnTrue_WhenClientReturnsTrue()
     {
@@ -195,7 +300,7 @@ public class RegistrationMaterialServiceTests
 
         // Act
         var task = _service.UpdateRegistrationTaskStatusAsync(id, request);
-        
+
         // Assert
         Assert.IsTrue(task.IsCompleted);
         _clientMock.Verify(x => x.UpdateRegistrationTaskStatusAsync(id, request), Times.Once);

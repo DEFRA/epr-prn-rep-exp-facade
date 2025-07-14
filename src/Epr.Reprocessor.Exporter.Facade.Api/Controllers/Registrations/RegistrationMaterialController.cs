@@ -81,8 +81,7 @@ public class RegistrationMaterialController : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError, LogMessages.UnExpectedError);
         }
     }
-
-
+    
     [HttpPost("{id:Guid}/permits")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OkResult))]
     [ProducesResponseType(typeof(ValidationProblemDetails), (int)HttpStatusCode.BadRequest)]
@@ -189,6 +188,69 @@ public class RegistrationMaterialController : ControllerBase
         }
     }
 
+	[HttpPost("UpdateIsMaterialRegistered")]
+	[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OkResult))]
+	[SwaggerOperation(
+	Summary = "updates an existing registration material IsMaterialRegistered flag",
+	Description = "attempting to update the registration material IsMaterialRegistered flag."
+	)]
+	public async Task<IActionResult> UpdateIsMaterialRegisteredAsync([FromBody] List<UpdateIsMaterialRegisteredDto> request)
+	{
+		_logger.LogInformation(LogMessages.UpdateIsMaterialRegistered);
+
+		_ = await _registrationMaterialService.UpdateIsMaterialRegisteredAsync(request);
+
+		return NoContent();
+	}
+
+    [HttpPost("{id:Guid}/contact")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RegistrationMaterialContactDto))]
+    [SwaggerOperation(
+        Summary = "Upserts the contact for a registration material",
+        Description = "attempting to upsert the registration material contact."
+    )]
+    [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
+    public async Task<IActionResult> UpsertRegistrationMaterialContactAsync([FromRoute] Guid id, [FromBody] RegistrationMaterialContactDto request)
+    {
+        try
+        {
+            _logger.LogInformation(LogMessages.UpsertRegistrationMaterialContact, id);
+
+            var response = await _registrationMaterialService.UpsertRegistrationMaterialContactAsync(id, request);
+
+            return Ok(response);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, LogMessages.UnExpectedError);
+            return StatusCode(StatusCodes.Status500InternalServerError, LogMessages.UnExpectedError);
+        }
+    }
+
+    [HttpPost("{registrationMaterialId:Guid}/registrationReprocessingDetails")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RegistrationReprocessingIORequestDto))]
+    [SwaggerOperation(
+      Summary = "Upserts the registration reprocessing io details for a registration material",
+      Description = "attempting to upsert the registration reprocessing io details."
+  )]
+    [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
+    public async Task<IActionResult> UpsertRegistrationReprocessingDetailsAsync([FromRoute] Guid registrationMaterialId, [FromBody] RegistrationReprocessingIORequestDto request)
+    {
+        try
+        {
+            _logger.LogInformation(LogMessages.UpsertRegistrationReprocessingDetails, registrationMaterialId);
+
+            await _registrationMaterialService.UpsertRegistrationReprocessingDetailsAsync(registrationMaterialId, request);
+
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, LogMessages.UnExpectedError);
+            return StatusCode(StatusCodes.Status500InternalServerError, LogMessages.UnExpectedError);
+        }
+    }
+
     [HttpPut("{registrationMaterialId:Guid}/max-weight")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OkResult))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(BadRequestResult))]
@@ -214,7 +276,7 @@ public class RegistrationMaterialController : ControllerBase
         Summary = "update the task status of an application registration material",
         Description = "attempting to update the task status of an application registration material."
     )]
-    public async Task<IActionResult> UpdateRegistrationTaskStatus([FromRoute]Guid registrationMaterialId, [FromBody]UpdateRegistrationTaskStatusDto request)
+    public async Task<IActionResult> UpdateRegistrationTaskStatus([FromRoute] Guid registrationMaterialId, [FromBody] UpdateRegistrationTaskStatusDto request)
     {
         _logger.LogInformation(LogMessages.UpdateRegistrationTaskStatus);
 
