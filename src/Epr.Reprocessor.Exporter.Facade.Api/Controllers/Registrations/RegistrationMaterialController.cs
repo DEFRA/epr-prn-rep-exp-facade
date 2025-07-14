@@ -251,7 +251,7 @@ public class RegistrationMaterialController : ControllerBase
         }
     }
 
-    [HttpPost("{registrationMaterialId:Guid}/materialNotRegisteringReason")]
+    [HttpPost("{registrationMaterialId:Guid}/materialNotReprocessingReason")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RegistrationReprocessingIORequestDto))]
     [SwaggerOperation(
       Summary = "Update the reason for not registreing a registration material",
