@@ -271,4 +271,24 @@ public class RegistrationMaterialServiceTests
         result.Should().BeFalse();
         _clientMock.Verify(x => x.SaveOverseasReprocessorAsync(request, createdBy), Times.Once);
     }
+
+    [TestMethod]
+    public async Task UpdateMaterialNotReprocessingReasonAsync_ShouldReturnExpectedResult()
+    {
+        // Arrange
+        var registrationMaterialId = Guid.NewGuid();
+        var reason = "Too contaminated";
+
+        _clientMock
+            .Setup(client => client.UpdateMaterialNotReprocessingReasonAsync(registrationMaterialId, reason))
+            .Returns(Task.CompletedTask);
+
+        // Act
+        await _service.UpdateMaterialNotReprocessingReasonAsync(registrationMaterialId, reason);
+
+        // Assert
+        _clientMock.Verify(
+            x => x.UpdateMaterialNotReprocessingReasonAsync(registrationMaterialId, reason),
+            Times.Once);
+    }
 }

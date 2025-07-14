@@ -45,7 +45,7 @@ public static class Endpoints
 		public const string UpdateIsMaterialRegistered = "api/v{0}/registrationMaterials/UpdateIsMaterialRegistered";
         public const string UpsertRegistrationReprocessingDetails = "api/v{0}/registrationMaterials/{1}/registrationReprocessingDetails";
         public const string SaveOverseasReprocessor = "api/v{0}/registrationMaterials/{1}/overseasReprocessingSites";
-        public const string UpdateMaterialNotRegisteringReason = "api/v{0}/registrationMaterials/{1}/materialNotRegisteringReason";
+        public const string UpdateMaterialNotReprocessingReason = "api/v{0}/registrationMaterials/{1}/materialNotReprocessingReason";
     }
 
     /// <summary>

@@ -41,6 +41,6 @@ public class RegistrationMaterialService(IRegistrationMaterialServiceClient regi
     public async Task<bool> SaveOverseasReprocessorAsync(OverseasAddressRequest request, Guid createdBy)
         => await registrationMaterialServiceClient.SaveOverseasReprocessorAsync(request, createdBy);
 
-    public async Task UpdateMaterialNotRegisteringReasonAsync(Guid registrationMaterialId, string materialNotRegisteringReason)
-        => await registrationMaterialServiceClient.UpdateMaterialNotRegisteringReasonAsync(registrationMaterialId, materialNotRegisteringReason);
+    public async Task UpdateMaterialNotReprocessingReasonAsync(Guid registrationMaterialId, string materialNotReprocessingReason)
+        => await registrationMaterialServiceClient.UpdateMaterialNotReprocessingReasonAsync(registrationMaterialId, materialNotReprocessingReason);
 }

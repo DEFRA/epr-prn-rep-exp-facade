@@ -26,5 +26,5 @@ public interface IRegistrationMaterialService
 
     Task<bool> SaveOverseasReprocessorAsync(OverseasAddressRequest requestDto, Guid createdBy);
 
-    Task UpdateMaterialNotRegisteringReasonAsync(Guid registrationMaterialId, string materialNotRegisteringReason);
+    Task UpdateMaterialNotReprocessingReasonAsync(Guid registrationMaterialId, string materialNotReprocessingReason);
 }

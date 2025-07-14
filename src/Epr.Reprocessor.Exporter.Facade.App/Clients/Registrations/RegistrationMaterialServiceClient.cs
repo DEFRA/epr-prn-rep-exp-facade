@@ -117,12 +117,12 @@ public class RegistrationMaterialServiceClient(
         return true;
     }
 
-    public async Task UpdateMaterialNotRegisteringReasonAsync(Guid registrationMaterialId, string materialNotRegisteringReason)
+    public async Task UpdateMaterialNotReprocessingReasonAsync(Guid registrationMaterialId, string materialNotReprocessingReason)
     {
-        _logger.LogInformation("Attempting to to update the reason for not registering registration material with External ID {Id}", registrationMaterialId);
+        _logger.LogInformation("Attempting to to update the reason for not reprocessing registration material with External ID {Id}", registrationMaterialId);
 
-        var url = string.Format(Endpoints.RegistrationMaterial.UpdateMaterialNotRegisteringReason, _config.ApiVersion, registrationMaterialId);
+        var url = string.Format(Endpoints.RegistrationMaterial.UpdateMaterialNotReprocessingReason, _config.ApiVersion, registrationMaterialId);
 
-        await PostAsync<string>(url, materialNotRegisteringReason);
+        await PostAsync<string>(url, materialNotReprocessingReason);
     }
 }
