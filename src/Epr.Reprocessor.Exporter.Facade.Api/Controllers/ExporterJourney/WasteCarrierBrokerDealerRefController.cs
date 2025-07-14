@@ -18,7 +18,6 @@ namespace Epr.Reprocessor.Exporter.Facade.Api.Controllers.ExporterJourney
 			ArgumentNullException.ThrowIfNull(logger);
 
 			_service = service;
-			_service = service;
 			_logger = logger;
 		}
 
