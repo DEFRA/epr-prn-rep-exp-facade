@@ -116,4 +116,16 @@ public class RegistrationMaterialServiceClient(
         await PostAsync<OverseasAddressRequestDto>(url, OverseasAddressRequestDto.MapOverseasAddressRequestToDto(requestDto, createdBy));
         return true;
     }
+    public async Task<List<OverseasMaterialReprocessingSiteDto>> GetOverseasMaterialReprocessingSites(Guid registrationMaterialId)
+    {
+        var url = string.Format(Endpoints.RegistrationMaterial.GetOverseasMaterialReprocessingSites, _config.ApiVersion, registrationMaterialId);
+        _logger.LogInformation("Calling {Url} to retrieve all OverseasMaterialReprocessingSite details.", url);
+        return await GetAsync<List<OverseasMaterialReprocessingSiteDto>>(url);
+    }
+
+    public async Task SaveInterimSitesAsync(SaveInterimSitesRequestDto requestDto, Guid createdBy)
+    {
+        var url = string.Format(Endpoints.RegistrationMaterial.SaveInterimSites, _config.ApiVersion, requestDto.RegistrationMaterialId);
+        await PostAsync(url, requestDto);
+    }
 }

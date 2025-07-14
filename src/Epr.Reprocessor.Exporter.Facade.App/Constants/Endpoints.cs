@@ -44,6 +44,8 @@ public static class Endpoints
         public const string UpsertRegistrationReprocessingDetails = "api/v{0}/registrationMaterials/{1}/registrationReprocessingDetails";
         public const string SaveOverseasReprocessor = "api/v{0}/registrationMaterials/{1}/overseasReprocessingSites";
         public const string ApplicationRegistrationUpdateTaskStatus = "api/v{0}/registrations/{1}/applicationTaskStatus";
+        public const string GetOverseasMaterialReprocessingSites = "api/v{0}/registrationMaterials/{1}/overseasMaterialReprocessingSites";
+        public const string SaveInterimSites = "api/v{0}/registrationMaterials/{1}/interimSites";
     }
 
     /// <summary>
