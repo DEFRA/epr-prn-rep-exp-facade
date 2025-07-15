@@ -479,4 +479,48 @@ public class RegistrationMaterialControllerTests
         Assert.IsInstanceOfType(result, typeof(OkResult));
         _registrationMaterialService.Verify(s => s.UpsertRegistrationReprocessingDetailsAsync(registrationMaterialId, request), Times.Once);
     }
+
+    [TestMethod]
+    public async Task UpdateMaterialNotReprocessingReasonAsync_ReturnsOkResult()
+    {
+        // Arrange
+        var registrationMaterialId = Guid.NewGuid();
+        var reason = "Too contaminated";
+        var expectedResult = new OkResult();
+
+        _registrationMaterialService
+            .Setup(s => s.UpdateMaterialNotReprocessingReasonAsync(registrationMaterialId, reason))
+            .Returns(Task.CompletedTask);
+
+        // Act
+        var result = await _controller.UpdateMaterialNotReprocessingReasonAsync(registrationMaterialId, reason);
+
+        // Assert
+        Assert.IsInstanceOfType(result, typeof(OkResult));
+        _registrationMaterialService.Verify(s =>
+            s.UpdateMaterialNotReprocessingReasonAsync(registrationMaterialId, reason), Times.Once);
+    }
+
+    [TestMethod]
+    public async Task UpdateMaterialNotReprocessingReasonAsync_ServiceThrows_ReturnsInternalServerError()
+    {
+        // Arrange
+        var registrationMaterialId = Guid.NewGuid();
+        var reason = "Too contaminated";
+
+        var expectedResult = new ObjectResult(LogMessages.UnExpectedError)
+        {
+            StatusCode = StatusCodes.Status500InternalServerError,
+        };
+
+        _registrationMaterialService
+            .Setup(s => s.UpdateMaterialNotReprocessingReasonAsync(registrationMaterialId, reason))
+            .ThrowsAsync(new Exception());
+
+        // Act
+        var result = await _controller.UpdateMaterialNotReprocessingReasonAsync(registrationMaterialId, reason);
+
+        // Assert
+        result.Should().BeEquivalentTo(expectedResult);
+    }
 }

@@ -116,4 +116,13 @@ public class RegistrationMaterialServiceClient(
         await PostAsync<OverseasAddressRequestDto>(url, OverseasAddressRequestDto.MapOverseasAddressRequestToDto(request, createdBy));
         return true;
     }
+
+    public async Task UpdateMaterialNotReprocessingReasonAsync(Guid registrationMaterialId, string materialNotReprocessingReason)
+    {
+        _logger.LogInformation("Attempting to to update the reason for not reprocessing registration material with External ID {Id}", registrationMaterialId);
+
+        var url = string.Format(Endpoints.RegistrationMaterial.UpdateMaterialNotReprocessingReason, _config.ApiVersion, registrationMaterialId);
+
+        await PostAsync<string>(url, materialNotReprocessingReason);
+    }
 }
