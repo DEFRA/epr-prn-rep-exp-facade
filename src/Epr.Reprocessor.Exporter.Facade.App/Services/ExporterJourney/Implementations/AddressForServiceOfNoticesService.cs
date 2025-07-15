@@ -20,8 +20,8 @@ namespace Epr.Reprocessor.Exporter.Facade.App.Services.ExporterJourney.Implement
 			_apiClient = apiClient;
 			_apiVersion = config.ApiVersion;
 
-			_baseGetUrl = config.ExportEndpoints.WasteCarrierBrokerDealerRefGet;
-			_basePutUrl = config.ExportEndpoints.WasteCarrierBrokerDealerRefPut;
+			_baseGetUrl = config.ExportEndpoints.AddressForServiceOfNoticesGet;
+			_basePutUrl = config.ExportEndpoints.AddressForServiceOfNoticesPut;
 		}
 
 		public async Task<AddressForServiceOfNoticesDto> Get(Guid registrationId)
