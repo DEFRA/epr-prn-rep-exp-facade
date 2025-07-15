@@ -20,10 +20,10 @@ public record OverseasAddressRequestDto(
             address.OrganisationName,
             address.AddressLine1,
             address.AddressLine2,
-            address.CityorTown,
+            address.CityOrTown,
             address.StateProvince,
             address.PostCode,
-            address.Country,
+            address.CountryName,
             address.SiteCoordinates,
             createdBy,
             address.OverseasAddressContact.Select(contact => new OverseasAddressContactDto(
