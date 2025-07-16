@@ -40,4 +40,7 @@ public class RegistrationMaterialService(IRegistrationMaterialServiceClient regi
 
     public async Task<bool> SaveOverseasReprocessorAsync(OverseasAddressRequest request, Guid createdBy)
         => await registrationMaterialServiceClient.SaveOverseasReprocessorAsync(request, createdBy);
+
+    public async Task<bool> UpdateMaximumWeight(Guid registrationMaterialId, UpdateMaximumWeightDto request)
+        => await registrationMaterialServiceClient.UpdateMaximumWeightAsync(registrationMaterialId, request);
 }
