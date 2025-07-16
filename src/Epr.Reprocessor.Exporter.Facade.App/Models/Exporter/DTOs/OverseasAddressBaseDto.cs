@@ -14,7 +14,7 @@ namespace Epr.Reprocessor.Exporter.Facade.App.Models.Exporter.DTOs
         public required string CityOrTown { get; set; }
         [MaxLength(100)]
         public required string CountryName { get; set; }
-        public Guid Id { get; set; }
+        public Guid ExternalId { get; set; }
         [MaxLength(100)]
         public required string OrganisationName { get; set; }
         [MaxLength(20)]

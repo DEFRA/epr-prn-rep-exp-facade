@@ -46,7 +46,7 @@ public static class Endpoints
         public const string SaveOverseasReprocessor = "api/v{0}/registrationMaterials/{1}/overseasReprocessingSites";
         public const string UpdateMaximumWeight = "api/v{0}/registrationMaterials/{1}/max-weight";
         public const string GetOverseasMaterialReprocessingSites = "api/v{0}/registrationMaterials/{1}/overseasMaterialReprocessingSites";
-        public const string SaveInterimSites = "api/v{0}/registrationMaterials/{1}/interimSites";
+        public const string SaveInterimSites = "api/v{0}/registrationMaterials/{1}/saveInterimSites";
     }
 
     /// <summary>
