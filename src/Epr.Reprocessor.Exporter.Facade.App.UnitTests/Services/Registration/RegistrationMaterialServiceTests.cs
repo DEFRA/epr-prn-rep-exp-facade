@@ -308,4 +308,26 @@ public class RegistrationMaterialServiceTests
                 It.Is<Guid>(g => g == createdBy)),
             Times.Once);
     }
+
+    [TestMethod]
+    public async Task UpdateMaximumWeight_ShouldReturnExpectedResult()
+    {
+        // Arrange
+        var registrationMaterialId = Guid.NewGuid();
+        var request = new UpdateMaximumWeightDto
+        {
+            WeightInTonnes = 10,
+            PeriodId = 1
+        };
+
+        _clientMock
+            .Setup(client => client.UpdateMaximumWeightAsync(registrationMaterialId, request))
+            .ReturnsAsync(true);
+
+        // Act
+        var result = await _service.UpdateMaximumWeight(registrationMaterialId, request);
+
+        // Assert
+        result.Should().BeTrue();
+    }
 }

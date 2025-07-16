@@ -109,11 +109,11 @@ public class RegistrationMaterialServiceClient(
         await PostAsync<RegistrationReprocessingIORequestDto>(url, request);
     }
 
-    public async Task<bool> SaveOverseasReprocessorAsync(OverseasAddressRequest requestDto, Guid createdBy)
+    public async Task<bool> SaveOverseasReprocessorAsync(OverseasAddressRequest request, Guid createdBy)
     {
-        var url = string.Format(Endpoints.RegistrationMaterial.SaveOverseasReprocessor, _config.ApiVersion, requestDto.RegistrationMaterialId);
+        var url = string.Format(Endpoints.RegistrationMaterial.SaveOverseasReprocessor, _config.ApiVersion, request.RegistrationMaterialId);
         
-        await PostAsync<OverseasAddressRequestDto>(url, OverseasAddressRequestDto.MapOverseasAddressRequestToDto(requestDto, createdBy));
+        await PostAsync<OverseasAddressRequestDto>(url, OverseasAddressRequestDto.MapOverseasAddressRequestToDto(request, createdBy));
         return true;
     }
 

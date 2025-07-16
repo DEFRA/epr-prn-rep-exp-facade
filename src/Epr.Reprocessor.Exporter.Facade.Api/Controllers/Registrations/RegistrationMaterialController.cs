@@ -204,14 +204,23 @@ public class RegistrationMaterialController : ControllerBase
     )]
     public async Task<IActionResult> UpdateMaximumWeight([FromRoute] Guid registrationMaterialId, [FromBody] UpdateMaximumWeightDto request)
     {
-        _logger.LogInformation(LogMessages.UpdateRegistrationMaterialPermitCapacity, registrationMaterialId);
+        _logger.LogInformation(LogMessages.UpdateMaximumWeight, registrationMaterialId);
 
-        if (!await _registrationMaterialService.UpdateMaximumWeight(registrationMaterialId, request))
+        try
         {
-            return BadRequest();
-        }
+            if (!await _registrationMaterialService.UpdateMaximumWeight(registrationMaterialId, request))
+            {
+                return BadRequest();
+            }
 
-        return Ok();
+            return Ok();
+
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, LogMessages.UnExpectedError);
+            return StatusCode(StatusCodes.Status500InternalServerError, LogMessages.UnExpectedError);
+        }
     }
 
 	[HttpPost("UpdateIsMaterialRegistered")]
