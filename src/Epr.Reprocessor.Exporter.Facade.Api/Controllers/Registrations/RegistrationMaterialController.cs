@@ -29,6 +29,8 @@ public class RegistrationMaterialController : ControllerBase
 
     [HttpPost("CreateRegistrationMaterial")]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(bool))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [SwaggerOperation(
         Summary = "creates a new registration material",
         Description = "attempting to create new registration material"
@@ -57,7 +59,9 @@ public class RegistrationMaterialController : ControllerBase
     }
 
     [HttpPost("CreateExemptionReferences")]
-    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(bool))]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [SwaggerOperation(
         Summary = "creates a new exemption references",
         Description = "attempting to create new exemption references"
@@ -85,7 +89,7 @@ public class RegistrationMaterialController : ControllerBase
     }
     
     [HttpPost("{id:Guid}/permits")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OkResult))]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ValidationProblemDetails), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
     [SwaggerOperation(
@@ -106,7 +110,7 @@ public class RegistrationMaterialController : ControllerBase
     }
 
     [HttpPost("{id:Guid}/permitCapacity")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OkResult))]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [SwaggerOperation(
         Summary = "updates an existing registration material permit capacity",
         Description = "attempting to update the registration material permit capacity."
@@ -139,7 +143,7 @@ public class RegistrationMaterialController : ControllerBase
     }
 
     [HttpGet("{registrationId:guid}/materials")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<RegistrationMaterialDto>))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<ApplicationRegistrationMaterialDto>))]
     [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
     [SwaggerOperation(
         Summary = "gets existing registration materials associated with a registration.",
@@ -163,6 +167,7 @@ public class RegistrationMaterialController : ControllerBase
 
     [HttpDelete("{registrationMaterialId:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OkResult))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
     [SwaggerOperation(
         Summary = "delete a registration material",
@@ -210,7 +215,7 @@ public class RegistrationMaterialController : ControllerBase
     }
 
 	[HttpPost("UpdateIsMaterialRegistered")]
-	[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OkResult))]
+	[ProducesResponseType(StatusCodes.Status204NoContent)]
 	[SwaggerOperation(
 	Summary = "updates an existing registration material IsMaterialRegistered flag",
 	Description = "attempting to update the registration material IsMaterialRegistered flag."
@@ -226,6 +231,7 @@ public class RegistrationMaterialController : ControllerBase
 
     [HttpPost("{id:Guid}/contact")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RegistrationMaterialContactDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [SwaggerOperation(
         Summary = "Upserts the contact for a registration material",
         Description = "attempting to upsert the registration material contact."
@@ -249,7 +255,8 @@ public class RegistrationMaterialController : ControllerBase
     }
 
     [HttpPost("{registrationMaterialId:Guid}/registrationReprocessingDetails")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RegistrationReprocessingIORequestDto))]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [SwaggerOperation(
       Summary = "Upserts the registration reprocessing io details for a registration material",
       Description = "attempting to upsert the registration reprocessing io details."
