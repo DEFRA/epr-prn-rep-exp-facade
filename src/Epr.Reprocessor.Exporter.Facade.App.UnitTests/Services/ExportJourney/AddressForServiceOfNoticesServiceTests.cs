@@ -19,8 +19,8 @@ namespace Epr.Reprocessor.Exporter.Facade.App.UnitTests.Services.ExporterJourney
         private AddressForServiceOfNoticesService _service = null!;
 
         private const int ApiVersion = 1;
-        private const string GetUrl = "/api/v{0}/registrations/{1}/carrier-broker-dealer-permits";
-        private const string PutUrl = "/api/v{0}/registrations/{1}/carrier-broker-dealer-permits";
+        private const string GetUrl = "/api/v{0}/registrations/{1}/address-for-service-of-notices";
+        private const string PutUrl = "/api/v{0}/registrations/{1}/address-for-service-of-notices";
 
         [TestInitialize]
         public void Setup()
@@ -33,8 +33,8 @@ namespace Epr.Reprocessor.Exporter.Facade.App.UnitTests.Services.ExporterJourney
                 ApiVersion = ApiVersion,
                 ExportEndpoints = new PrnServiceApiConfigExportEndpoints
                 {
-                    WasteCarrierBrokerDealerRefGet = GetUrl,
-                    WasteCarrierBrokerDealerRefPut = PutUrl
+                    AddressForServiceOfNoticesGet = GetUrl,
+                    AddressForServiceOfNoticesPut = PutUrl
                 }
             };
 
@@ -48,6 +48,7 @@ namespace Epr.Reprocessor.Exporter.Facade.App.UnitTests.Services.ExporterJourney
         {
             // Arrange
             var registrationId = Guid.NewGuid();
+
             var expectedDto = new AddressForServiceOfNoticesDto
             {
                 RegistrationId = registrationId,
