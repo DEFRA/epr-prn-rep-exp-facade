@@ -13,7 +13,7 @@ using Microsoft.FeatureManagement.Mvc;
 public class AccreditationPrnIssueAuthController(IAccreditationPrnIssueAuthService service) : ControllerBase
 {
     [HttpGet("{accreditationId}")]
-    [ProducesResponseType(typeof(AccreditationPrnIssueAuthDto), 200)]
+    [ProducesResponseType(typeof(List<AccreditationPrnIssueAuthDto>), 200)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetByAccreditationId([FromRoute] Guid accreditationId)
     {
@@ -28,7 +28,7 @@ public class AccreditationPrnIssueAuthController(IAccreditationPrnIssueAuthServi
     }
 
     [HttpPost("{accreditationId}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> Post([FromRoute] Guid accreditationId, [FromBody] List<AccreditationPrnIssueAuthRequestDto> request)
     {
         await service.ReplaceAllByAccreditationId(accreditationId, request);

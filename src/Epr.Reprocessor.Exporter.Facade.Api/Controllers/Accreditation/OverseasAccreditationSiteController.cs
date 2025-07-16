@@ -13,7 +13,7 @@ namespace Epr.Reprocessor.Exporter.Facade.Api.Controllers.Accreditation;
 public class OverseasAccreditationSiteController(IOverseasAccreditationSiteService service) : ControllerBase
 {
     [HttpGet("{accreditationId}")]
-    [ProducesResponseType(typeof(OverseasAccreditationSiteDto), 200)]
+    [ProducesResponseType(typeof(List<OverseasAccreditationSiteDto>), 200)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetAllByAccreditationId([FromRoute] Guid accreditationId)
     {
@@ -28,7 +28,7 @@ public class OverseasAccreditationSiteController(IOverseasAccreditationSiteServi
     }
 
     [HttpPost("{accreditationId}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> Post([FromRoute] Guid accreditationId, [FromBody] OverseasAccreditationSiteDto request)
     {
         await service.PostByAccreditationId(accreditationId, request);
