@@ -116,6 +116,15 @@ public class RegistrationMaterialServiceClient(
         await PostAsync<OverseasAddressRequestDto>(url, OverseasAddressRequestDto.MapOverseasAddressRequestToDto(requestDto, createdBy));
         return true;
     }
+
+    public async Task<bool> UpdateMaximumWeightAsync(Guid registrationMaterialId, UpdateMaximumWeightDto request)
+    {
+        var url = string.Format(Endpoints.RegistrationMaterial.UpdateMaximumWeight, _config.ApiVersion, registrationMaterialId);
+
+        _logger.LogInformation("Calling {Url} to update the maximum weight for the registration material.", url);
+
+        return await PutAsync(url, request);
+    }
     public async Task<List<OverseasMaterialReprocessingSiteDto>> GetOverseasMaterialReprocessingSites(Guid registrationMaterialId)
     {
         var url = string.Format(Endpoints.RegistrationMaterial.GetOverseasMaterialReprocessingSites, _config.ApiVersion, registrationMaterialId);

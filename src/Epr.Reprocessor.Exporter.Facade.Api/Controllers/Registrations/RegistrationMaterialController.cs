@@ -190,6 +190,25 @@ public class RegistrationMaterialController : ControllerBase
         }
     }
 
+    [HttpPut("{registrationMaterialId:Guid}/max-weight")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OkResult))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(BadRequestResult))]
+    [SwaggerOperation(
+        Summary = "update the maximum weight the site is capable of processing for the material",
+        Description = "attempting to update the maximum weight the site is capable of processing for the material."
+    )]
+    public async Task<IActionResult> UpdateMaximumWeight([FromRoute] Guid registrationMaterialId, [FromBody] UpdateMaximumWeightDto request)
+    {
+        _logger.LogInformation(LogMessages.UpdateRegistrationMaterialPermitCapacity, registrationMaterialId);
+
+        if (!await _registrationMaterialService.UpdateMaximumWeight(registrationMaterialId, request))
+        {
+            return BadRequest();
+        }
+
+        return Ok();
+    }
+
 	[HttpPost("UpdateIsMaterialRegistered")]
 	[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OkResult))]
 	[SwaggerOperation(
