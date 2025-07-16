@@ -125,6 +125,7 @@ public class RegistrationMaterialServiceClient(
 
     public async Task SaveInterimSitesAsync(SaveInterimSitesRequestDto requestDto, Guid createdBy)
     {
+        requestDto.UserId = createdBy;
         var url = string.Format(Endpoints.RegistrationMaterial.SaveInterimSites, _config.ApiVersion, requestDto.RegistrationMaterialId);
         await PostAsync(url, requestDto);
     }
