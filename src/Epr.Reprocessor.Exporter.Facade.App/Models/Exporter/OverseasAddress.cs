@@ -21,6 +21,6 @@ public class OverseasAddress
     public required string SiteCoordinates { get; set; }
     [MaxLength(70)]
     public required string StateProvince { get; set; }
-    public List<OverseasAddressContact> OverseasAddressContact { get; set; } = new();
+    public List<OverseasAddressContact> OverseasAddressContacts { get; set; } = new();
     public List<OverseasAddressWasteCodes> OverseasAddressWasteCodes { get; set; } = new();
 }
