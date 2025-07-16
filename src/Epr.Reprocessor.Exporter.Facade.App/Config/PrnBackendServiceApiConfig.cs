@@ -48,4 +48,7 @@ public class PrnServiceApiConfigExportEndpoints
 	public string WasteCarrierBrokerDealerRefGet { get; set; }
 	public string WasteCarrierBrokerDealerRefPost { get; set; }
 	public string WasteCarrierBrokerDealerRefPut { get; set; }
+
+    public string AddressForServiceOfNoticesGet { get; set; }
+    public string AddressForServiceOfNoticesPut { get; set; }
 }
