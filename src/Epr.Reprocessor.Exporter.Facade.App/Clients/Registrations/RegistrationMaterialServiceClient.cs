@@ -109,12 +109,21 @@ public class RegistrationMaterialServiceClient(
         await PostAsync<RegistrationReprocessingIORequestDto>(url, request);
     }
 
-    public async Task<bool> SaveOverseasReprocessorAsync(OverseasAddressRequest requestDto, Guid createdBy)
+    public async Task<bool> SaveOverseasReprocessorAsync(OverseasAddressRequest request, Guid createdBy)
     {
-        var url = string.Format(Endpoints.RegistrationMaterial.SaveOverseasReprocessor, _config.ApiVersion, requestDto.RegistrationMaterialId);
+        var url = string.Format(Endpoints.RegistrationMaterial.SaveOverseasReprocessor, _config.ApiVersion, request.RegistrationMaterialId);
         
-        await PostAsync<OverseasAddressRequestDto>(url, OverseasAddressRequestDto.MapOverseasAddressRequestToDto(requestDto, createdBy));
+        await PostAsync<OverseasAddressRequestDto>(url, OverseasAddressRequestDto.MapOverseasAddressRequestToDto(request, createdBy));
         return true;
+    }
+
+    public async Task<bool> UpdateMaximumWeightAsync(Guid registrationMaterialId, UpdateMaximumWeightDto request)
+    {
+        var url = string.Format(Endpoints.RegistrationMaterial.UpdateMaximumWeight, _config.ApiVersion, registrationMaterialId);
+
+        _logger.LogInformation("Calling {Url} to update the maximum weight for the registration material.", url);
+
+        return await PutAsync(url, request);
     }
     public async Task<List<OverseasMaterialReprocessingSiteDto>> GetOverseasMaterialReprocessingSites(Guid registrationMaterialId)
     {
@@ -125,6 +134,7 @@ public class RegistrationMaterialServiceClient(
 
     public async Task SaveInterimSitesAsync(SaveInterimSitesRequestDto requestDto, Guid createdBy)
     {
+        requestDto.UserId = createdBy;
         var url = string.Format(Endpoints.RegistrationMaterial.SaveInterimSites, _config.ApiVersion, requestDto.RegistrationMaterialId);
         await PostAsync(url, requestDto);
     }

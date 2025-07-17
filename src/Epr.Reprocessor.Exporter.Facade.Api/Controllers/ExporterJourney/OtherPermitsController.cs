@@ -22,7 +22,7 @@ namespace Epr.Reprocessor.Exporter.Facade.Api.Controllers.ExporterJourney
 		}
 
         [HttpGet("{registrationId:Guid}/carrier-broker-dealer-permits")]
-        [ProducesResponseType(typeof(string), 200)]
+        [ProducesResponseType(typeof(CarrierBrokerDealerPermitsDto), 200)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public async virtual Task<IActionResult> Get(Guid registrationId)
 		{

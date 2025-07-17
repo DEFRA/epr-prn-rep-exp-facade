@@ -25,6 +25,7 @@ public class RegistrationController : ControllerBase
 
     [HttpGet("{applicationTypeId:int}/organisations/{organisationId:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RegistrationDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerResponse(StatusCodes.Status404NotFound, "If an existing registration isn not found.", typeof(ProblemDetails))]
     [SwaggerOperation(
         Summary = "gets an existing registration by the organisation ID.",
@@ -46,6 +47,7 @@ public class RegistrationController : ControllerBase
 
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(int))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [SwaggerOperation(
             Summary = "create an application registration",
             Description = "attempting to create an application registration."
@@ -126,6 +128,7 @@ public class RegistrationController : ControllerBase
 
     [HttpGet("{registrationId:int}/RegistrationTaskStatus")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<RegistrationTaskDto>))]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [SwaggerOperation(
         Summary = "get the task statuses of a registration",
         Description = "retrieving a list of task statuses for a registration."

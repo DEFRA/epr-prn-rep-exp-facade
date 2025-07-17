@@ -14,7 +14,7 @@ using Microsoft.FeatureManagement.Mvc;
 public class AccreditationController(IAccreditationService service) : ControllerBase
 {
     [HttpGet("{organisationId}/{materialId}/{applicationTypeId}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
     public async Task<IActionResult> Get(
         [FromRoute] Guid organisationId,
         [FromRoute] int materialId,
