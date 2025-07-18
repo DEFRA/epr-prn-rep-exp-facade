@@ -273,6 +273,23 @@ public class RegistrationMaterialServiceTests
     }
 
     [TestMethod]
+    public async Task UpdateMaximumWeight_ShouldReturnTrue_WhenClientReturnsTrue()
+    {
+        // Arrange
+        var id = Guid.NewGuid();
+        var request = _fixture.Create<UpdateMaximumWeightDto>();
+        _clientMock.Setup(x => x.UpdateMaximumWeightAsync(id, request))
+            .ReturnsAsync(true);
+
+        // Act
+        var result = await _service.UpdateMaximumWeight(id, request);
+
+        // Assert
+        result.Should().BeTrue();
+        _clientMock.Verify(x => x.UpdateMaximumWeightAsync(id, request), Times.Once);
+    }
+
+    [TestMethod]
     public async Task UpdateMaterialNotReprocessingReasonAsync_ShouldReturnExpectedResult()
     {
         // Arrange

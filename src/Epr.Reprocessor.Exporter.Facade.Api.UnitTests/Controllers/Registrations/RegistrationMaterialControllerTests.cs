@@ -481,6 +481,54 @@ public class RegistrationMaterialControllerTests
     }
 
     [TestMethod]
+    public async Task UpdateMaximumWeight_TrueResponse_ReturnOkResult()
+    {
+        // Arrange
+        var registrationMaterialId = Guid.NewGuid();
+        var request = new UpdateMaximumWeightDto
+        {
+            WeightInTonnes = 10,
+            PeriodId = 1
+        };
+        var expectedResult = new OkResult();
+
+        // Expectations
+        _registrationMaterialService
+            .Setup(s => s.UpdateMaximumWeight(registrationMaterialId, request))
+            .ReturnsAsync(true);
+
+        // Act
+        var result = await _controller.UpdateMaximumWeight(registrationMaterialId, request);
+
+        // Assert
+        result.Should().BeEquivalentTo(expectedResult);
+    }
+
+    [TestMethod]
+    public async Task UpdateMaximumWeight_FalseResponse_ReturnBadRequestResult()
+    {
+        // Arrange
+        var registrationMaterialId = Guid.NewGuid();
+        var request = new UpdateMaximumWeightDto
+        {
+            WeightInTonnes = 10,
+            PeriodId = 1
+        };
+        var expectedResult = new BadRequestResult();
+
+        // Expectations
+        _registrationMaterialService
+            .Setup(s => s.UpdateMaximumWeight(registrationMaterialId, request))
+            .ReturnsAsync(false);
+
+        // Act
+        var result = await _controller.UpdateMaximumWeight(registrationMaterialId, request);
+
+        // Assert
+        result.Should().BeEquivalentTo(expectedResult);
+    }
+
+    [TestMethod]
     public async Task UpdateMaterialNotReprocessingReasonAsync_ReturnsOkResult()
     {
         // Arrange
