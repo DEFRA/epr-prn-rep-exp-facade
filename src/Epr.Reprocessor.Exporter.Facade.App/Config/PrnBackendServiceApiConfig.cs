@@ -36,6 +36,7 @@ public class PrnServiceApiConfigEndpoints
     public string AccreditationFileUploadsGet { get; set; }
     public string AccreditationFileUploadPost { get; set; }
     public string AccreditationFileUploadDelete { get; set; }
+    public string AccreditationOverViewByOrgId { get; internal set; }
 }
 
 [ExcludeFromCodeCoverage]

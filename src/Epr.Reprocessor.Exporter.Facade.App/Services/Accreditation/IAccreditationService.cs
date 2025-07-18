@@ -1,4 +1,5 @@
 ﻿using Epr.Reprocessor.Exporter.Facade.App.Models.Accreditations;
+using System.Collections.Generic;
 
 namespace Epr.Reprocessor.Exporter.Facade.App.Services.Accreditation;
 
@@ -22,4 +23,6 @@ public interface IAccreditationService
     Task<AccreditationFileUploadDto> UpsertFileUpload(Guid accreditationId, AccreditationFileUploadDto request);
 
     Task DeleteFileUpload(Guid accreditationId, Guid fileId);
+
+    Task<List<AccreditationOverviewDto>> GetAccreditationOverviewByOrgId(Guid organisationId);
 }

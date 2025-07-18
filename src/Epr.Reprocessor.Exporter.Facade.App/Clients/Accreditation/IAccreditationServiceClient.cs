@@ -24,4 +24,6 @@ public interface IAccreditationServiceClient
     Task<AccreditationFileUploadDto> UpsertFileUpload(Guid accreditationId, AccreditationFileUploadDto request);
 
     Task DeleteFileUpload(Guid accreditationId, Guid fileId);
+
+    Task<List<AccreditationOverviewDto>> GetAccreditationOverviewByOrgId(Guid organisationId);
 }
