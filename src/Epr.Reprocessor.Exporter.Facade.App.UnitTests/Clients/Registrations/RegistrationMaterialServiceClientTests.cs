@@ -6,12 +6,17 @@ using AutoFixture;
 using Epr.Reprocessor.Exporter.Facade.App.Clients.Registrations;
 using Epr.Reprocessor.Exporter.Facade.App.Config;
 using Epr.Reprocessor.Exporter.Facade.App.Models.Exporter;
+using Epr.Reprocessor.Exporter.Facade.App.Models.Exporter.DTOs;
 using Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
 using Moq.Protected;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Http.Json;
+using System.Text.Json;
 
 namespace Epr.Reprocessor.Exporter.Facade.App.UnitTests.Clients.Registrations;
 
@@ -412,6 +417,81 @@ public class RegistrationMaterialServiceClientTests
         // Assert
         capturedRequest.Should().NotBeNull();
         capturedRequest.Method.Should().Be(HttpMethod.Post);
+    }
+
+    [TestMethod]
+    public async Task GetOverseasMaterialReprocessingSites_SendsCorrectRequest_AndReturnsData()
+    {
+        // Arrange
+        var registrationMaterialId = Guid.NewGuid();
+        var expectedResponse = _fixture.Create<List<OverseasMaterialReprocessingSiteDto>>();
+        HttpRequestMessage? capturedRequest = null;
+
+        var url = $"api/v1/registrations/materials/{registrationMaterialId}/overseas-sites"; // Adjust if your endpoint differs
+        _mockHttpMessageHandler
+            .Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.Is<HttpRequestMessage>(msg =>
+                    msg.Method == HttpMethod.Get &&
+                    msg.RequestUri!.ToString().Contains(registrationMaterialId.ToString())),
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .Callback<HttpRequestMessage, CancellationToken>((req, _) => capturedRequest = req)
+            .ReturnsAsync(new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = new StringContent(JsonSerializer.Serialize(expectedResponse, JsonSerializerOptions))
+            });
+
+        // Act
+        var result = await _client.GetOverseasMaterialReprocessingSites(registrationMaterialId);
+
+        // Assert
+        capturedRequest.Should().NotBeNull();
+        capturedRequest.Method.Should().Be(HttpMethod.Get);
+        result.Should().BeEquivalentTo(expectedResponse);
+    }
+
+    [TestMethod]
+    public async Task SaveInterimSitesAsync_SendsCorrectRequest()
+    {
+        // Arrange
+        var registrationMaterialId = Guid.NewGuid();
+        var createdBy = Guid.NewGuid();
+        var requestDto = new SaveInterimSitesRequestDto
+        {
+            RegistrationMaterialId = registrationMaterialId,
+            OverseasMaterialReprocessingSites = _fixture.Create<List<OverseasMaterialReprocessingSiteDto>>()
+        };
+        HttpRequestMessage? capturedRequest = null;
+
+        var url = $"api/v1/registrations/materials/{registrationMaterialId}/interim-sites"; // Adjust if your endpoint differs
+
+        _mockHttpMessageHandler
+            .Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.Is<HttpRequestMessage>(msg =>
+                    msg.Method == HttpMethod.Post &&
+                    msg.RequestUri!.ToString().Contains(registrationMaterialId.ToString())),
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .Callback<HttpRequestMessage, CancellationToken>((req, _) => capturedRequest = req)
+            .ReturnsAsync(new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = new StringContent(string.Empty)
+            });
+
+        // Act
+        await _client.SaveInterimSitesAsync(requestDto, createdBy);
+
+        // Assert
+        capturedRequest.Should().NotBeNull();
+        capturedRequest.Method.Should().Be(HttpMethod.Post);
+        var content = await capturedRequest.Content.ReadAsStringAsync();
+        content.Should().NotBeNullOrEmpty();
     }
 
     [TestMethod]

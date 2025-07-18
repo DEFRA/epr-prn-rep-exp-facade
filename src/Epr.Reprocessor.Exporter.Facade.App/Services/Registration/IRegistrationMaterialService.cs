@@ -1,4 +1,5 @@
 ﻿using Epr.Reprocessor.Exporter.Facade.App.Models.Exporter;
+using Epr.Reprocessor.Exporter.Facade.App.Models.Exporter.DTOs;
 using Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
 
 namespace Epr.Reprocessor.Exporter.Facade.App.Services.Registration;
@@ -27,4 +28,8 @@ public interface IRegistrationMaterialService
     Task<bool> SaveOverseasReprocessorAsync(OverseasAddressRequest request, Guid createdBy);
 
     Task<bool> UpdateMaximumWeight(Guid registrationMaterialId, UpdateMaximumWeightDto request);
+
+    Task<List<OverseasMaterialReprocessingSiteDto>> GetOverseasMaterialReprocessingSites(Guid registrationMaterialId);
+
+    Task SaveInterimSitesAsync(SaveInterimSitesRequestDto requestDto, Guid createdBy);
 }
