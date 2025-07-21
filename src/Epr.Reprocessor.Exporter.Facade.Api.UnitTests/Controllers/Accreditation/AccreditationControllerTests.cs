@@ -261,4 +261,56 @@ public class AccreditationControllerTests
         // Assert
         result.Should().BeOfType<NotFoundResult>();
     }
+
+    [TestMethod]
+    public async Task GetAccreditationOverviewByOrgId_NoItems_ReturnsEmptyList()
+    {
+        // Arrange
+        var orgId = Guid.NewGuid();
+        var expectedOutput = new List<AccreditationOverviewDto>();
+        _serviceMock.Setup(x => x.GetAccreditationOverviewByOrgId(orgId))
+            .ReturnsAsync(new List<AccreditationOverviewDto>());
+
+        // Act
+        var result = await _controller.GetAccreditationOverviewByOrgId(orgId);
+
+        // Assert
+        var okResult = result as OkObjectResult;
+        okResult.Should().NotBeNull();
+        okResult!.StatusCode.Should().Be(200);
+        okResult!.Value.Should().BeEquivalentTo(expectedOutput);
+    }
+
+    [TestMethod]
+    public async Task GetAccreditationOverviewByOrgId_3Items_ReturnsExpectedList()
+    {
+        // Arrange
+        var orgId = Guid.NewGuid();
+        var expectedOutput = new List<AccreditationOverviewDto>
+        {
+            new AccreditationOverviewDto
+            {
+                OrganisationId = orgId,
+            },
+            new AccreditationOverviewDto
+            {
+                OrganisationId = orgId
+            },
+            new AccreditationOverviewDto
+            {
+                OrganisationId = orgId
+            }
+        };
+        _serviceMock.Setup(x => x.GetAccreditationOverviewByOrgId(orgId))
+            .ReturnsAsync(expectedOutput);
+
+        // Act
+        var result = await _controller.GetAccreditationOverviewByOrgId(orgId);
+
+        // Assert
+        var okResult = result as OkObjectResult;
+        okResult.Should().NotBeNull();
+        okResult!.StatusCode.Should().Be(200);
+        okResult!.Value.Should().BeEquivalentTo(expectedOutput);
+    }
 }
