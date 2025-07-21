@@ -4,6 +4,7 @@ using Epr.Reprocessor.Exporter.Facade.App.Models.Accreditations;
 using Epr.Reprocessor.Exporter.Facade.App.Services.Accreditation;
 using FluentAssertions;
 using Moq;
+using System.ComponentModel.DataAnnotations;
 
 namespace Epr.Reprocessor.Exporter.Facade.App.UnitTests.Services.Accreditation;
 
@@ -130,5 +131,51 @@ public class AccreditationServiceTests
 
         // Assert
         _mockClient.Verify(c => c.DeleteFileUpload(accreditationId, fileId), Times.Once);
+    }
+
+    [TestMethod]
+    public async Task GetAccreditationOverviewByOrgId_NoItems_ReturnsEmptylist()
+    {
+        // Arrange
+        var orgId = Guid.NewGuid();
+        var expectedOutput = new List<AccreditationOverviewDto>();
+        _mockClient.Setup(x => x.GetAccreditationOverviewByOrgId(orgId))
+            .ReturnsAsync(new List<AccreditationOverviewDto>());
+
+        // Act
+        var result = await _service.GetAccreditationOverviewByOrgId(orgId);
+
+        // Assert
+        result.Should().BeEquivalentTo(expectedOutput);
+    }
+
+    [TestMethod]
+    public async Task GetAccreditationOverviewByOrgId_3Items_ReturnsListWith3Items()
+    {
+        // Arrange
+        var orgId = Guid.NewGuid();
+        var expectedOutput = new List<AccreditationOverviewDto>
+        {
+            new AccreditationOverviewDto
+            {
+                OrganisationId = orgId,
+            },
+            new AccreditationOverviewDto
+            {
+                OrganisationId = orgId
+            },
+            new AccreditationOverviewDto
+            {
+                OrganisationId = orgId
+            }
+        };
+        _mockClient.Setup(x => x.GetAccreditationOverviewByOrgId(orgId))
+            .ReturnsAsync(expectedOutput);
+
+        // Act
+        var result = await _service.GetAccreditationOverviewByOrgId(orgId);
+
+        // Assert
+        result.Should().BeEquivalentTo(expectedOutput);
     }
 }
