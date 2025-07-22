@@ -17,4 +17,5 @@ public interface IRegistrationMaterialServiceClient
     Task UpsertRegistrationReprocessingDetailsAsync(Guid registrationMaterialId, RegistrationReprocessingIORequestDto request);
     Task<bool> SaveOverseasReprocessorAsync(OverseasAddressRequest request, Guid createdBy);
     Task<bool> UpdateMaximumWeightAsync(Guid registrationMaterialId, UpdateMaximumWeightDto request);
+    Task UpdateMaterialNotReprocessingReasonAsync(Guid registrationMaterialId, string materialNotReprocessingReason);
 }

@@ -28,4 +28,5 @@ public static class LogMessages
     public const string UpsertRegistrationMaterialContact = "Attempting to upsert a contact for registration material with ID {RegistrationMaterialId}";
     public const string UpsertRegistrationReprocessingDetails = "Attempting to upsert registration reprocessing details for registration material with ID {RegistrationMaterialId}";
     public const string GetCountries = "Attempting to get Countries";
+    public const string UpdateMaterialNotReprocessingReason = "Attempting to update the reason for not reprocessing registration material with ID {RegistrationMaterialId}";
 }
