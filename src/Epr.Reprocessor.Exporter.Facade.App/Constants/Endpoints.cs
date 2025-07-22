@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 
 namespace Epr.Reprocessor.Exporter.Facade.App.Constants;
 
@@ -45,6 +46,7 @@ public static class Endpoints
         public const string SaveOverseasReprocessor = "api/v{0}/registrationMaterials/{1}/overseasReprocessingSites";
         public const string ApplicationRegistrationUpdateTaskStatus = "api/v{0}/registrations/{1}/applicationTaskStatus";
         public const string UpdateMaximumWeight = "api/v{0}/registrationMaterials/{1}/max-weight";
+        public const string UpdateMaterialNotReprocessingReason = "api/v{0}/registrationMaterials/{1}/materialNotReprocessingReason";
         public const string GetOverseasMaterialReprocessingSites = "api/v{0}/registrationMaterials/{1}/overseasMaterialReprocessingSites";
         public const string SaveInterimSites = "api/v{0}/registrationMaterials/{1}/saveInterimSites";
     }

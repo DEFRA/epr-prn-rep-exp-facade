@@ -28,8 +28,8 @@ public class RegistrationMaterialService(IRegistrationMaterialServiceClient regi
     public async Task<bool> Delete(Guid registrationMaterialId)
         => await registrationMaterialServiceClient.DeleteAsync(registrationMaterialId);
 
-	public async Task<bool> UpdateIsMaterialRegisteredAsync(List<UpdateIsMaterialRegisteredDto> request)
-		=> await registrationMaterialServiceClient.UpdateIsMaterialRegisteredAsync(request);
+    public async Task<bool> UpdateIsMaterialRegisteredAsync(List<UpdateIsMaterialRegisteredDto> request)
+        => await registrationMaterialServiceClient.UpdateIsMaterialRegisteredAsync(request);
 
     public async Task<RegistrationMaterialContactDto> UpsertRegistrationMaterialContactAsync(Guid registrationMaterialId,
         RegistrationMaterialContactDto request)
@@ -43,6 +43,9 @@ public class RegistrationMaterialService(IRegistrationMaterialServiceClient regi
 
     public async Task<bool> UpdateMaximumWeight(Guid registrationMaterialId, UpdateMaximumWeightDto request)
         => await registrationMaterialServiceClient.UpdateMaximumWeightAsync(registrationMaterialId, request);
+
+    public async Task UpdateMaterialNotReprocessingReasonAsync(Guid registrationMaterialId, string materialNotReprocessingReason)
+        => await registrationMaterialServiceClient.UpdateMaterialNotReprocessingReasonAsync(registrationMaterialId, materialNotReprocessingReason);
     
     public async Task<List<OverseasMaterialReprocessingSiteDto>> GetOverseasMaterialReprocessingSites(Guid registrationMaterialId)
         => await registrationMaterialServiceClient.GetOverseasMaterialReprocessingSites(registrationMaterialId);

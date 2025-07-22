@@ -523,4 +523,43 @@ public class RegistrationMaterialServiceClientTests
         capturedRequest.Should().NotBeNull();
         capturedRequest.Method.Should().Be(HttpMethod.Put);
     }
+
+    [TestMethod]
+    public async Task UpdateMaterialNotReprocessingReasonAsync_SendsCorrectRequest()
+    {
+        // Arrange
+        var registrationMaterialId = Guid.NewGuid();
+        var reason = "Material is hazardous";
+
+        HttpRequestMessage? capturedRequest = null;
+
+        var options = new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            Converters = { new JsonStringEnumConverter(JsonNamingPolicy.CamelCase) }
+        };
+
+        _mockHttpMessageHandler
+            .Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.IsAny<HttpRequestMessage>(),
+                ItExpr.IsAny<CancellationToken>())
+            .Callback<HttpRequestMessage, CancellationToken>((req, _) => capturedRequest = req)
+            .ReturnsAsync(new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = new StringContent(string.Empty)
+            });
+
+        // Act
+        await _client.UpdateMaterialNotReprocessingReasonAsync(registrationMaterialId, reason);
+
+        // Assert
+        capturedRequest.Should().NotBeNull();
+        capturedRequest.Method.Should().Be(HttpMethod.Post);
+
+        var requestBody = await capturedRequest.Content.ReadAsStringAsync();
+        requestBody.Should().Contain(reason);
+    }
 }

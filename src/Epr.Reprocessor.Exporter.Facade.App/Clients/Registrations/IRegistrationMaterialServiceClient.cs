@@ -18,6 +18,7 @@ public interface IRegistrationMaterialServiceClient
     Task UpsertRegistrationReprocessingDetailsAsync(Guid registrationMaterialId, RegistrationReprocessingIORequestDto request);
     Task<bool> SaveOverseasReprocessorAsync(OverseasAddressRequest request, Guid createdBy);
     Task<bool> UpdateMaximumWeightAsync(Guid registrationMaterialId, UpdateMaximumWeightDto request);
+    Task UpdateMaterialNotReprocessingReasonAsync(Guid registrationMaterialId, string materialNotReprocessingReason);
     Task<List<OverseasMaterialReprocessingSiteDto>> GetOverseasMaterialReprocessingSites(Guid registrationMaterialId);
     Task SaveInterimSitesAsync(SaveInterimSitesRequestDto requestDto, Guid createdBy);
 }
