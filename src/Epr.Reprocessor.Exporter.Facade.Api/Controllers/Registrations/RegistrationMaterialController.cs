@@ -276,4 +276,28 @@ public class RegistrationMaterialController : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError, LogMessages.UnExpectedError);
         }
     }
+
+    [HttpPost("{registrationMaterialId:Guid}/materialNotReprocessingReason")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RegistrationReprocessingIORequestDto))]
+    [SwaggerOperation(
+      Summary = "Update the reason for not reprocessing a registration material",
+      Description = "attempting to update the reason for not reprocessing a registration material."
+    )]
+    [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
+    public async Task<IActionResult> UpdateMaterialNotReprocessingReasonAsync([FromRoute] Guid registrationMaterialId, [FromBody] string materialNotReprocessingReason)
+    {
+        try
+        {
+            _logger.LogInformation(LogMessages.UpdateMaterialNotReprocessingReason, registrationMaterialId);
+
+            await _registrationMaterialService.UpdateMaterialNotReprocessingReasonAsync(registrationMaterialId, materialNotReprocessingReason);
+
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, LogMessages.UnExpectedError);
+            return StatusCode(StatusCodes.Status500InternalServerError, LogMessages.UnExpectedError);
+        }
+    }
 }

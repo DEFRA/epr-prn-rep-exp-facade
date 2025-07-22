@@ -125,4 +125,13 @@ public class RegistrationMaterialServiceClient(
 
         return await PutAsync(url, request);
     }
+
+    public async Task UpdateMaterialNotReprocessingReasonAsync(Guid registrationMaterialId, string materialNotReprocessingReason)
+    {
+        _logger.LogInformation("Attempting to to update the reason for not reprocessing registration material with External ID {Id}", registrationMaterialId);
+
+        var url = string.Format(Endpoints.RegistrationMaterial.UpdateMaterialNotReprocessingReason, _config.ApiVersion, registrationMaterialId);
+
+        await PostAsync<string>(url, materialNotReprocessingReason);
+    }
 }

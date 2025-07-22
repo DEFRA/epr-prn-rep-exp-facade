@@ -18,7 +18,7 @@ public interface IRegistrationMaterialService
     Task<List<ApplicationRegistrationMaterialDto>> GetAllRegistrationsMaterials(Guid registrationId);
     Task<bool> Delete(Guid registrationMaterialId);
 
-	Task<bool> UpdateIsMaterialRegisteredAsync(List<UpdateIsMaterialRegisteredDto> request);
+    Task<bool> UpdateIsMaterialRegisteredAsync(List<UpdateIsMaterialRegisteredDto> request);
 
     Task<RegistrationMaterialContactDto> UpsertRegistrationMaterialContactAsync(Guid registrationMaterialId, RegistrationMaterialContactDto request);
 
@@ -27,4 +27,6 @@ public interface IRegistrationMaterialService
     Task<bool> SaveOverseasReprocessorAsync(OverseasAddressRequest request, Guid createdBy);
 
     Task<bool> UpdateMaximumWeight(Guid registrationMaterialId, UpdateMaximumWeightDto request);
+
+    Task UpdateMaterialNotReprocessingReasonAsync(Guid registrationMaterialId, string materialNotReprocessingReason);
 }
