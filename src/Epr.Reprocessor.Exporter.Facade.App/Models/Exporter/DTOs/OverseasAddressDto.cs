@@ -8,7 +8,7 @@ public record OverseasAddressDto(
     string OrganisationName,
     string AddressLine1,
     string AddressLine2,
-    string CityorTown,
+    string CityOrTown,
     string StateProvince,
     string PostCode,
     string CountryName,

@@ -1,5 +1,6 @@
 ﻿using Epr.Reprocessor.Exporter.Facade.App.Clients.Registrations;
 using Epr.Reprocessor.Exporter.Facade.App.Models.Exporter;
+using Epr.Reprocessor.Exporter.Facade.App.Models.Exporter.DTOs;
 using Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
 
 namespace Epr.Reprocessor.Exporter.Facade.App.Services.Registration;
@@ -11,8 +12,7 @@ public class RegistrationMaterialService(IRegistrationMaterialServiceClient regi
 
     public async Task<CreateRegistrationMaterialResponseDto> CreateRegistrationMaterial(CreateRegistrationMaterialRequestDto requestDto)
         => await registrationMaterialServiceClient.CreateRegistrationMaterialAsync(requestDto);
-
-
+    
     public async Task<bool> UpdateRegistrationMaterialPermitsAsync(Guid externalId, UpdateRegistrationMaterialPermitsDto request)
         => await registrationMaterialServiceClient.UpdateRegistrationMaterialPermitsAsync(externalId, request);
 
@@ -46,4 +46,10 @@ public class RegistrationMaterialService(IRegistrationMaterialServiceClient regi
 
     public async Task UpdateMaterialNotReprocessingReasonAsync(Guid registrationMaterialId, string materialNotReprocessingReason)
         => await registrationMaterialServiceClient.UpdateMaterialNotReprocessingReasonAsync(registrationMaterialId, materialNotReprocessingReason);
+    
+    public async Task<List<OverseasMaterialReprocessingSiteDto>> GetOverseasMaterialReprocessingSites(Guid registrationMaterialId)
+        => await registrationMaterialServiceClient.GetOverseasMaterialReprocessingSites(registrationMaterialId);
+    
+    public async Task SaveInterimSitesAsync(SaveInterimSitesRequestDto requestDto, Guid createdBy)
+        => await registrationMaterialServiceClient.SaveInterimSitesAsync(requestDto, createdBy);
 }

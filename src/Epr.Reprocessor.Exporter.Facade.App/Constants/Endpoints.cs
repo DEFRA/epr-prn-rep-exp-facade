@@ -16,7 +16,6 @@ public static class Endpoints
     {
         public const string CreateRegistration = "api/v{0}/registrations";
         public const string RegistrationUpdateTaskStatus = "api/v{0}/registrations/{1}/taskStatus";
-        public const string ApplicantRegistrationUpdateTaskStatus = "api/v{0}/registrations/{1}/applicantTaskStatus";
         public const string RegistrationUpdateSiteAddress = "api/v{0}/registrations/{1}/siteAddress";
         public const string GetRegistrationByOrganisation = "api/v{0}/registrations/{1}/organisations/{2}";
         public const string UpdateRegistration = "api/v{0}/registrations/{1}/update";
@@ -45,8 +44,11 @@ public static class Endpoints
 		public const string UpdateIsMaterialRegistered = "api/v{0}/registrationMaterials/UpdateIsMaterialRegistered";
         public const string UpsertRegistrationReprocessingDetails = "api/v{0}/registrationMaterials/{1}/registrationReprocessingDetails";
         public const string SaveOverseasReprocessor = "api/v{0}/registrationMaterials/{1}/overseasReprocessingSites";
+        public const string ApplicationRegistrationUpdateTaskStatus = "api/v{0}/registrations/{1}/applicationTaskStatus";
         public const string UpdateMaximumWeight = "api/v{0}/registrationMaterials/{1}/max-weight";
         public const string UpdateMaterialNotReprocessingReason = "api/v{0}/registrationMaterials/{1}/materialNotReprocessingReason";
+        public const string GetOverseasMaterialReprocessingSites = "api/v{0}/registrationMaterials/{1}/overseasMaterialReprocessingSites";
+        public const string SaveInterimSites = "api/v{0}/registrationMaterials/{1}/saveInterimSites";
     }
 
     /// <summary>
