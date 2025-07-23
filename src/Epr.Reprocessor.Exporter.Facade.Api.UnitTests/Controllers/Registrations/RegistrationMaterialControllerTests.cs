@@ -1,6 +1,8 @@
 ﻿using AutoFixture;
 using Epr.Reprocessor.Exporter.Facade.Api.Controllers.Registrations;
+using Epr.Reprocessor.Exporter.Facade.Api.Extensions;
 using Epr.Reprocessor.Exporter.Facade.App.Constants;
+using Epr.Reprocessor.Exporter.Facade.App.Models.Exporter.DTOs;
 using Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
 using Epr.Reprocessor.Exporter.Facade.App.Services.Registration;
 using FluentAssertions;
@@ -481,7 +483,161 @@ public class RegistrationMaterialControllerTests
     }
 
     [TestMethod]
-    public async Task UpdateMaximumWeight_TrueResponse_ReturnOkResult()
+    public async Task GetOverseasMaterialReprocessingSites_ShouldReturnOkWithData_WhenServiceReturnsList()
+    {
+        // Arrange
+        var registrationMaterialId = Guid.NewGuid();
+        var expectedList = _fixture.Create<List<OverseasMaterialReprocessingSiteDto>>();
+
+        _registrationMaterialService
+            .Setup(s => s.GetOverseasMaterialReprocessingSites(registrationMaterialId))
+            .ReturnsAsync(expectedList);
+
+        // Act
+        var result = await _controller.GetOverseasMaterialReprocessingSites(registrationMaterialId);
+
+        // Assert
+        result.Should().BeOfType<OkObjectResult>()
+            .Which.Value.Should().BeEquivalentTo(expectedList);
+
+        _registrationMaterialService.Verify(s => s.GetOverseasMaterialReprocessingSites(registrationMaterialId), Times.Once);
+    }
+
+    [TestMethod]
+    public async Task GetOverseasMaterialReprocessingSites_ServiceThrowsException_ReturnsInternalServerError()
+    {
+        // Arrange
+        var registrationMaterialId = Guid.NewGuid();
+        var expectedResult = new ObjectResult(LogMessages.UnExpectedError)
+        {
+            StatusCode = StatusCodes.Status500InternalServerError
+        };
+
+        _registrationMaterialService
+            .Setup(s => s.GetOverseasMaterialReprocessingSites(registrationMaterialId))
+            .ThrowsAsync(new Exception());
+
+        // Act
+        var result = await _controller.GetOverseasMaterialReprocessingSites(registrationMaterialId);
+
+        // Assert
+        result.Should().BeEquivalentTo(expectedResult);
+    }
+
+    [TestMethod]
+    public async Task SaveInterimSites_NullRequest_ReturnsBadRequest()
+    {
+        // Act
+        var result = await _controller.SaveInterimSites(null);
+
+        // Assert
+        result.Should().BeOfType<BadRequestObjectResult>()
+            .Which.Value.Should().Be(LogMessages.InvalidRequest);
+
+        _loggerMock.Verify(
+            x => x.Log(
+                LogLevel.Warning,
+                It.IsAny<EventId>(),
+                It.Is<It.IsAnyType>((v, t) => v.ToString().Contains(LogMessages.InvalidRequest)),
+                null,
+                It.IsAny<Func<It.IsAnyType, Exception, string>>()
+            ),
+            Times.Once
+        );
+    }
+
+    [TestMethod]
+    public async Task SaveInterimSites_ValidRequest_CallsServiceAndReturnsNoContent()
+    {
+        // Arrange
+        var userId = Guid.NewGuid();
+        var request = _fixture.Create<SaveInterimSitesRequestDto>();
+
+        var claims = new List<System.Security.Claims.Claim>
+        {
+            new(System.Security.Claims.ClaimTypes.NameIdentifier, userId.ToString()),
+            new("http://schemas.microsoft.com/identity/claims/objectidentifier", userId.ToString())
+        };
+        var identity = new System.Security.Claims.ClaimsIdentity(claims);
+        var claimsPrincipal = new System.Security.Claims.ClaimsPrincipal(identity);
+
+        var controllerContext = new ControllerContext
+        {
+            HttpContext = new DefaultHttpContext { User = claimsPrincipal }
+        };
+        _controller.ControllerContext = controllerContext;
+
+        // Act
+        var result = await _controller.SaveInterimSites(request);
+
+        // Assert
+        result.Should().BeOfType<NoContentResult>();
+        _registrationMaterialService.Verify(
+            s => s.SaveInterimSitesAsync(request, userId),
+            Times.Once
+        );
+        _loggerMock.Verify(
+            x => x.Log(
+                LogLevel.Information,
+                It.IsAny<EventId>(),
+                It.Is<It.IsAnyType>((v, t) => v.ToString().Contains(LogMessages.SaveInterimSites)),
+                null,
+                It.IsAny<Func<It.IsAnyType, Exception, string>>()
+            ),
+            Times.Once
+        );
+    }
+
+    [TestMethod]
+    public async Task SaveInterimSites_ServiceThrowsException_ReturnsInternalServerError()
+    {
+        // Arrange
+        var userId = Guid.NewGuid();
+        var request = _fixture.Create<SaveInterimSitesRequestDto>();
+        var exception = new Exception("Service error");
+
+        // Set up claims principal with the correct claim for UserId extension
+        var claims = new List<System.Security.Claims.Claim>
+        {
+            new(System.Security.Claims.ClaimTypes.NameIdentifier, userId.ToString()),
+            new("http://schemas.microsoft.com/identity/claims/objectidentifier", userId.ToString())
+        };
+        var identity = new System.Security.Claims.ClaimsIdentity(claims);
+        var claimsPrincipal = new System.Security.Claims.ClaimsPrincipal(identity);
+
+        var controllerContext = new ControllerContext
+        {
+            HttpContext = new DefaultHttpContext { User = claimsPrincipal }
+        };
+        _controller.ControllerContext = controllerContext;
+
+        _registrationMaterialService
+            .Setup(s => s.SaveInterimSitesAsync(request, userId))
+            .ThrowsAsync(exception);
+
+        // Act
+        var result = await _controller.SaveInterimSites(request);
+
+        // Assert
+        var objectResult = result as ObjectResult;
+        objectResult.Should().NotBeNull();
+        objectResult.StatusCode.Should().Be(StatusCodes.Status500InternalServerError);
+        objectResult.Value.Should().Be(LogMessages.UnExpectedError);
+
+        _loggerMock.Verify(
+            x => x.Log(
+                LogLevel.Error,
+                It.IsAny<EventId>(),
+                It.Is<It.IsAnyType>((v, t) => v.ToString().Contains(LogMessages.UnExpectedError)),
+                exception,
+                It.IsAny<Func<It.IsAnyType, Exception, string>>()
+            ),
+            Times.Once
+        );
+    }
+
+    [TestMethod]
+    public async Task UpdateMaximumWeight_BadRequest()
     {
         // Arrange
         var registrationMaterialId = Guid.NewGuid();
@@ -490,6 +646,32 @@ public class RegistrationMaterialControllerTests
             WeightInTonnes = 10,
             PeriodId = 1
         };
+
+        var expectedResult = new BadRequestResult();
+
+        // Expectations
+        _registrationMaterialService
+            .Setup(s => s.UpdateMaximumWeight(registrationMaterialId, request))
+            .ReturnsAsync(false);
+
+        // Act
+        var result = await _controller.UpdateMaximumWeight(registrationMaterialId, request);
+
+        // Assert
+        result.Should().BeEquivalentTo(expectedResult);
+    }
+
+    [TestMethod]
+    public async Task UpdateMaximumWeight_OkResult()
+    {
+        // Arrange
+        var registrationMaterialId = Guid.NewGuid();
+        var request = new UpdateMaximumWeightDto
+        {
+            WeightInTonnes = 10,
+            PeriodId = 1
+        };
+
         var expectedResult = new OkResult();
 
         // Expectations
@@ -505,7 +687,7 @@ public class RegistrationMaterialControllerTests
     }
 
     [TestMethod]
-    public async Task UpdateMaximumWeight_FalseResponse_ReturnBadRequestResult()
+    public async Task UpdateMaximumWeight_ThrowsException()
     {
         // Arrange
         var registrationMaterialId = Guid.NewGuid();
@@ -514,12 +696,16 @@ public class RegistrationMaterialControllerTests
             WeightInTonnes = 10,
             PeriodId = 1
         };
-        var expectedResult = new BadRequestResult();
+
+        var expectedResult = new ObjectResult(LogMessages.UnExpectedError)
+        {
+            StatusCode = StatusCodes.Status500InternalServerError,
+        };
 
         // Expectations
         _registrationMaterialService
             .Setup(s => s.UpdateMaximumWeight(registrationMaterialId, request))
-            .ReturnsAsync(false);
+            .ThrowsAsync(new Exception());
 
         // Act
         var result = await _controller.UpdateMaximumWeight(registrationMaterialId, request);

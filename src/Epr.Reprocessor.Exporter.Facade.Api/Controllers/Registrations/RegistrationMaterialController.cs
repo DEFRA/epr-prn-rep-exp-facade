@@ -1,6 +1,8 @@
 ﻿using System.Net;
+using Epr.Reprocessor.Exporter.Facade.Api.Extensions;
 using Epr.Reprocessor.Exporter.Facade.App.Constants;
 using Epr.Reprocessor.Exporter.Facade.App.Models;
+using Epr.Reprocessor.Exporter.Facade.App.Models.Exporter.DTOs;
 using Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
 using Epr.Reprocessor.Exporter.Facade.App.Services.Registration;
 using Microsoft.AspNetCore.Mvc;
@@ -202,14 +204,23 @@ public class RegistrationMaterialController : ControllerBase
     )]
     public async Task<IActionResult> UpdateMaximumWeight([FromRoute] Guid registrationMaterialId, [FromBody] UpdateMaximumWeightDto request)
     {
-        _logger.LogInformation(LogMessages.UpdateRegistrationMaterialPermitCapacity, registrationMaterialId);
+        _logger.LogInformation(LogMessages.UpdateMaximumWeight, registrationMaterialId);
 
-        if (!await _registrationMaterialService.UpdateMaximumWeight(registrationMaterialId, request))
+        try
         {
-            return BadRequest();
-        }
+            if (!await _registrationMaterialService.UpdateMaximumWeight(registrationMaterialId, request))
+            {
+                return BadRequest();
+            }
 
-        return Ok();
+            return Ok();
+
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, LogMessages.UnExpectedError);
+            return StatusCode(StatusCodes.Status500InternalServerError, LogMessages.UnExpectedError);
+        }
     }
 
 	[HttpPost("UpdateIsMaterialRegistered")]
@@ -269,6 +280,57 @@ public class RegistrationMaterialController : ControllerBase
             await _registrationMaterialService.UpsertRegistrationReprocessingDetailsAsync(registrationMaterialId, request);
 
             return Ok();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, LogMessages.UnExpectedError);
+            return StatusCode(StatusCodes.Status500InternalServerError, LogMessages.UnExpectedError);
+        }
+    }
+    
+    [HttpGet("{registrationMaterialId:guid}/overseasMaterialReprocessingSites")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<OverseasMaterialReprocessingSiteDto>))]
+    [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
+    [SwaggerOperation(
+        Summary = "get details of overseas reprocessing sites including corresponding interim sites",
+        Description = "attempting to retrieve overseas reprocessing sites including corresponding interim sites."
+    )]
+    public async Task<IActionResult> GetOverseasMaterialReprocessingSites([FromRoute] Guid registrationMaterialId)
+    {
+        _logger.LogInformation(LogMessages.GetOverseasMaterialReprocessingSites, registrationMaterialId);
+
+        try
+        {
+            var overseasMaterialReprocessingSites = await _registrationMaterialService.GetOverseasMaterialReprocessingSites(registrationMaterialId);
+            return Ok(overseasMaterialReprocessingSites);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, LogMessages.UnExpectedError);
+            return StatusCode(StatusCodes.Status500InternalServerError, LogMessages.UnExpectedError);
+        }
+    }
+
+    [HttpPost("SaveInterimSites")]
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(bool))]
+    [SwaggerOperation(
+        Summary = "creates or updates interim sites",
+        Description = "attempting to create or update interim sites"
+    )]
+    public async Task<IActionResult> SaveInterimSites([FromBody] SaveInterimSitesRequestDto request)
+    {
+        if (request == null)
+        {
+            _logger.LogWarning(LogMessages.InvalidRequest);
+            return BadRequest(LogMessages.InvalidRequest);
+        }
+
+        _logger.LogInformation(LogMessages.SaveInterimSites);
+
+        try
+        {
+            await _registrationMaterialService.SaveInterimSitesAsync(request, HttpContext.User.UserId());
+            return NoContent();
         }
         catch (Exception ex)
         {
