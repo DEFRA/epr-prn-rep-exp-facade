@@ -8,7 +8,6 @@ namespace Epr.Reprocessor.Exporter.Facade.App.Models.Accreditations
     {
         public int Id { get; set; }
         public Guid ExternalId { get; set; }
-        public Guid OrganisationId { get; set; }
         public int RegistrationMaterialId { get; set; }
         public int ApplicationTypeId { get; set; }
         public int AccreditationStatusId { get; set; }
