@@ -1,5 +1,5 @@
-﻿using Epr.Reprocessor.Exporter.Facade.Api.Controllers.Accreditation;
-using Epr.Reprocessor.Exporter.Facade.App.Clients.Accreditation;
+﻿using AutoFixture;
+using Epr.Reprocessor.Exporter.Facade.Api.Controllers.Accreditation;
 using Epr.Reprocessor.Exporter.Facade.App.Models.Accreditations;
 using Epr.Reprocessor.Exporter.Facade.App.Services.Accreditation;
 using FluentAssertions;
@@ -13,10 +13,12 @@ public class AccreditationControllerTests
 {
     private Mock<IAccreditationService> _serviceMock;
     private AccreditationController _controller;
+    private IFixture _fixture;
 
     [TestInitialize]
     public void SetUp()
     {
+        _fixture = new Fixture();
         _serviceMock = new Mock<IAccreditationService>();
         _controller = new AccreditationController(_serviceMock.Object);
     }
@@ -260,5 +262,44 @@ public class AccreditationControllerTests
 
         // Assert
         result.Should().BeOfType<NotFoundResult>();
+    }
+
+    [TestMethod]
+    public async Task GetAccreditationOverviewByOrgId_NoItems_ReturnsEmptyList()
+    {
+        // Arrange
+        var orgId = Guid.NewGuid();
+        var expectedOutput = new List<AccreditationOverviewDto>();
+        _serviceMock.Setup(x => x.GetAccreditationOverviewByOrgId(orgId))
+            .ReturnsAsync(new List<AccreditationOverviewDto>());
+
+        // Act
+        var result = await _controller.GetAccreditationOverviewByOrgId(orgId);
+
+        // Assert
+        var okResult = result as OkObjectResult;
+        okResult.Should().NotBeNull();
+        okResult!.StatusCode.Should().Be(200);
+        okResult!.Value.Should().BeEquivalentTo(expectedOutput);
+    }
+
+    [TestMethod]
+    public async Task GetAccreditationOverviewByOrgId_3Items_ReturnsExpectedList()
+    {
+        // Arrange
+        var orgId = Guid.NewGuid();
+        var expectedOutput = _fixture.CreateMany<AccreditationOverviewDto>(3).ToList();
+
+        _serviceMock.Setup(x => x.GetAccreditationOverviewByOrgId(orgId))
+            .ReturnsAsync(expectedOutput);
+
+        // Act
+        var result = await _controller.GetAccreditationOverviewByOrgId(orgId);
+
+        // Assert
+        var okResult = result as OkObjectResult;
+        okResult.Should().NotBeNull();
+        okResult!.StatusCode.Should().Be(200);
+        okResult!.Value.Should().BeEquivalentTo(expectedOutput);
     }
 }

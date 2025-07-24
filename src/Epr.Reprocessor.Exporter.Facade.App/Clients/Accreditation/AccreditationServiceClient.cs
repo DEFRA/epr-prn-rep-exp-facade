@@ -77,4 +77,11 @@ public class AccreditationServiceClient : BaseHttpClient, IAccreditationServiceC
 
         await DeleteAsync(url);
     }
+
+    public async Task<List<AccreditationOverviewDto>> GetAccreditationOverviewByOrgId(Guid organisationId)
+    {
+        var url = string.Format(config.Endpoints.AccreditationOverViewByOrgId, config.ApiVersion, organisationId);
+
+        return await GetAsync<List<AccreditationOverviewDto>>(url);
+    }
 }

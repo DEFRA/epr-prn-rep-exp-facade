@@ -37,7 +37,8 @@ public class AccreditationServiceClientTests
                 AccreditationFileUploadGet = "api/v{0}/accreditation/Files/{1}",
                 AccreditationFileUploadsGet = "api/v{0}/accreditation/{1}/Files/{2}/{3}",
                 AccreditationFileUploadPost = "api/v{0}/accreditation/{1}/Files",
-                AccreditationFileUploadDelete = "api/v{0}/accreditation/{1}/Files/{2}"
+                AccreditationFileUploadDelete = "api/v{0}/accreditation/{1}/Files/{2}",
+                AccreditationOverViewByOrgId = "api/v{0}/accreditation/accrediationoverview/{1}"
             }
         };
         _mockOptions.Setup(x => x.Value).Returns(config);
@@ -275,6 +276,44 @@ public class AccreditationServiceClientTests
             Times.Once(),
             ItExpr.Is<HttpRequestMessage>(msg =>
                 msg.Method == HttpMethod.Delete &&
+                msg.RequestUri!.PathAndQuery.EndsWith(url)
+            ),
+            ItExpr.IsAny<CancellationToken>()
+        );
+    }
+
+    [TestMethod]
+    public async Task GetAccreditationOverviewByOrgId_ShouldSendGetRequest()
+    {
+        // Arrange
+        var orgId = Guid.NewGuid();
+        var url = $"api/v1/accreditation/accrediationoverview/{orgId}";
+        var expectedOutput = _fixture.CreateMany<AccreditationOverviewDto>();
+        var json = SerializeCamelCase( expectedOutput );
+        _mockHttpMessageHandler.Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.Is<HttpRequestMessage>(msg =>
+                    msg.Method == HttpMethod.Get &&
+                    msg.RequestUri!.PathAndQuery.EndsWith(url)
+                ),
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .ReturnsAsync(new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = new StringContent( json )
+            });
+
+        // Act
+        var result = await _client.GetAccreditationOverviewByOrgId(orgId);
+
+        // Assert
+        _mockHttpMessageHandler.Protected().Verify(
+            "SendAsync",
+            Times.Once(),
+            ItExpr.Is<HttpRequestMessage>(msg =>
+                msg.Method == HttpMethod.Get &&
                 msg.RequestUri!.PathAndQuery.EndsWith(url)
             ),
             ItExpr.IsAny<CancellationToken>()

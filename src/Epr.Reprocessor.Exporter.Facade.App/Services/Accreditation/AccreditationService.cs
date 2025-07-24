@@ -57,4 +57,9 @@ public class AccreditationService(IAccreditationServiceClient serviceClient) : I
     {
         await serviceClient.DeleteFileUpload(accreditationId, fileId);
     }
+
+    public async Task<List<AccreditationOverviewDto>> GetAccreditationOverviewByOrgId(Guid organisationId)
+    {
+        return await serviceClient.GetAccreditationOverviewByOrgId(organisationId);
+    }
 }

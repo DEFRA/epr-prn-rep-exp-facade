@@ -90,4 +90,13 @@ public class AccreditationController(IAccreditationService service) : Controller
 
         return Ok();
     }
+
+    [HttpGet("{organisationid:guid}/overview")]
+    [ProducesResponseType(typeof(List<AccreditationOverviewDto>), 200)]
+    public async Task<IActionResult> GetAccreditationOverviewByOrgId([FromRoute] Guid organisationId)
+    {
+        var accreditationOverviews = await service.GetAccreditationOverviewByOrgId(organisationId);
+
+        return Ok(accreditationOverviews);
+    }
 }
