@@ -1,6 +1,8 @@
 ﻿using System.Net;
+using Epr.Reprocessor.Exporter.Facade.Api.Extensions;
 using Epr.Reprocessor.Exporter.Facade.App.Constants;
 using Epr.Reprocessor.Exporter.Facade.App.Models;
+using Epr.Reprocessor.Exporter.Facade.App.Models.Exporter.DTOs;
 using Epr.Reprocessor.Exporter.Facade.App.Models.Registrations;
 using Epr.Reprocessor.Exporter.Facade.App.Services.Registration;
 using Microsoft.AspNetCore.Mvc;
@@ -27,6 +29,8 @@ public class RegistrationMaterialController : ControllerBase
 
     [HttpPost("CreateRegistrationMaterial")]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(bool))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [SwaggerOperation(
         Summary = "creates a new registration material",
         Description = "attempting to create new registration material"
@@ -55,7 +59,9 @@ public class RegistrationMaterialController : ControllerBase
     }
 
     [HttpPost("CreateExemptionReferences")]
-    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(bool))]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [SwaggerOperation(
         Summary = "creates a new exemption references",
         Description = "attempting to create new exemption references"
@@ -83,7 +89,7 @@ public class RegistrationMaterialController : ControllerBase
     }
     
     [HttpPost("{id:Guid}/permits")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OkResult))]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ValidationProblemDetails), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
     [SwaggerOperation(
@@ -104,7 +110,7 @@ public class RegistrationMaterialController : ControllerBase
     }
 
     [HttpPost("{id:Guid}/permitCapacity")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OkResult))]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [SwaggerOperation(
         Summary = "updates an existing registration material permit capacity",
         Description = "attempting to update the registration material permit capacity."
@@ -161,6 +167,7 @@ public class RegistrationMaterialController : ControllerBase
 
     [HttpDelete("{registrationMaterialId:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OkResult))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
     [SwaggerOperation(
         Summary = "delete a registration material",
@@ -197,18 +204,27 @@ public class RegistrationMaterialController : ControllerBase
     )]
     public async Task<IActionResult> UpdateMaximumWeight([FromRoute] Guid registrationMaterialId, [FromBody] UpdateMaximumWeightDto request)
     {
-        _logger.LogInformation(LogMessages.UpdateRegistrationMaterialPermitCapacity, registrationMaterialId);
+        _logger.LogInformation(LogMessages.UpdateMaximumWeight, registrationMaterialId);
 
-        if (!await _registrationMaterialService.UpdateMaximumWeight(registrationMaterialId, request))
+        try
         {
-            return BadRequest();
-        }
+            if (!await _registrationMaterialService.UpdateMaximumWeight(registrationMaterialId, request))
+            {
+                return BadRequest();
+            }
 
-        return Ok();
+            return Ok();
+
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, LogMessages.UnExpectedError);
+            return StatusCode(StatusCodes.Status500InternalServerError, LogMessages.UnExpectedError);
+        }
     }
 
 	[HttpPost("UpdateIsMaterialRegistered")]
-	[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OkResult))]
+	[ProducesResponseType(StatusCodes.Status204NoContent)]
 	[SwaggerOperation(
 	Summary = "updates an existing registration material IsMaterialRegistered flag",
 	Description = "attempting to update the registration material IsMaterialRegistered flag."
@@ -224,6 +240,7 @@ public class RegistrationMaterialController : ControllerBase
 
     [HttpPost("{id:Guid}/contact")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RegistrationMaterialContactDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [SwaggerOperation(
         Summary = "Upserts the contact for a registration material",
         Description = "attempting to upsert the registration material contact."
@@ -247,7 +264,8 @@ public class RegistrationMaterialController : ControllerBase
     }
 
     [HttpPost("{registrationMaterialId:Guid}/registrationReprocessingDetails")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RegistrationReprocessingIORequestDto))]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [SwaggerOperation(
       Summary = "Upserts the registration reprocessing io details for a registration material",
       Description = "attempting to upsert the registration reprocessing io details."
@@ -283,5 +301,80 @@ public class RegistrationMaterialController : ControllerBase
         await _registrationMaterialService.UpdateRegistrationTaskStatusAsync(registrationMaterialId, request);
 
         return NoContent();
+    }
+
+    [HttpGet("{registrationMaterialId:guid}/overseasMaterialReprocessingSites")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<OverseasMaterialReprocessingSiteDto>))]
+    [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
+    [SwaggerOperation(
+        Summary = "get details of overseas reprocessing sites including corresponding interim sites",
+        Description = "attempting to retrieve overseas reprocessing sites including corresponding interim sites."
+    )]
+    public async Task<IActionResult> GetOverseasMaterialReprocessingSites([FromRoute] Guid registrationMaterialId)
+    {
+        _logger.LogInformation(LogMessages.GetOverseasMaterialReprocessingSites, registrationMaterialId);
+
+        try
+        {
+            var overseasMaterialReprocessingSites = await _registrationMaterialService.GetOverseasMaterialReprocessingSites(registrationMaterialId);
+            return Ok(overseasMaterialReprocessingSites);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, LogMessages.UnExpectedError);
+            return StatusCode(StatusCodes.Status500InternalServerError, LogMessages.UnExpectedError);
+        }
+    }
+
+    [HttpPost("SaveInterimSites")]
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(bool))]
+    [SwaggerOperation(
+        Summary = "creates or updates interim sites",
+        Description = "attempting to create or update interim sites"
+    )]
+    public async Task<IActionResult> SaveInterimSites([FromBody] SaveInterimSitesRequestDto request)
+    {
+        if (request == null)
+        {
+            _logger.LogWarning(LogMessages.InvalidRequest);
+            return BadRequest(LogMessages.InvalidRequest);
+        }
+
+        _logger.LogInformation(LogMessages.SaveInterimSites);
+
+        try
+        {
+            await _registrationMaterialService.SaveInterimSitesAsync(request, HttpContext.User.UserId());
+            return NoContent();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, LogMessages.UnExpectedError);
+            return StatusCode(StatusCodes.Status500InternalServerError, LogMessages.UnExpectedError);
+        }
+    }
+
+    [HttpPost("{registrationMaterialId:Guid}/materialNotReprocessingReason")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RegistrationReprocessingIORequestDto))]
+    [SwaggerOperation(
+      Summary = "Update the reason for not reprocessing a registration material",
+      Description = "attempting to update the reason for not reprocessing a registration material."
+    )]
+    [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
+    public async Task<IActionResult> UpdateMaterialNotReprocessingReasonAsync([FromRoute] Guid registrationMaterialId, [FromBody] string materialNotReprocessingReason)
+    {
+        try
+        {
+            _logger.LogInformation(LogMessages.UpdateMaterialNotReprocessingReason, registrationMaterialId);
+
+            await _registrationMaterialService.UpdateMaterialNotReprocessingReasonAsync(registrationMaterialId, materialNotReprocessingReason);
+
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, LogMessages.UnExpectedError);
+            return StatusCode(StatusCodes.Status500InternalServerError, LogMessages.UnExpectedError);
+        }
     }
 }

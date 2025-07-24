@@ -134,4 +134,27 @@ public class RegistrationMaterialServiceClient(
 
         return await PostAsync<UpdateRegistrationTaskStatusDto, bool>(url, request);
     }
+
+    public async Task<List<OverseasMaterialReprocessingSiteDto>> GetOverseasMaterialReprocessingSites(Guid registrationMaterialId)
+    {
+        var url = string.Format(Endpoints.RegistrationMaterial.GetOverseasMaterialReprocessingSites, _config.ApiVersion, registrationMaterialId);
+        logger.LogInformation("Calling {Url} to retrieve all OverseasMaterialReprocessingSite details.", url);
+        return await GetAsync<List<OverseasMaterialReprocessingSiteDto>>(url);
+    }
+
+    public async Task SaveInterimSitesAsync(SaveInterimSitesRequestDto requestDto, Guid createdBy)
+    {
+        requestDto.UserId = createdBy;
+        var url = string.Format(Endpoints.RegistrationMaterial.SaveInterimSites, _config.ApiVersion, requestDto.RegistrationMaterialId);
+        await PostAsync(url, requestDto);
+    }
+
+    public async Task UpdateMaterialNotReprocessingReasonAsync(Guid registrationMaterialId, string materialNotReprocessingReason)
+    {
+        logger.LogInformation("Attempting to to update the reason for not reprocessing registration material with External ID {Id}", registrationMaterialId);
+
+        var url = string.Format(Endpoints.RegistrationMaterial.UpdateMaterialNotReprocessingReason, _config.ApiVersion, registrationMaterialId);
+
+        await PostAsync<string>(url, materialNotReprocessingReason);
+    }
 }

@@ -15,7 +15,7 @@ using System.Diagnostics.CodeAnalysis;
 public class AccreditationController(IAccreditationService service) : ControllerBase
 {
     [HttpGet("{organisationId}/{materialId}/{applicationTypeId}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
     public async Task<IActionResult> Get(
         [FromRoute] Guid organisationId,
         [FromRoute] int materialId,
@@ -90,5 +90,14 @@ public class AccreditationController(IAccreditationService service) : Controller
         await service.DeleteFileUpload(accreditationId, fileId);
 
         return Ok();
+    }
+
+    [HttpGet("{organisationid:guid}/overview")]
+    [ProducesResponseType(typeof(List<AccreditationOverviewDto>), 200)]
+    public async Task<IActionResult> GetAccreditationOverviewByOrgId([FromRoute] Guid organisationId)
+    {
+        var accreditationOverviews = await service.GetAccreditationOverviewByOrgId(organisationId);
+
+        return Ok(accreditationOverviews);
     }
 }

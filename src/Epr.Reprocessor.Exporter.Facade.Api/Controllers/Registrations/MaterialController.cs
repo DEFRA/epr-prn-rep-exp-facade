@@ -36,7 +36,7 @@ public class MaterialController : ControllerBase
     /// </summary>
     /// <returns></returns>
     [HttpGet]
-    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(IEnumerable<AvailableMaterialDto>))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<AvailableMaterialDto>))]
     [SwaggerOperation(
         Summary = "Retrieve all materials.",
         Description = "Retrieves a list of materials that can be applied for during the reprocessor/exporter journey."

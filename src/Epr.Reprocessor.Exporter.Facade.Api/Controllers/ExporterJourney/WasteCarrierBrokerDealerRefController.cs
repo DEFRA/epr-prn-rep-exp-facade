@@ -23,7 +23,7 @@ namespace Epr.Reprocessor.Exporter.Facade.Api.Controllers.ExporterJourney
 		}
 
         [HttpGet("{registrationId:Guid}/waste-carrier-broker-dealer-ref")]
-        [ProducesResponseType(typeof(string), 200)]
+        [ProducesResponseType(typeof(WasteCarrierBrokerDealerRefDto), 200)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public async virtual Task<IActionResult> Get(Guid registrationId)
 		{
@@ -34,8 +34,9 @@ namespace Epr.Reprocessor.Exporter.Facade.Api.Controllers.ExporterJourney
 		}
 
 		[HttpPost("{registrationId:Guid}/waste-carrier-broker-dealer-ref")]
+        [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
 		public async virtual Task<IActionResult> Post(Guid registrationId, [FromBody] WasteCarrierBrokerDealerRefDto value)
-		{
+        {
 			_logger.LogInformation($"Create WasteCarrierBrokerDealerRef for registrationId: {value.RegistrationId}");
 
             var result = await _service.Create(value.RegistrationId, value);

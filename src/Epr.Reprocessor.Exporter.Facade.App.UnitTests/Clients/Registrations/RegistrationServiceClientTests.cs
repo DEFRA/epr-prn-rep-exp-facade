@@ -199,7 +199,7 @@ public class RegistrationServiceClientTests
     }
 
     [TestMethod]
-    public async Task UpdateApplicantTaskStatusAsync_ShouldReturnExpectedResult()
+    public async Task UpdateApplicationTaskStatusAsync_ShouldReturnExpectedResult()
     {
         // Arrange
         var registrationId = Guid.NewGuid();
@@ -209,7 +209,7 @@ public class RegistrationServiceClientTests
                 "SendAsync",
                 ItExpr.Is<HttpRequestMessage>(msg =>
                     msg.Method == HttpMethod.Post &&
-                    msg.RequestUri!.ToString().Contains("applicantTaskStatus")),
+                    msg.RequestUri!.ToString().Contains("applicationTaskStatus")),
                 ItExpr.IsAny<CancellationToken>()
             )
             .ReturnsAsync(new HttpResponseMessage
@@ -219,7 +219,7 @@ public class RegistrationServiceClientTests
             });
 
         // Act
-        var result = await _client.UpdateApplicantRegistrationTaskStatusAsync(registrationId, requestDto);
+        var result = await _client.UpdateApplicationRegistrationTaskStatusAsync(registrationId, requestDto);
 
         // Assert
         result.Should().BeTrue();

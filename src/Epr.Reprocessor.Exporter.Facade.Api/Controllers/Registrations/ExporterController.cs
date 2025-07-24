@@ -24,7 +24,9 @@ public class ExporterController : ControllerBase
     }
 
     [HttpPost("SaveOverseasReprocessor")]
-    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(bool))]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [SwaggerOperation(
         Summary = "creates or updates a overseas reprocessor",
         Description = "attempting to create or update overseas reprocessor"

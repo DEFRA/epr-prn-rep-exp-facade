@@ -25,6 +25,7 @@ public class RegistrationController : ControllerBase
 
     [HttpGet("{applicationTypeId:int}/organisations/{organisationId:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RegistrationDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerResponse(StatusCodes.Status404NotFound, "If an existing registration isn not found.", typeof(ProblemDetails))]
     [SwaggerOperation(
         Summary = "gets an existing registration by the organisation ID.",
@@ -46,6 +47,7 @@ public class RegistrationController : ControllerBase
 
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(int))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [SwaggerOperation(
             Summary = "create an application registration",
             Description = "attempting to create an application registration."
@@ -94,17 +96,17 @@ public class RegistrationController : ControllerBase
         return NoContent();
     }
 
-    [HttpPost("{registrationId:guid}/ApplicantTaskStatus")]
+    [HttpPost("{registrationMaterialId:guid}/ApplicationTaskStatus")]
     [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(NoContentResult))]
     [SwaggerOperation(
-        Summary = "update the applicant task status of an application registration",
-        Description = "attempting to update the applicant task status of an application registration."
+        Summary = "update the application task status of an application registration",
+        Description = "attempting to update the application task status of an application registration."
     )]
-    public async Task<IActionResult> UpdateApplicantRegistrationTaskStatus([FromRoute] Guid registrationId, [FromBody] UpdateRegistrationTaskStatusDto request)
+    public async Task<IActionResult> UpdateApplicationRegistrationTaskStatus([FromRoute] Guid registrationMaterialId, [FromBody] UpdateRegistrationTaskStatusDto request)
     {
         _logger.LogInformation(LogMessages.UpdateRegistrationTaskStatus);
 
-        await _registrationService.UpdateApplicantRegistrationTaskStatusAsync(registrationId, request);
+        await _registrationService.UpdateApplicationRegistrationTaskStatusAsync(registrationMaterialId, request);
 
         return NoContent();
     }
@@ -126,6 +128,7 @@ public class RegistrationController : ControllerBase
 
     [HttpGet("{registrationId:Guid}/RegistrationTaskStatus")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<ApplicantRegistrationTaskOverviewDto>))]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [SwaggerOperation(
         Summary = "get the task statuses of a registration",
         Description = "retrieving a list of task statuses for a registration."
