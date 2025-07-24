@@ -154,21 +154,7 @@ public class AccreditationServiceTests
     {
         // Arrange
         var orgId = Guid.NewGuid();
-        var expectedOutput = new List<AccreditationOverviewDto>
-        {
-            new AccreditationOverviewDto
-            {
-                OrganisationId = orgId,
-            },
-            new AccreditationOverviewDto
-            {
-                OrganisationId = orgId
-            },
-            new AccreditationOverviewDto
-            {
-                OrganisationId = orgId
-            }
-        };
+        var expectedOutput = _fixture.CreateMany<AccreditationOverviewDto>(3).ToList();
         _mockClient.Setup(x => x.GetAccreditationOverviewByOrgId(orgId))
             .ReturnsAsync(expectedOutput);
 
