@@ -51,7 +51,20 @@ public class ExporterControllerTests
     public async Task SaveOverseasReprocessor_ShouldReturnNoContent_WhenServiceSucceeds()
     {
         // Arrange
+        var externalId = Guid.NewGuid();
         var request = new OverseasAddressRequest();
+        request.OverseasAddresses = new List<OverseasAddress>() { new OverseasAddress
+        {
+            AddressLine1 = "Address Line 1",
+            CityOrTown = "City",
+            CountryName = "Country",
+            OrganisationName = "Organisation",
+            PostCode = "12345",
+            SiteCoordinates = "12.345,67.890",
+            StateProvince = "State",
+            AddressLine2 = "Address Line 2",
+            ExternalId = externalId,
+        }};
         var userId = Guid.NewGuid();
         _registrationMaterialServiceMock
             .Setup(s => s.SaveOverseasReprocessorAsync(request, userId))
@@ -74,6 +87,7 @@ public class ExporterControllerTests
         using var scope = new AssertionScope();
         result.Should().BeOfType<NoContentResult>();
         _registrationMaterialServiceMock.Verify(s => s.SaveOverseasReprocessorAsync(request, userId), Times.Once);
+
     }
 
     [TestMethod]
