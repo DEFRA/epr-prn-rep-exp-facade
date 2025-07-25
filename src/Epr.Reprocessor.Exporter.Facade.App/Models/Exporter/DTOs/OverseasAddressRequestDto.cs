@@ -16,7 +16,7 @@ public record OverseasAddressRequestDto(
         }
 
         var overseasAddressesDto = request.OverseasAddresses?.Select(address => new OverseasAddressDto(
-            address.Id,
+            address.ExternalId,
             address.OrganisationName,
             address.AddressLine1,
             address.AddressLine2,
