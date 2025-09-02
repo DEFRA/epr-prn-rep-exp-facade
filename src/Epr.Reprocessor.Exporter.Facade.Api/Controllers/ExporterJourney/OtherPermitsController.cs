@@ -1,4 +1,5 @@
-﻿using Epr.Reprocessor.Exporter.Facade.App.Models.ExporterJourney;
+﻿using Epr.Reprocessor.Exporter.Facade.App.Constants;
+using Epr.Reprocessor.Exporter.Facade.App.Models.ExporterJourney;
 using Epr.Reprocessor.Exporter.Facade.App.Services.ExporterJourney.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,7 +27,7 @@ namespace Epr.Reprocessor.Exporter.Facade.Api.Controllers.ExporterJourney
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public async virtual Task<IActionResult> Get(Guid registrationId)
 		{
-			_logger.LogInformation($"Get CarrierBrokerDealerPermits for registrationId: {registrationId}");
+			_logger.LogInformation(LogMessages.GetOtherPermitsCarrierBrokerDealerPermits, registrationId); 
 
             var dto = await _service.Get(registrationId);
 			return dto == null ? NotFound() : Ok(dto);
@@ -43,7 +44,7 @@ namespace Epr.Reprocessor.Exporter.Facade.Api.Controllers.ExporterJourney
         [ProducesResponseType(StatusCodes.Status202Accepted)]
 		public async virtual Task<IActionResult> Put(Guid registrationId, [FromBody] CarrierBrokerDealerPermitsDto value)
 		{
-			_logger.LogInformation($"Update CarrierBrokerDealerPermits for registrationId: {registrationId}");
+			_logger.LogInformation(LogMessages.GetOtherPermitsCarrierBrokerDealerPermits, registrationId);
             
 			await _service.Update(registrationId, value);
 			return Accepted();

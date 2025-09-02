@@ -1,4 +1,5 @@
-﻿using Epr.Reprocessor.Exporter.Facade.App.Models.ExporterJourney;
+﻿using Epr.Reprocessor.Exporter.Facade.App.Constants;
+using Epr.Reprocessor.Exporter.Facade.App.Models.ExporterJourney;
 using Epr.Reprocessor.Exporter.Facade.App.Services.ExporterJourney.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,7 +28,7 @@ namespace Epr.Reprocessor.Exporter.Facade.Api.Controllers.ExporterJourney
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public async virtual Task<IActionResult> Get(Guid registrationId)
 		{
-			_logger.LogInformation($"Get WasteCarrierBrokerDealerRef for registrationId: {registrationId}");
+			_logger.LogInformation(LogMessages.GetWasteCarrierBrokerDealerRef, registrationId);
 
             var dto = await _service.Get(registrationId);
 			return dto == null ? NotFound() : Ok(dto);
@@ -37,7 +38,7 @@ namespace Epr.Reprocessor.Exporter.Facade.Api.Controllers.ExporterJourney
         [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
 		public async virtual Task<IActionResult> Post(Guid registrationId, [FromBody] WasteCarrierBrokerDealerRefDto value)
         {
-			_logger.LogInformation($"Create WasteCarrierBrokerDealerRef for registrationId: {value.RegistrationId}");
+			_logger.LogInformation(LogMessages.CreateWasteCarrierBrokerDealerRef, value.RegistrationId);
 
             var result = await _service.Create(value.RegistrationId, value);
 			return Ok(result);
@@ -47,7 +48,7 @@ namespace Epr.Reprocessor.Exporter.Facade.Api.Controllers.ExporterJourney
         [ProducesResponseType(StatusCodes.Status202Accepted)]
 		public async virtual Task<IActionResult> Put(Guid registrationId, [FromBody] WasteCarrierBrokerDealerRefDto value)
 		{
-            _logger.LogInformation($"Update WasteCarrierBrokerDealerRef for registrationId: {value.RegistrationId}");
+            _logger.LogInformation(LogMessages.UpdateWasteCarrierBrokerDealerRef, value.RegistrationId);
 
             await _service.Update(registrationId, value);
 			return Accepted();

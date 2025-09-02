@@ -17,7 +17,7 @@ public static class ServiceCollectionExtension
     public static void RegisterComponents(this IServiceCollection services, IConfiguration configuration)
     {
         RegisterConfigs(services, configuration);
-        RegisterServices(services, configuration);
+        RegisterServices(services);
     }
 
     private static void RegisterConfigs(this IServiceCollection services, IConfiguration configuration)
@@ -25,8 +25,7 @@ public static class ServiceCollectionExtension
         services.Configure<PrnBackendServiceApiConfig>(configuration.GetSection(PrnBackendServiceApiConfig.SectionName));
     }
 
-    private static void RegisterServices(this IServiceCollection services, IConfiguration configuration)
-    {
+    private static void RegisterServices(this IServiceCollection services)   {
         // Service Clients
         services.AddScoped<IRegistrationServiceClient, RegistrationServiceClient>();
         services.AddScoped<ILookupServiceClient, LookupServiceClient>();
