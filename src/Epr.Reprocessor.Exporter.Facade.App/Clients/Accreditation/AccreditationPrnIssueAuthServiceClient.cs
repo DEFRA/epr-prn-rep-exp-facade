@@ -13,8 +13,8 @@ public class AccreditationPrnIssueAuthServiceClient : BaseHttpClient, IAccredita
         : base(httpClient)
     {
         config = options.Value;
-        httpClient.DefaultRequestHeaders.AddIfNotExists("X-EPR-ORGANISATION", Guid.NewGuid().ToString()); // TODO
-        httpClient.DefaultRequestHeaders.AddIfNotExists("X-EPR-USER", Guid.NewGuid().ToString()); // TODO
+        httpClient.DefaultRequestHeaders.AddIfNotExists("X-EPR-ORGANISATION", Guid.NewGuid().ToString()); // TODO - replace with real organisation id
+        httpClient.DefaultRequestHeaders.AddIfNotExists("X-EPR-USER", Guid.NewGuid().ToString()); // TODO - replace with real user id
     }
 
     public async Task<List<AccreditationPrnIssueAuthDto>> GetByAccreditationId(Guid accreditationId)

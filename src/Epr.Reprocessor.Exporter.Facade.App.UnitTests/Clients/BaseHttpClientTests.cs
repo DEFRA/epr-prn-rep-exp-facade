@@ -17,6 +17,12 @@ public class BaseHttpClientTests
     private TestableBaseHttpClient _client = null!;
     private const string Url = "http://test-api.com/endpoint";
 
+    private readonly JsonSerializerOptions _jsonOptions = new JsonSerializerOptions
+    {
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+        WriteIndented = true
+    };
+
     [TestInitialize]
     public void TestInitialize()
     {
@@ -158,12 +164,9 @@ public class BaseHttpClientTests
         result.Should().BeTrue();
     }
 
-    private static string SerializeCamelCase<T>(T obj)
+    private string SerializeCamelCase<T>(T obj)
     {
-        return JsonSerializer.Serialize(obj, new JsonSerializerOptions
-        {
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-        });
+        return JsonSerializer.Serialize(obj, _jsonOptions);
     }
 
     private class TestableBaseHttpClient : BaseHttpClient
