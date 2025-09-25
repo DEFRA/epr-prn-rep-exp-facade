@@ -1,4 +1,6 @@
-﻿namespace Epr.Reprocessor.Exporter.Facade.App.Constants;
+﻿using static Epr.Reprocessor.Exporter.Facade.App.Constants.Endpoints;
+
+namespace Epr.Reprocessor.Exporter.Facade.App.Constants;
 public static class LogMessages
 {
     public const string CreateRegistration = "Attempting to create registration application";
@@ -31,4 +33,9 @@ public static class LogMessages
     public const string UpdateMaterialNotReprocessingReason = "Attempting to update the reason for not reprocessing registration material with ID {RegistrationMaterialId}";
     public const string GetOverseasMaterialReprocessingSites = "Attempting to retrieve overseas reprocessing sites including corresponding interim sites for registrationMaterial {RegistrationMaterialId}";
     public const string SaveInterimSites = "Attempting to create or update interim sites.";
+
+    public const string GetOtherPermitsCarrierBrokerDealerPermits = "Get CarrierBrokerDealerPermits for registrationId: {registrationId}";    
+    public const string GetWasteCarrierBrokerDealerRef = "Get WasteCarrierBrokerDealerRef for registrationId: {registrationId}";
+    public const string CreateWasteCarrierBrokerDealerRef = "Create WasteCarrierBrokerDealerRef for registrationId: {registrationId}";
+    public const string UpdateWasteCarrierBrokerDealerRef = "Update WasteCarrierBrokerDealerRef for registrationId: {registrationId}";
 }

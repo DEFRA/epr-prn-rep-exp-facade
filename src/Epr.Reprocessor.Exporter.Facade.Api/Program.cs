@@ -12,7 +12,7 @@ using Microsoft.OpenApi.Models;
 namespace Epr.Reprocessor.Exporter.Facade.Api;
 
 [ExcludeFromCodeCoverage]
-public class Program
+public static class Program
 {
 	private static async Task Main(string[] args)
 	{
@@ -74,10 +74,6 @@ public class Program
 		app.UseAuthentication();
 		app.UseAuthorization();
 		app.MapControllers();
-
-		//app.MapHealthChecks(
-		//    builder.Configuration.GetValue<string>("HealthCheckPath"),
-		//    HealthCheckOptionBuilder.Build()).AllowAnonymous();
 
 		await app.RunAsync();
 	}

@@ -24,9 +24,9 @@ public class AccreditationService(IAccreditationServiceClient serviceClient) : I
         return await serviceClient.GetAccreditationById(accreditationId);
     }
 
-    public async Task<AccreditationDto> UpsertAccreditation(AccreditationRequestDto requestDto)
+    public async Task<AccreditationDto> UpsertAccreditation(AccreditationRequestDto accreditationDto)
     {
-        return await serviceClient.UpsertAccreditation(requestDto);
+        return await serviceClient.UpsertAccreditation(accreditationDto);
     }
 
     [ExcludeFromCodeCoverage]

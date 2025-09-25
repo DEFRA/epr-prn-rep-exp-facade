@@ -18,6 +18,10 @@ public class AccreditationServiceClientTests
     private Mock<IOptions<PrnBackendServiceApiConfig>> _mockOptions;
     private Mock<HttpMessageHandler> _mockHttpMessageHandler;
     private AccreditationServiceClient _client;
+    private JsonSerializerOptions _jsonOptions = new JsonSerializerOptions
+    {
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+    };
 
     [TestInitialize]
     public void TestInitialize()
@@ -320,11 +324,8 @@ public class AccreditationServiceClientTests
         );
     }
 
-    private static string SerializeCamelCase<T>(T obj)
+    private string SerializeCamelCase<T>(T obj)
     {
-        return JsonSerializer.Serialize(obj, new JsonSerializerOptions
-        {
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-        });
+        return JsonSerializer.Serialize(obj,_jsonOptions);  
     }
 }

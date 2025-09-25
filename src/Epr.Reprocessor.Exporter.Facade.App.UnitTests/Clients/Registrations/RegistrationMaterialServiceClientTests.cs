@@ -322,11 +322,7 @@ public class RegistrationMaterialServiceClientTests
 
         HttpRequestMessage? capturedRequest = null;
 
-        var options = new JsonSerializerOptions
-        {
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-            Converters = { new JsonStringEnumConverter(JsonNamingPolicy.CamelCase) }
-        };
+        
 
         _mockHttpMessageHandler
             .Protected()
@@ -338,7 +334,7 @@ public class RegistrationMaterialServiceClientTests
             .ReturnsAsync(new HttpResponseMessage
             {
                 StatusCode = HttpStatusCode.OK,
-                Content = new StringContent(JsonSerializer.Serialize(expectedResponse, options))
+                Content = new StringContent(JsonSerializer.Serialize(expectedResponse, JsonSerializerOptions))
             });
 
         // Act
