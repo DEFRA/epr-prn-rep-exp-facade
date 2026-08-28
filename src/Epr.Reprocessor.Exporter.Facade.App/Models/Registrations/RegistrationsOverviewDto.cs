@@ -7,7 +7,7 @@ namespace Epr.Reprocessor.Exporter.Facade.App.Models.Registrations
     public class RegistrationsOverviewDto
 
     {
-        public Guid RegistrationId { get; set; }
+        public Guid Id { get; set; }
 
         public int RegistrationMaterialId { get; set; }
 

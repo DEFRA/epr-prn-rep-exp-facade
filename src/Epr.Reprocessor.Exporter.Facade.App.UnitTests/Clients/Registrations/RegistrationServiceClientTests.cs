@@ -354,7 +354,7 @@ public class RegistrationServiceClientTests
     {
         new RegistrationsOverviewDto
         {
-            RegistrationId = Guid.NewGuid(),
+            Id = Guid.NewGuid(),
             RegistrationMaterialId = 1,
             MaterialId = 101,
             Material = "Plastic",
@@ -478,7 +478,7 @@ public class RegistrationServiceClientTests
     {
         new RegistrationsOverviewDto
         {
-            RegistrationId = Guid.NewGuid(),
+            Id = Guid.NewGuid(),
             RegistrationMaterialId = 1,
             MaterialId = 101,
             Material = "Plastic",

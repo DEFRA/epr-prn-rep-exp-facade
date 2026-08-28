@@ -313,7 +313,7 @@ public class RegistrationControllerTests
     {
         new RegistrationsOverviewDto
         {
-            RegistrationId = Guid.NewGuid(),
+            Id = Guid.NewGuid(),
             RegistrationMaterialId = 1,
             MaterialId = 101,
             Material = "Plastic",
