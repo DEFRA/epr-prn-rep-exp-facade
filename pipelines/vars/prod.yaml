@@ -1,6 +1,12 @@
 variables:
-  azureSubscription: 'AZR-RWD-PRD1'
-  docker.imageName: 'eprrepexpfacade'
-  acr.azureContainerRegistryName: 'prdrwdinfac1401'
-  acr.repositoryName: 'eprrepexpfacaderepository'
-  serviceName: 'PRDRWDWEBWA1417'
+- group: ServiceConnections
+- name: azureSubscription
+  value: $(ServiceConnectionPRD1)
+- name: docker.imageName
+  value: 'eprrepexpfacade'
+- name: acr.azureContainerRegistryName
+  value: 'prdrwdinfac1401'
+- name: acr.repositoryName
+  value: 'eprrepexpfacaderepository'
+- name: serviceName
+  value: 'PRDRWDWEBWA1417'
